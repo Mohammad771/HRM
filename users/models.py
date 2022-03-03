@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from job_management.models import job_titles, departments
 
 
@@ -63,29 +64,82 @@ class addresses(models.Model):
     address_updated_at = models.DateTimeField()
     address_deleted_at = models.DateTimeField()
 
+class MyAccountManager(BaseUserManager):
+	def create_user(self, email, username, password=None):
+		if not email:
+			raise ValueError('Users must have an email address')
+		if not username:
+			raise ValueError('Users must have a username')
 
-class users(models.Model):
+		user = self.model(
+			email=self.normalize_email(email),
+			username=username,
+		)
+
+		user.set_password(password)
+		user.save(using=self._db)
+		return user
+
+	def create_superuser(self, email, username, password):
+		user = self.create_user(
+			email=self.normalize_email(email),
+			password=password,
+			username=username,
+		)
+		user.is_admin = True
+		user.is_staff = True
+		user.is_superuser = True
+		user.save(using=self._db)
+		return user
+
+
+class users(AbstractBaseUser):
     user_id = models.AutoField(max_length=24, primary_key=True)
-    user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")
-    user_address_id = models.ForeignKey(addresses, default=None, on_delete=models.CASCADE, related_name="+")
-    user_job_title_id = models.ForeignKey(job_titles, on_delete=models.CASCADE, related_name="+")
-    user_type_id = models.ForeignKey('user_types', default=None, on_delete=models.CASCADE, related_name="+")
-    user_employee_department = models.ForeignKey(departments, on_delete=models.CASCADE, related_name="+")
+    email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
+    username 				= models.CharField(max_length=30, unique=True)
+    date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
+    is_admin				= models.BooleanField(default=False)
+    is_active				= models.BooleanField(default=True)
+    is_staff				= models.BooleanField(default=False)
+    is_superuser			= models.BooleanField(default=False)
     user_first_name = models.CharField(max_length=24)
     user_middle_name = models.CharField(max_length=24)
     user_last_name = models.CharField(max_length=24)
-    user_email = models.CharField(max_length=50, unique=True)
-    user_mobile = models.IntegerField(unique=True)
-    user_password_hash = models.TextField()
-    user_activation_hash = models.TextField()
-    user_is_active = models.BooleanField()
-    user_status = models.BooleanField()
-    user_education_degree = models.CharField(max_length=24)
-    user_DOB = models.DateField()
-    user_nationality_ID = models.IntegerField()
-    user_created_at = models.DateTimeField()
-    user_updated_at = models.DateTimeField()
-    user_deleted_at = models.DateTimeField()
+    user_password_hash      = models.TextField()
+    # user_mobile = models.IntegerField(unique=True)
+    # user_id = models.AutoField(max_length=24, primary_key=True)
+    # user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")
+    # user_address_id = models.ForeignKey(addresses, default=None, on_delete=models.CASCADE, related_name="+")
+    # user_job_title_id = models.ForeignKey(job_titles, on_delete=models.CASCADE, related_name="+")
+    # user_type_id = models.ForeignKey('user_types', default=None, on_delete=models.CASCADE, related_name="+")
+    # user_employee_department = models.ForeignKey(departments, on_delete=models.CASCADE, related_name="+")
+    # user_activation_hash = models.TextField()
+    # user_is_active = models.BooleanField()
+    # user_status = models.BooleanField()
+    # user_education_degree = models.CharField(max_length=24)
+    # user_DOB = models.DateField()
+    # user_nationality_ID = models.IntegerField()
+    # user_created_at = models.DateTimeField()
+    # user_updated_at = models.DateTimeField()
+    # user_deleted_at = models.DateTimeField()
+        
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    objects = MyAccountManager()
+
+    def __str__(self):
+        return self.email
+
+        # For checking permissions. to keep it simple all admin have ALL permissons
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+        # Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
+    def has_module_perms(self, app_label):
+        return True
 
 
 class user_types(models.Model):

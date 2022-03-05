@@ -79,6 +79,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'HRM.wsgi.application'
 
+AUTH_USER_MODEL = 'users.users'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -130,6 +131,7 @@ STATICFILES_DIRS = [
     STATIC_DIR,
 ]
 
+LOGIN_URL = '/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

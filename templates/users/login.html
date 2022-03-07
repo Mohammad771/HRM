@@ -1,34 +1,11 @@
-<!DOCTYPE html>
+{% extends 'common\commonView.html' %}
 {% load staticfiles %}
-<html class="loading bordered-layout" lang="en" data-layout="bordered-layout" data-textdirection="ltr">
-<!-- BEGIN: Head-->
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-    <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <meta name="author" content="PIXINVENT">
-    <title>Login Page - HRM System</title>
+{% block title %}
+    <title>Login Page</title>
+{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
-
-    <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/vendors.min.css" %}">
-    <!-- END: Vendor CSS-->
-
-    <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/bootstrap.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/bootstrap-extended.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/colors.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/components.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/dark-layout.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/bordered-layout.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/semi-dark-layout.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/vertical-menu.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/form-validation.css" %}">
-
+{% block pageCSS %}
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{% static "css/users/authentication.css" %}">
      <!-- END: Page CSS-->
@@ -36,103 +13,90 @@
     <!-- BEGIN: Custom CSS-->
    <link rel="stylesheet" type="text/css" href="{% static "common/css/style.css" %}">
     <!-- END: Custom CSS-->
+{% endblock %}
 
-</head>
-<!-- END: Head-->
 
-<!-- BEGIN: Body-->
-
-<body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
+{% block content %}
     <!-- BEGIN: Content-->
-    <div class="app-content content ">
-        <div class="content-overlay"></div>
-        <div class="header-navbar-shadow"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-            </div>
-            <div class="content-body">
-                <div class="auth-wrapper auth-basic px-2">
-                    <div class="auth-inner my-2">
-                        <!-- Login basic -->
-                        <div class="card mb-0">
-                            <div class="card-body">
-                                <a href="" class="brand-logo">
-                                    <img src="{% static "images/hr.png" %}" alt="hr logo" width="40" height="40">
-                                    <h2 class="brand-text text-primary ms-1">HRM System</h2>
-                                </a>
+    <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
 
-                                <h4 class="card-title mb-1">Welcome to HRM System 👋</h4>
-                                <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
-
-                                {% if authenticated %}
-                                    <h1>You are already logged in</h1>
-                                {% else %}
-                                <form action="{% url 'users:users/login' %}" class="auth-login-form mt-2" method="POST">
-                                    {% csrf_token %}
-                                    <div class="mb-1">
-                                        <label for="login_email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="login-email" name="login_email" placeholder="john@الخطير.com" aria-describedby="login-email" tabindex="1" autofocus />
-                                    </div>
-
-                                    <div class="mb-1">
-                                        <div class="d-flex justify-content-between">
-                                            <label class="form-label" for="login_password">Password</label>
-                                            <a href="auth-forgot-password-basic.html">
-                                                <small>Forgot Password?</small>
-                                            </a>
-                                        </div>
-                                        <div class="input-group input-group-merge form-password-toggle">
-                                            <input type="password" class="form-control form-control-merge" id="login-password" name="login_password" tabindex="2" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="login-password" />
-                                            <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="mb-1">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="remember-me" tabindex="3" />
-                                            <label class="form-check-label" for="remember-me"> Remember Me </label>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary w-100" tabindex="4">Sign in</button>
-                                </form>
-
-                                {% endif %}
-
-                                <p class="text-center mt-2">
-                                    <span>New on our platform?</span>
-                                    <a href="auth-register-basic.html">
-                                        <span>Create an account</span>
-                                    </a>
-                                </p>
-
-                            </div>
-                        </div>
-                        <!-- /Login basic -->
-                    </div>
+        <div class="app-content content ">
+            <div class="content-overlay"></div>
+            <div class="header-navbar-shadow"></div>
+            <div class="content-wrapper">
+                <div class="content-header row">
                 </div>
+                <div class="content-body">
+                    <div class="auth-wrapper auth-basic px-2">
+                        <div class="auth-inner my-2">
+                            <!-- Login basic -->
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <a href="" class="brand-logo">
+                                        <img src="{% static "images/hr.png" %}" alt="hr logo" width="40" height="40">
+                                        <h2 class="brand-text text-primary ms-1">HRM System</h2>
+                                    </a>
 
+                                    <h4 class="card-title mb-1">Welcome to HRM System 👋</h4>
+                                    <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
+
+                                    {% if authenticated %}
+                                        <h1>You are already logged in</h1>
+                                    {% else %}
+                                    <form action="{% url 'users:users/login' %}" class="auth-login-form mt-2" method="POST">
+                                        {% csrf_token %}
+                                        <div class="mb-1">
+                                            <label for="login_email" class="form-label">Email</label>
+                                            <input type="text" class="form-control" id="login-email" name="login_email" placeholder="john@الخطير.com" aria-describedby="login-email" tabindex="1" autofocus />
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <div class="d-flex justify-content-between">
+                                                <label class="form-label" for="login_password">Password</label>
+                                                <a href="auth-forgot-password-basic.html">
+                                                    <small>Forgot Password?</small>
+                                                </a>
+                                            </div>
+                                            <div class="input-group input-group-merge form-password-toggle">
+                                                <input type="password" class="form-control form-control-merge" id="login-password" name="login_password" tabindex="2" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="login-password" />
+                                                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="remember-me" tabindex="3" />
+                                                <label class="form-check-label" for="remember-me"> Remember Me </label>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary w-100" tabindex="4">Sign in</button>
+                                    </form>
+
+                                    {% endif %}
+
+                                    <p class="text-center mt-2">
+                                        <span>New on our platform?</span>
+                                        <a href="auth-register-basic.html">
+                                            <span>Create an account</span>
+                                        </a>
+                                    </p>
+
+                                </div>
+                            </div>
+                            <!-- /Login basic -->
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
+    </body>
     <!-- END: Content-->
 
 
-    <!-- BEGIN: Vendor JS-->
-    <script src="{% static "common/js/vendors.min.js" %}"></script>
+{% endblock %}
 
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="{% static "common/js/jquery.validate.min.js" %}"></script>
-
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="{% static "common/js/app-menu.js" %}"></script>
-    <script src="{% static "common/js/app.js" %}"></script>
-
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
+{% block pageCJs %}
+<!-- BEGIN: Page JS-->
     <script src="{% static "js/users/auth-login.js" %}"></script>
 
     <!-- END: Page JS-->
@@ -147,6 +111,9 @@
             }
         })
     </script>
+
+{% endblock %}
+
 </body>
 <!-- END: Body-->
 

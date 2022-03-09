@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html class="loading bordered-layout" lang="en" data-layout="bordered-layout" data-textdirection="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+    {% block title %}
+
+    {% endblock %}
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/vendors.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/users/select2.min.css" %}">
+
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/bootstrap-extended.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/colors.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/components.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/dark-layout.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/bordered-layout.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/semi-dark-layout.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/vertical-menu.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/form-validation.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/form-validation.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "common/css/flatpickr.min.css" %}">
+
+    {% block pageCSS %}
+
+    {% endblock %}
+
+</head>
+
+{% block content %}
+
+
+
+    <!-- END: Page JS-->
+{% endblock %}
+
+
+
+<!-- BEGIN: Vendor JS-->
+    <script src="{% static "common/js/vendors.min.js" %}"></script>
+
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static "common/js/jquery.validate.min.js" %}"></script>
+    <script src="{% static "common/js/flatpickr.min.js" %}"></script>
+    <script src="{% static "common/js/form-pickers.js" %}"></script>
+    <script src="{% static "js/users/select2.full.min.js" %}"></script>
+    <script src="{% static "js/users/form-select2.js" %}"></script>
+
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static "common/js/app-menu.js" %}"></script>
+    <script src="{% static "common/js/app.js" %}"></script>
+
+    <!-- END: Theme JS-->
+{% block pageCJs %}
+
+
+{% endblock %}
+</html>

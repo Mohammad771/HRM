@@ -93,3 +93,7 @@ def register(request):
 
 def dashboard(request):
     return render(request, 'users/dashboard.html')
+
+
+def viewUsers(request):
+    return render(request, 'users/viewUsers.html')

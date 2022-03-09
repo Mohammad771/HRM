@@ -1,38 +1,12 @@
-<!DOCTYPE html>
+{% extends 'common\commonView.html' %}
 {% load staticfiles %}
-<html class="loading bordered-layout" lang="en" data-layout="bordered-layout" data-textdirection="ltr">
-<!-- BEGIN: Head-->
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-    <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <meta name="author" content="PIXINVENT">
-    <title>Login Page - HRM System</title>
+{% block title %}
+    <title>Register Page</title>
+{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
-
-    <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/vendors.min.css" %}">
+{% block pageCSS %}
     <link rel="stylesheet" type="text/css" href="{% static "css/users/bs-stepper.min.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/users/select2.min.css" %}">
-    <!-- END: Vendor CSS-->
-
-    <!-- BEGIN: Theme CSS-->
-
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/bootstrap.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/bootstrap-extended.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/colors.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/components.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/dark-layout.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/bordered-layout.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/semi-dark-layout.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/vertical-menu.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/form-validation.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "common/css/flatpickr.min.css" %}">
-
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{% static "css/users/form-wizard.css" %}">
@@ -42,31 +16,30 @@
     <!-- BEGIN: Custom CSS-->
    <link rel="stylesheet" type="text/css" href="{% static "common/css/style.css" %}">
     <!-- END: Custom CSS-->
+{% endblock %}
 
-</head>
-<!-- END: Head-->
 
-<!-- BEGIN: Body-->
+{% block content %}
 
-<body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
-    <!-- BEGIN: Content-->
-    <div class="app-content content ">
-        <div class="content-overlay"></div>
-        <div class="header-navbar-shadow"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-            </div>
-            <div class="content-body">
-                <div class="auth-wrapper auth-cover">
-                    <div class="auth-inner row m-0">
+    <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
+        <!-- BEGIN: Content-->
+        <div class="app-content content ">
+            <div class="content-overlay"></div>
+            <div class="header-navbar-shadow"></div>
+            <div class="content-wrapper">
+                <div class="content-header row">
+                </div>
+                <div class="content-body">
+                    <div class="auth-wrapper auth-cover">
+                        <div class="auth-inner row m-0">
 
-                        <!-- Left Text-->
-                        <div class="col-lg-3 d-none d-lg-flex align-items-center p-0">
-                            <div class="w-100 d-lg-flex align-items-center justify-content-center">
-                                <img class="img-fluid w-100" src="{% static "images/users/create-account.svg" %}" alt="multi-steps" />
+                            <!-- Left Text-->
+                            <div class="col-lg-3 d-none d-lg-flex align-items-center p-0">
+                                <div class="w-100 d-lg-flex align-items-center justify-content-center">
+                                    <img class="img-fluid w-100" src="{% static "images/users/create-account.svg" %}" alt="multi-steps" />
+                                </div>
                             </div>
-                        </div>
-                        <!-- /Left Text-->
+                            <!-- /Left Text-->
 
                         <!-- Register-->
                         <div class="col-lg-9 d-flex align-items-center auth-bg px-2 px-sm-3 px-lg-5 pt-3">
@@ -125,7 +98,17 @@
                                                         <input type="email" name="email" id="email" class="form-control" placeholder="john.doe@email.com" aria-label="john.doe" />
                                                         <!-- {{register_form.email}} -->
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-1">
+                                                            <label class="form-label" for="email">Phone Number</label>
+                                                            <input type="phone" name="phone" id="phone" class="form-control" placeholder="john.doe@email.com" aria-label="john.doe" />
+                                                        </div>
+                                                        <div class="col-md-6 mb-1">
+                                                            <label class="form-label" for="email">Email</label>
+                                                            <input type="email" name="email" id="email" class="form-control" placeholder="john.doe@email.com" aria-label="john.doe" />
+                                                        </div>
 
+<<<<<<< HEAD
                                                     <div class="col-md-6 mb-1">
                                                         <label class="form-label" for="password1">Password</label>
                                                         <div class="input-group input-group-merge form-password-toggle">
@@ -163,8 +146,58 @@
                                                         <input type="text" id="Dob" name="user_DOB" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
                                                         <!-- {{register_form.user_DOB}} -->
                                                     </div>
+=======
+                                                        <div class="col-md-6 mb-1">
+                                                            <label class="form-label" for="password">Password</label>
+                                                            <div class="input-group input-group-merge form-password-toggle">
+                                                                <input type="password" name="password" id="password" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                                                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mb-1">
+                                                            <label class="form-label" for="confirm-password">Confirm Password</label>
+                                                            <div class="input-group input-group-merge form-password-toggle">
+                                                                <input type="password" name="confirm-password" id="confirm-password" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                                                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 mb-1">
+                                                            <label class="form-check-label mb-50" for="customSwitch15">Admin?</label>
+                                                            <div class="form-check form-switch form-check-dark">
+                                                                <input type="checkbox" class="form-check-input" id="customSwitch15" checked="">
 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5 mb-1" data-select2-id="46">
+                                                            <label class="form-label" for="select2-basic">Nationality</label>
+                                                            <div class="position-relative" data-select2-id="45">
+                                                                <select class="select2 form-select select2-hidden-accessible" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                                                    <option value="AK" data-select2-id="2">Saudi Arabia</option>
+                                                                    <option value="HI" data-select2-id="57">UAE</option>
+                                                                    <option value="CA" data-select2-id="58">Iraq</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5 mb-1">
+                                                            <label class="form-label" for="Dob">Date of Birth</label>
+                                                            <input type="text" id="Dob" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                                        </div>
+>>>>>>> 6f29ce15fb8b8c93f082f69ea96e09ebe253e3a3
+
+                                                    </div>
+                                                </form>
+
+                                                <div class="d-flex justify-content-between mt-2">
+                                                    <button class="btn btn-outline-danger btn-prev">
+                                                        <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
+                                                        <span class="align-middle d-sm-inline-block d-none">Cancel</span>
+                                                    </button>
+                                                    <button class="btn btn-primary btn-next">
+                                                        <span class="align-middle d-sm-inline-block d-none">Submit</span>
+                                                        <i data-feather="chevron-right" class="align-middle ms-sm-25 ms-0"></i>
+                                                    </button>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class="d-flex justify-content-between mt-2">
                                                     <button class="btn btn-outline-danger btn-prev">
                                                         <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
@@ -177,6 +210,8 @@
                                             </form>
 
 
+=======
+>>>>>>> 6f29ce15fb8b8c93f082f69ea96e09ebe253e3a3
                                             </div>
                                         </div>
                                     </div>
@@ -184,48 +219,24 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
-    <!-- END: Content-->
-
-
-    <!-- BEGIN: Vendor JS-->
-    <script src="{% static "common/js/vendors.min.js" %}"></script>
-
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <!--<script src="{% static "common/js/picker.js" %}"></script>
-    <script src="{% static "common/js/picker.date.js" %}"></script>-->
-    <script src="{% static "common/js/flatpickr.min.js" %}"></script>
-    <script src="{% static "common/js/form-pickers.js" %}"></script>
+        <!-- END: Content-->
 
 
 
+{% endblock %}
+
+{% block pageCJs %}
 
     <script src="{% static "js/users/bs-stepper.min.js" %}"></script>
-    <script src="{% static "js/users/select2.full.min.js" %}"></script>
-    <script src="{% static "js/users/form-select2.js" %}"></script>
     <script src="{% static "js/users/cleave.min.js" %}"></script>
     <script src="{% static "js/users/cleave-phone.sa.js" %}"></script>
-
-    <script src="{% static "common/js/jquery.validate.min.js" %}"></script>
-
-
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="{% static "common/js/app-menu.js" %}"></script>
-    <script src="{% static "common/js/app.js" %}"></script>
-
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
     <script src="{% static "js/users/auth-register.js" %}"></script>
 
+<<<<<<< HEAD
     <!-- END: Page JS-->
 
     <script>
@@ -248,4 +259,7 @@
 <!-- END: Body-->
 
 </html>
+=======
+>>>>>>> 6f29ce15fb8b8c93f082f69ea96e09ebe253e3a3
 
+{% endblock %}

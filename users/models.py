@@ -104,10 +104,11 @@ class users(AbstractBaseUser):
     is_staff				= models.BooleanField(default=False)
     is_superuser			= models.BooleanField(default=False)
     user_first_name = models.CharField(max_length=24)
-    user_middle_name = models.CharField(max_length=24)
+    # user_middle_name = models.CharField(max_length=24)
     user_last_name = models.CharField(max_length=24)
-    user_password_hash      = models.TextField()
-    # user_mobile = models.IntegerField(unique=True)
+    user_mobile = models.CharField(max_length = 15, unique=True)
+    user_nationality_ID = models.IntegerField()
+    user_DOB = models.DateField()
     # user_id = models.AutoField(max_length=24, primary_key=True)
     # user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")
     # user_address_id = models.ForeignKey(addresses, default=None, on_delete=models.CASCADE, related_name="+")
@@ -118,13 +119,12 @@ class users(AbstractBaseUser):
     # user_is_active = models.BooleanField()
     # user_status = models.BooleanField()
     # user_education_degree = models.CharField(max_length=24)
-    # user_DOB = models.DateField()
-    # user_nationality_ID = models.IntegerField()
     # user_created_at = models.DateTimeField()
     # user_updated_at = models.DateTimeField()
     # user_deleted_at = models.DateTimeField()
-        
+    # user_password_hash      = models.TextField()
 
+        
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 

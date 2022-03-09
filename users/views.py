@@ -1,9 +1,15 @@
+import imp
 from django.shortcuts import redirect, render
-from .froms import login_form
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-# from django.core.urlresolvers import reverse
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from .forms import register_form
+# from django.contrib.auth.models import User
+# from django.contrib.auth import get_user_model
+
+# User = get_user_model()
 
 def user_login(request):
 
@@ -37,31 +43,52 @@ def user_logout(request):
 
 
 
-def register(request): 
+def register(request):
 
-    # authenticated = False
+    context = {}
+
+    if request.method == "POST":
+        form = register_form(request.POST)
+        # username = request.POST.
+        # request.POST.update({'username': ['something']})
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            password1 = form.cleaned_data.get('password1')
+            user = authenticate(email=email, password=password1)
+            login(request, user)
+            return redirect('/dashboard')
+
+        else:
+            print(form.errors)
+            context['errors'] =  form.errors
+            context['register_form'] = form
+            # return redirect('/register')
+            return render(request, 'users/register.html', context)
+
+            
+    else: #GET request
+
+        form = register_form()
+        context['register_form'] =  form
+        
+        return render(request, 'users/register.html', context)
 
     # if request.method == "POST":
-    #     login_info = login_form(data=request.POST)
-    #     if login_info.is_valid():
-    #         user = login_info.save()
-    #         user.set_password(user.password)
-    #         user.save()
-
-    #         authenticated = True
-
-    #     else:
-    #         print(login_form.errors)
+    #     form = UserCreationForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         email = form.cleaned_data['email']
+    #         password = form.cleaned_data['password1']
+    #         user = authenticate(email=email, password=password)
+    #         login(request, user)
+    #         messages.success(request, ("Registration Successful"))
+    #         return redirect('/dashboard')
     # else:
-        
-    #     loginForm = login_form()
+    #     form = UserCreationForm()
 
-
-    return render(request, 'users/register.html',)
-    #  {
-    #     'login_form':loginForm,
-    #     'authenticated':authenticated
-    # })
+    #     return render(request, 'users/register.html', {"form":form})
     
 
 def dashboard(request):

@@ -63,12 +63,17 @@
 
                                 <h4 class="card-title mb-1">Welcome to HRM System 👋</h4>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
-
+                                
                                 {% if authenticated %}
                                     <h1>You are already logged in</h1>
                                 {% else %}
                                 <form action="{% url 'users:users/login' %}" class="auth-login-form mt-2" method="POST">
                                     {% csrf_token %}
+                                    {% if login_error %}
+                                        <p style="color: red;" class="card-text mb-2">{{login_error}} 😥</p>
+                                    {% endif %}
+
+
                                     <div class="mb-1">
                                         <label for="login_email" class="form-label">Email</label>
                                         <input type="text" class="form-control" id="login-email" name="login_email" placeholder="john@الخطير.com" aria-describedby="login-email" tabindex="1" autofocus />
@@ -99,7 +104,7 @@
 
                                 <p class="text-center mt-2">
                                     <span>New on our platform?</span>
-                                    <a href="auth-register-basic.html">
+                                    <a href="{% url 'users:users/register' %}">
                                         <span>Create an account</span>
                                     </a>
                                 </p>

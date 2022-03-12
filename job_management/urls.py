@@ -6,7 +6,7 @@ from job_management import views
 app_name = "job_management"
 
 urlpatterns = [
-    path('departments/', views.departments,name='job_management/departments'),
+    path('departments/', views.create_department,name='job_management/create_department'),
     path('job_titles/', views.job_titles, name='job_management/job_titles'),
 
 ]

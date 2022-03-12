@@ -25,7 +25,7 @@ class job_titles(models.Model):
     job_title_available_online = models.BooleanField()
     job_title_days_off = models.IntegerField()
     job_title_status = models.BooleanField()
-    job_title_created_at = models.DateTimeField()
+    job_title_created_at = models.DateTimeField(auto_now=True)
     job_title_updated_at = models.DateTimeField()
     job_title_deleted_at = models.DateTimeField()
 

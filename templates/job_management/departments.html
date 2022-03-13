@@ -20,18 +20,20 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">ِAdd New Department</h4>
+
         </div>
-        {% if create_department_errors %}
-        <p style="color: red;" class="card-text mb-2">{{create_department_errors}} 😥</p>
-        {% endif %}
+
         <div class="card-body">
+            {% if create_department_errors %}
+                {{create_department_errors}}
+            {% endif %}
             <form action="{% url 'job_management:job_management/create_department' %}" method="POST" id="basic-input">
                 {% csrf_token %}
                 <div class="row">
                     <i class="fa-regular fa-face-clouds"></i>
                     <div class="col-md-8">
                         <label class="form-label" for="basicInput">Department Name</label>
-                        <input type="text" class="form-control" name="department_Name" id="department_Name" placeholder="Enter department name">
+                        <input type="text" class="form-control" name="department_name" id="department_Name" placeholder="Enter department name">
                     </div>
 
                     <div class="col-md-2 mt-2">
@@ -39,7 +41,7 @@
 
                     </div>
                     {% if success_message %}
-                    <p style="color: red;" class="card-text mb-2">{{success_message}} 😥</p>
+                    <p style="color: green;" class="card-text mb-2">{{success_message}}</p>
                     {% endif %}
 
                 </div>

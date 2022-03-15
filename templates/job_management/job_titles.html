@@ -1,0 +1,151 @@
+{% extends 'common\baseView.html' %}
+{% load staticfiles %}
+
+{% block pageCSS %}
+    <!-- BEGIN: Page CSS-->
+
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+
+    <!-- END: Custom CSS-->
+{% endblock %}
+
+{% block viewName %}
+    <h2 class="content-header-title float-start mb-0">Job Titles</h2>
+{% endblock %}
+
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">ِAdd New Job Titles</h4>
+        </div>
+        <div class="card-body">
+            <form id="basic-input">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label" for="basicSelect">Choose Department</label>
+                        <select class="form-select" id="basicSelect">
+                            <option>Implementation</option>
+                            <option>IT</option>
+                            <option>Sales</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" for="basicInput">Job Titles Name</label>
+                        <input type="text" class="form-control" id="departmentName" placeholder="Enter Job Titles name">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label" for="hourPrice">Hour Price</label>
+                        <input type="text" class="form-control" id="hourPrice" placeholder="Ex; 80">
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                        <button style="width: 110px" type="button" class="btn btn-outline-success round waves-effect">Add</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title"></h4>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Department</th>
+                    <th>Job Titles</th>
+                    <th>Hour Price</th>
+                    <th>Status</th>
+                    <th>Suspend</th>
+                    <th>Edit</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <span class="fw-bold">1</span>
+                    </td>
+                    <td>Implementation</td>
+                    <td>UI developer</td>
+                    <td>90 SAR</td>
+                    <td id="inactive" style="display: none"><span class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
+                    <td id="active"><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                    <td>
+                        <div class="form-check form-check-secondary form-switch">
+                            <input type="checkbox" class="form-check-input" id="suspend">
+                        </div>
+                    </td>
+                    <td>
+                        <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade text-start" id="editForm" tabindex="-1" aria-labelledby="myModalLabel33" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33">Edit Department Form</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="#">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="basicSelect">Choose Department</label>
+                                    <select class="form-select" id="basicSelect">
+                                        <option>Implementation</option>
+                                        <option>IT</option>
+                                        <option>Sales</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="basicInput">Job Titles Name</label>
+                                    <input type="text" value="UI developer" class="form-control" id="departmentName" placeholder="Enter Job Titles name">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label" for="hourPrice">Hour Price</label>
+                                    <input type="text" value="90" class="form-control" id="hourPrice" placeholder="Ex; 80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- END: Page JS-->
+{% endblock %}
+
+{% block pageCJs %}
+    <script>
+        $(window).on('load', function() {
+            $('#inactive').hide();
+        })
+    </script>
+
+
+{% endblock %}

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from job_management.models import job_titles, departments
+import random
 
 
 class attachment_types(models.Model):
@@ -65,32 +66,39 @@ class addresses(models.Model):
     address_deleted_at = models.DateTimeField()
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, username, password=None):
-		if not email:
-			raise ValueError('Users must have an email address')
-		if not username:
-			raise ValueError('Users must have a username')
+    def create_user(self, email, username, password=None, superuser=False):
+        if not email:
+            raise ValueError('Users must have an email address')
+        if not username:
+            raise ValueError('Users must have a username')
 
-		user = self.model(
+        user = self.model(
 			email=self.normalize_email(email),
 			username=username,
 		)
 
-		user.set_password(password)
-		user.save(using=self._db)
-		return user
+        if superuser:
+            user.user_nationality_ID = 1
+            user.user_DOB = '2022-03-12'
+            user.user_mobile = str(random.randint(1111111111, 9999999999))
 
-	def create_superuser(self, email, username, password):
-		user = self.create_user(
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username, password):
+        user = self.create_user(
 			email=self.normalize_email(email),
 			password=password,
 			username=username,
-		)
-		user.is_admin = True
-		user.is_staff = True
-		user.is_superuser = True
-		user.save(using=self._db)
-		return user
+            superuser=True)
+                
+        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        
 
 
 class users(AbstractBaseUser):
@@ -104,10 +112,12 @@ class users(AbstractBaseUser):
     is_staff				= models.BooleanField(default=False)
     is_superuser			= models.BooleanField(default=False)
     user_first_name = models.CharField(max_length=24)
-    user_middle_name = models.CharField(max_length=24)
     user_last_name = models.CharField(max_length=24)
-    user_password_hash      = models.TextField()
-    # user_mobile = models.IntegerField(unique=True)
+    user_mobile = models.CharField(max_length=13, unique=True)
+    user_DOB = models.DateField()
+    user_nationality_ID = models.IntegerField()
+    # user_middle_name = models.CharField(max_length=24)
+    # user_password_hash      = models.TextField()
     # user_id = models.AutoField(max_length=24, primary_key=True)
     # user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")
     # user_address_id = models.ForeignKey(addresses, default=None, on_delete=models.CASCADE, related_name="+")
@@ -118,8 +128,6 @@ class users(AbstractBaseUser):
     # user_is_active = models.BooleanField()
     # user_status = models.BooleanField()
     # user_education_degree = models.CharField(max_length=24)
-    # user_DOB = models.DateField()
-    # user_nationality_ID = models.IntegerField()
     # user_created_at = models.DateTimeField()
     # user_updated_at = models.DateTimeField()
     # user_deleted_at = models.DateTimeField()

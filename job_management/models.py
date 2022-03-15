@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 # Create your models here.
 from finance.models import accounts
@@ -7,10 +9,12 @@ from finance.models import accounts
 class departments(models.Model):
     department_id = models.AutoField(max_length=24, primary_key=True)
     department_name = models.CharField(max_length=50)
-    department_created_at = models.DateTimeField()
-    department_updated_at = models.DateTimeField()
-    department_deleted_at = models.DateTimeField()
+    department_created_at = models.DateTimeField(default=timezone.now)
+    department_updated_at = models.DateTimeField(null=True)
+    department_deleted_at = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return self.department_name
 
 class job_titles(models.Model):
     job_title_id = models.AutoField(max_length=24, primary_key=True)
@@ -25,7 +29,7 @@ class job_titles(models.Model):
     job_title_available_online = models.BooleanField()
     job_title_days_off = models.IntegerField()
     job_title_status = models.BooleanField()
-    job_title_created_at = models.DateTimeField()
+    job_title_created_at = models.DateTimeField(auto_now=True)
     job_title_updated_at = models.DateTimeField()
     job_title_deleted_at = models.DateTimeField()
 

@@ -1,11 +1,14 @@
+
+from multiprocessing import context
 from django.shortcuts import redirect, render
-from .froms import login_form
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-# from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from .forms import register_form
 
 def user_login(request):
+    context = {}
 
     if request.method == "POST":
         email = request.POST.get('login_email')
@@ -20,9 +23,14 @@ def user_login(request):
 
             else:
                 print("User is not yet activated")
+                context['login_error'] = "User is not yet activated"
+                return render(request, 'users/login.html', context)
+                
         
-        else: 
+        else:
             print("incorrect credentials")
+            context['login_error'] = "incorrect credentials"
+            return render(request, 'users/login.html', context)
     
     else:
         return render(request, 'users/login.html')
@@ -37,32 +45,40 @@ def user_logout(request):
 
 
 
-def register(request): 
+def register(request):
 
-    # authenticated = False
+    context = {}
 
-    # if request.method == "POST":
-    #     login_info = login_form(data=request.POST)
-    #     if login_info.is_valid():
-    #         user = login_info.save()
-    #         user.set_password(user.password)
-    #         user.save()
+    if request.method == "POST":
+        form = register_form(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            password1 = form.cleaned_data.get('password1')
+            user = authenticate(email=email, password=password1)
+            login(request, user)
+            return redirect('/dashboard')
 
-    #         authenticated = True
+        else:
+            print(form.errors)
+            context['errors'] =  form.errors
+            context['register_form'] = form
+            # return redirect('/register')
+            return render(request, 'users/register.html', context)
 
-    #     else:
-    #         print(login_form.errors)
-    # else:
+            
+    else: #GET request
+
+        form = register_form()
+        context['register_form'] =  form
         
-    #     loginForm = login_form()
-
-
-    return render(request, 'users/register.html',)
-    #  {
-    #     'login_form':loginForm,
-    #     'authenticated':authenticated
-    # })
+        return render(request, 'users/register.html', context)
     
 
 def dashboard(request):
     return render(request, 'users/dashboard.html')
+
+
+def viewUsers(request):
+    return render(request, 'users/viewUsers.html')

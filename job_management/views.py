@@ -26,3 +26,9 @@ def create_department(request):
 
 def job_titles(request):
     return render(request, 'job_management/job_titles.html')
+
+def create_contract(request):
+    return render(request, 'job_management/create_contract.html')
+
+def viewContract(request):
+    return render(request, 'job_management/viewContract.html')

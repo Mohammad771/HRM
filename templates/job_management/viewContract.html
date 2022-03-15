@@ -1,0 +1,60 @@
+{% extends 'common\baseView.html' %}
+{% load staticfiles %}
+
+{% block pageCSS %}
+    <!-- BEGIN: Page CSS-->
+
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+
+    <!-- END: Custom CSS-->
+{% endblock %}
+
+{% block viewName %}
+    <h2 class="content-header-title float-start mb-0">Contracts List</h2>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title"></h4>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Job Title</th>
+                    <th>Expire Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <span class="fw-bold">John الخطير</span>
+                    </td>
+                    <td>Implementation</td>
+                    <td>UI developer</td>
+
+                    <td><span class="badge rounded-pill badge-light-danger me-1">23-08-2023</span></td>
+
+                </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- END: Page JS-->
+{% endblock %}
+
+{% block pageCJs %}
+
+
+{% endblock %}

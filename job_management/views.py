@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from .forms import create_department_form
 from pprint import pprint
 from HRM.CRUD import *
-
+from .models import job_titles
 
 # Create your views here.
 
@@ -25,7 +25,16 @@ def create_department(request):
         return render(request, 'job_management/departments.html', context)
 
 def job_titles(request):
-    return render(request, 'job_management/job_titles.html')
+    if request.method == 'POST':
+        department = request.POST.get('deptname')
+        jobTitle = request.POST.get('jtname')
+        hourPrice = request.POST.get('hourPrice')
+
+        var_jobTitle = add_job_titles(deptname = department, jtname = jobTitle, hourPrice = hourPrice)
+        var_jobTitle.save()
+        return render(request, 'job_management/thanks.html')
+    else:
+        return render(request, 'job_management/job_titles.html')
 
 def create_contract(request):
     return render(request, 'job_management/create_contract.html')

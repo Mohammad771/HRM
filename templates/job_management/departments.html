@@ -1,4 +1,5 @@
 {% extends 'common\baseView.html' %}
+{% load index %}
 {% load staticfiles %}
 
 {% block pageCSS %}
@@ -24,8 +25,10 @@
         </div>
 
         <div class="card-body">
-            {% if create_department_errors %}
-                {{create_department_errors}}
+            {% if create_department_form %}
+                {% for field in create_department_form %}
+                    {{field.errors}}
+                {% endfor %}
             {% endif %}
             <form action="{% url 'job_management:job_management/create_department' %}" method="POST" id="basic-input">
                 {% csrf_token %}
@@ -70,23 +73,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <span class="fw-bold">1</span>
-                    </td>
-                    <td>Implementation</td>
-                    <td id="inactive" style="display: none"><span class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
-                    <td id="active"><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
-                    <td>
-                        <div class="form-check form-check-secondary form-switch">
-                            <input type="checkbox" class="form-check-input" id="suspend">
-                        </div>
-                    </td>
-                    <td>
-                        <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
-                    </td>
-
-                </tr>
+                {%  if departments %}      
+                    {% for department in departments %}
+                        <tr>
+                            <td>
+                                <span class="fw-bold">{{ department.number }}</span>
+                            </td>
+                            <td>{{department.info.department_name}}</td>
+                            <td id="inactive" style="display: none"><span class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
+                            <td id="active"><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                            <td>
+                                <div class="form-check form-check-secondary form-switch">
+                                    <input type="checkbox" class="form-check-input" id="suspend">
+                                </div>
+                            </td>
+                            <td>
+                                <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
+                            </td>
+        
+                        </tr>
+                    {% endfor%}
+                {% endif %}
 
 
                 </tbody>

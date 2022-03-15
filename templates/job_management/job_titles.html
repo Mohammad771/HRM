@@ -22,12 +22,13 @@
             <h4 class="card-title">ِAdd New Job Titles</h4>
         </div>
         <div class="card-body">
-            <form id="basic-input">
+            <form id="basic-input" action={% url 'job_management:job_management/job_titles' %} method="post">
+                {%csrf_token%}
 
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label" for="basicSelect">Choose Department</label>
-                        <select class="form-select" id="basicSelect">
+                        <select class="form-select" id="basicSelect" name = "deptname">
                             <option>Implementation</option>
                             <option>IT</option>
                             <option>Sales</option>
@@ -35,16 +36,16 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="basicInput">Job Titles Name</label>
-                        <input type="text" class="form-control" id="departmentName" placeholder="Enter Job Titles name">
+                        <input type="text" class="form-control" id="departmentName" name = "jtname" placeholder="Enter Job Titles name">
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label" for="hourPrice">Hour Price</label>
-                        <input type="text" class="form-control" id="hourPrice" placeholder="Ex; 80">
+                        <input type="text" class="form-control" id="hourPrice" name = "hourPrice" placeholder="Ex; 80">
                     </div>
 
                     <div class="col-md-2 mt-2">
-                        <button style="width: 110px" type="button" class="btn btn-outline-success round waves-effect">Add</button>
+                        <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect" onclick="document.getElementById('basic-input').submit();">Add</button>
                     </div>
                 </div>
 

@@ -7,4 +7,9 @@ class create_department_form(forms.ModelForm):
     class  Meta():
         model = departments
         fields = ('department_name',)
+        error_messages = {
+            'department_name': {
+                'required': ("Department name cannot be empty 😥"),
+            },
+        }
 

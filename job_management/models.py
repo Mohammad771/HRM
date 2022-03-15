@@ -33,6 +33,11 @@ class job_titles(models.Model):
     job_title_updated_at = models.DateTimeField()
     job_title_deleted_at = models.DateTimeField()
 
+class add_job_titles(models.Model):
+    deptname = models.CharField(max_length=150)
+    jtname = models.CharField(max_length=80)
+    hourPrice = models.CharField(max_length=5)
+
 
 class job_locations(models.Model):
     job_locations_id = models.AutoField(max_length=24, primary_key=True)

@@ -3,7 +3,7 @@
 
 {% block pageCSS %}
     <!-- BEGIN: Page CSS-->
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -21,34 +21,43 @@
         <div class="card-header">
             <h4 class="card-title">ِAdd New Job Titles</h4>
         </div>
-        <div class="card-body">
-            <form id="basic-input" action={% url 'job_management:job_management/job_titles' %} method="post">
-                {%csrf_token%}
+        {% if form_errors %}
+            {% for field in form_errors %}
+                {{field.errors}}
+            {% endfor %}
+        {% endif %}
 
+        <!-- {% for error in form_errors %}
+        {{error}}
+    {% endfor %} -->
+        <div class="card-body">
+            <form id="basic-input" action="{% url 'job_management:job_management/job_titles' %}" method="post">
+                {%csrf_token%}
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label" for="basicSelect">Choose Department</label>
-                        <select class="form-select" id="basicSelect" name = "deptname">
-                            <option>Implementation</option>
-                            <option>IT</option>
-                            <option>Sales</option>
+                        <select class="form-select" id="basicSelect" name = "job_title_department_id">
+                            {% for department in departments %}
+                                <option value="{{department.info.department_id}}">{{department.info.department_name}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="basicInput">Job Titles Name</label>
-                        <input type="text" class="form-control" id="departmentName" name = "jtname" placeholder="Enter Job Titles name">
+                        <input type="text" class="form-control" id="departmentName" name = "job_title_name" placeholder="Enter Job Titles name">
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label" for="hourPrice">Hour Price</label>
-                        <input type="text" class="form-control" id="hourPrice" name = "hourPrice" placeholder="Ex; 80">
+                        <input type="text" class="form-control" id="job_title_hour_price" name ="job_title_hour_price" placeholder="Ex; 80">
+                        <input type="hidden" name ="job_title_status" value="True" >
                     </div>
 
                     <div class="col-md-2 mt-2">
-                        <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect" onclick="document.getElementById('basic-input').submit();">Add</button>
+                        <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect">Add</button>
                     </div>
                 </div>
-
+                <!-- onclick="document.getElementById('basic-input').submit();" -->
             </form>
         </div>
 
@@ -75,25 +84,40 @@
                 </tr>
                 </thead>
                 <tbody>
+                {% if job_titles %}
+                    {%  for job_title in job_titles %}
                 <tr>
                     <td>
                         <span class="fw-bold">1</span>
                     </td>
-                    <td>Implementation</td>
-                    <td>UI developer</td>
-                    <td>90 SAR</td>
-                    <td id="inactive" style="display: none"><span class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
-                    <td id="active"><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                    <td id="department_id{{job_title.job_title_id}}">{{job_title.job_title_department_id}}</td>
+                    <td id="job_title_name{{job_title.job_title_id}}">{{job_title.job_title_name}}</td>
+                    <td id="job_title_hour_price{{job_title.job_title_id}}">{{job_title.job_title_hour_price}}</td>
+                        {% if job_title.job_title_status %}
+                            <td id="active_OR_inactive"><span id="active{{job_title.job_title_id}}" class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                            <td>
+                                <div class="form-check form-check-secondary form-switch">
+                                    <input type="checkbox" class="form-check-input" id="{{job_title.job_title_id}}"
+                                      onclick="change_status(this.id)">
+                                </div>
+                            </td>
+                        {% else %}
+                            <td id="active_OR_inactive"><span id="inactive{{job_title.job_title_id}}" class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
+                            <td>
+                                <div class="form-check form-check-secondary form-switch">
+                                    <input type="checkbox" class="form-check-input" id="{{job_title.job_title_id}}"
+                                      onclick="change_status(this.id)" checked>
+                                </div>
+                            </td>
+                        {% endif %}
+
                     <td>
-                        <div class="form-check form-check-secondary form-switch">
-                            <input type="checkbox" class="form-check-input" id="suspend">
-                        </div>
-                    </td>
-                    <td>
-                        <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
+                        <i id="{{job_title.job_title_id}}" onclick="open_modal(this.id)" class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
                     </td>
 
                 </tr>
+                    {% endfor %}
+                {% endif %}
 
 
                 </tbody>
@@ -103,33 +127,36 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel33">Edit Department Form</h4>
+                        <h4 class="modal-title" id="myModalLabel33">Edit Job Title Form</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="#">
+                    <form action="{% url 'job_management:job_management/job_titles' %}" method="post">
+                        {%csrf_token%}
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
+                                    <input type="hidden" name="request_type" value="update" class="form-control" id="request_type">
                                     <label class="form-label" for="basicSelect">Choose Department</label>
-                                    <select class="form-select" id="basicSelect">
-                                        <option>Implementation</option>
-                                        <option>IT</option>
-                                        <option>Sales</option>
+                                    <select name = "job_title_department_id" id="modal_department_field" class="form-select" id="basicSelect">
+                                    {% for department in departments %}
+                                        <option value="{{department.info.department_id}}">{{department.info.department_name}}</option>
+                                    {% endfor %}
                                     </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="basicInput">Job Titles Name</label>
-                                    <input type="text" value="UI developer" class="form-control" id="departmentName" placeholder="Enter Job Titles name">
+                                    <input type="text" name="job_title_name" value="UI developer" class="form-control" id="modal_job_title_field">
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label" for="hourPrice">Hour Price</label>
-                                    <input type="text" value="90" class="form-control" id="hourPrice" placeholder="Ex; 80">
+                                    <input type="text" name="job_title_hour_price" value="90" class="form-control" id="modal_hour_price_field" placeholder="Ex; 80">
+                                    <input type="hidden" name="job_title_id" value="" class="form-control" id="modal_job_title_id_field" placeholder="Ex; 80">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                            <button class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                         </div>
                     </form>
                 </div>
@@ -146,7 +173,75 @@
         $(window).on('load', function() {
             $('#inactive').hide();
         })
+
+
+        function change_status(checkbox_id)
+        {
+            var url = 'change_job_title_status/';
+            if (document.getElementById(checkbox_id).checked){
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data : jQuery.param({'job_title_id': checkbox_id, "switch":"make_inactive",
+                     "csrfmiddlewaretoken": $('[name=csrfmiddlewaretoken]').val()}),
+                    success : function() {
+                        span_id = "active" + checkbox_id
+                        this_span = document.getElementById(span_id)
+                        this_span.className = "badge rounded-pill badge-light-danger me-1"
+                        this_span.innerHTML = "Inactive"
+                        document.getElementById(span_id).id = "inactive" + checkbox_id;
+
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+jqXHR.status);
+                    } 
+                });
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data : jQuery.param({'job_title_id': checkbox_id, "switch":"make_active",
+                     "csrfmiddlewaretoken": $('[name=csrfmiddlewaretoken]').val()}),
+                    success : function() { 
+                        span_id = "inactive" + checkbox_id
+                        console.log(span_id)
+                        this_span = document.getElementById(span_id)
+                        this_span.className = "badge rounded-pill badge-light-success me-1"
+                        this_span.innerHTML = "Active"
+                        document.getElementById(span_id).id = "active" + checkbox_id;
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+jqXHR.status);
+                    } 
+                });
+            }
+        }
+
+        function open_modal(Job_title_id){
+            
+            job_title_department = document.getElementById("department_id" + Job_title_id).innerHTML;
+            console.log(job_title_department);
+            var text1 = job_title_department;
+            $("#modal_department_field option").filter(function() {
+            return $(this).text() == text1;
+            }).prop('selected', true);
+
+            job_title_name = document.getElementById("job_title_name" + Job_title_id).innerHTML;
+            document.getElementById("modal_job_title_field").value = job_title_name;
+
+            job_title_hour_price = document.getElementById("job_title_hour_price" + Job_title_id).innerHTML;
+            document.getElementById("modal_hour_price_field").value = job_title_hour_price;
+            
+            document.getElementById("modal_job_title_id_field").value = Job_title_id;
+
+            
+        
+        }
+
     </script>
+
+
 
 
 {% endblock %}

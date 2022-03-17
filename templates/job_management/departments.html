@@ -26,7 +26,7 @@
 
         <div class="card-body">
             {% if create_department_form %}
-                {% for field in create_department_form %}
+                {% for field in form_errors %}
                     {{field.errors}}
                 {% endfor %}
             {% endif %}

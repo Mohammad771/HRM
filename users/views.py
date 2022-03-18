@@ -1,4 +1,3 @@
-
 from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -6,6 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import register_form
+from .models import users as users_model
+from .models import departments
+from .models import job_titles
+
 
 def user_login(request):
     context = {}
@@ -71,7 +74,7 @@ def register(request):
     else: #GET request
 
         form = register_form()
-        context['register_form'] =  form
+        context['register_form'] = form
         
         return render(request, 'users/register.html', context)
     
@@ -81,4 +84,9 @@ def dashboard(request):
 
 
 def viewUsers(request):
-    return render(request, 'users/viewUsers.html')
+    context = {}
+    viewUsers = users_model.objects.all()
+    #department = departments.objects.all()
+    #jobTitles = job_titles.objects.all()
+    context['viewUser'] = viewUsers
+    return render(request, 'users/viewUsers.html', context)

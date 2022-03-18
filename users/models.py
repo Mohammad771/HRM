@@ -16,7 +16,8 @@ class attachment_types(models.Model):
 
 class attachments(models.Model):
     attachment_id = models.AutoField(max_length=24, primary_key=True)
-    attachment_attachment_type_id = models.ForeignKey(attachment_types, default=None, on_delete=models.CASCADE, related_name="+")
+    attachment_attachment_type_id = models.ForeignKey(attachment_types, default=None, on_delete=models.CASCADE,
+                                                      related_name="+")
     attachment_name = models.CharField(max_length=50)
     attachment_type = models.CharField(max_length=24)
     attachment_path = models.TextField()
@@ -28,7 +29,8 @@ class attachments(models.Model):
 class attachments_users(models.Model):
     attachment_user_id = models.AutoField(max_length=24, primary_key=True)
     attachment_user_user_id = models.ForeignKey('users', on_delete=models.CASCADE, related_name="+")
-    attachment_user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")
+    attachment_user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE,
+                                                      related_name="+")
     attachment_user_created_at = models.DateTimeField()
     attachment_user_updated_at = models.DateTimeField()
     attachment_user_deleted_at = models.DateTimeField()
@@ -65,6 +67,7 @@ class addresses(models.Model):
     address_updated_at = models.DateTimeField()
     address_deleted_at = models.DateTimeField()
 
+
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, password=None, superuser=False):
         if not email:
@@ -73,15 +76,14 @@ class MyAccountManager(BaseUserManager):
             raise ValueError('Users must have a username')
 
         user = self.model(
-			email=self.normalize_email(email),
-			username=username,
-		)
+            email=self.normalize_email(email),
+            username=username,
+        )
 
         if superuser:
             user.user_nationality_ID = 1
             user.user_DOB = '2022-03-12'
             user.user_mobile = str(random.randint(1111111111, 9999999999))
-
 
         user.set_password(password)
         user.save(using=self._db)
@@ -89,28 +91,27 @@ class MyAccountManager(BaseUserManager):
 
     def create_superuser(self, email, username, password):
         user = self.create_user(
-			email=self.normalize_email(email),
-			password=password,
-			username=username,
+            email=self.normalize_email(email),
+            password=password,
+            username=username,
             superuser=True)
-                
+
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
-        
 
 
 class users(AbstractBaseUser):
     user_id = models.AutoField(max_length=24, primary_key=True)
-    email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
-    username 				= models.CharField(max_length=30, unique=True)
-    date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
-    last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
-    is_admin				= models.BooleanField(default=False)
-    is_active				= models.BooleanField(default=True)
-    is_staff				= models.BooleanField(default=False)
-    is_superuser			= models.BooleanField(default=False)
+    email = models.EmailField(verbose_name="email", max_length=60, unique=True)
+    username = models.CharField(max_length=30, unique=True)
+    date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     user_first_name = models.CharField(max_length=24)
     user_last_name = models.CharField(max_length=24)
     user_mobile = models.CharField(max_length=13, unique=True)
@@ -131,7 +132,6 @@ class users(AbstractBaseUser):
     # user_created_at = models.DateTimeField()
     # user_updated_at = models.DateTimeField()
     # user_deleted_at = models.DateTimeField()
-        
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -142,10 +142,12 @@ class users(AbstractBaseUser):
         return self.email
 
         # For checking permissions. to keep it simple all admin have ALL permissons
+
     def has_perm(self, perm, obj=None):
         return self.is_admin
 
         # Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
+
     def has_module_perms(self, app_label):
         return True
 

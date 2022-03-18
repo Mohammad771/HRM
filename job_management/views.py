@@ -36,6 +36,10 @@ def job_titles(request):
     else:
         return render(request, 'job_management/job_titles.html')
 
+#def added_jobs(request):
+#    var_1 = add_job_titles.objects.all()
+#    return render(request, 'job_management/job_titles.html', {'var_1':var_1})
+
 def create_contract(request):
     return render(request, 'job_management/create_contract.html')
 

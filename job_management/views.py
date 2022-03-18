@@ -10,18 +10,6 @@ from .models import departments as departments_model
 def departments_handler(request): 
     context = {} # Declaring the variable which will be sent to the html file
 
-<<<<<<< HEAD
-def create_department(request):
-    context = {}
-    context['departments'] = Read('departments')
-    pprint(context["departments"])
-    if request.method == "POST":
-        result = Create(request.POST, 'departments')
-        if result["status"] == True:
-            context["success_message"] = "Department has been added 👍"
-            context['departments'] = Read('departments')
-            return render(request, 'job_management/departments.html', context)
-=======
     if request.method == "POST": # if the received request is "POST", it means that the user wants to add or update a department
 
         result = Create(request.POST, 'departments') # The "Create" functinon takes the post array (which contains a create department
@@ -31,7 +19,6 @@ def create_department(request):
         if result["status"] == True: # checking if the create operation was successful
             context["success_message"] = "Department has been added 👍" # inserting a success message in the context variable 
              
->>>>>>> 7b1af9374a6a3f611515085d29bb44a247d26347
         else:
             context["form_errors"] = result['form'] # if the create operation failed, the errors are taken from the the array
             # that was returned from the "Create" function and put inside the context dictionary
@@ -104,16 +91,10 @@ def change_department_status(request):
     html = "<html><body>Success.</body></html>"
     return HttpResponse(html)
     
-   
-<<<<<<< HEAD
-
-
 #def added_jobs(request):
 #    var_1 = add_job_titles.objects.all()
 #    return render(request, 'job_management/job_titles.html', {'var_1':var_1})
 
-=======
->>>>>>> 7b1af9374a6a3f611515085d29bb44a247d26347
 def create_contract(request):
     return render(request, 'job_management/create_contract.html')
 

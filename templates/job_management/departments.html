@@ -26,7 +26,7 @@
 
         <div class="card-body">
             {% if create_department_form %}
-                {% for field in create_department_form %}
+                {% for field in form_errors %}
                     {{field.errors}}
                 {% endfor %}
             {% endif %}
@@ -129,6 +129,71 @@
         $(window).on('load', function() {
             $('#inactive').hide();
         })
+
+
+        function change_status(checkbox_id)
+        {
+            var url = 'change_department_status/';
+            if (document.getElementById(checkbox_id).checked){
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data : jQuery.param({'department_id': checkbox_id, "switch":"make_inactive",
+                     "csrfmiddlewaretoken": $('[name=csrfmiddlewaretoken]').val()}),
+                    success : function() {
+                        span_id = "active" + checkbox_id
+                        this_span = document.getElementById(span_id)
+                        this_span.className = "badge rounded-pill badge-light-danger me-1"
+                        this_span.innerHTML = "Inactive"
+                        document.getElementById(span_id).id = "inactive" + checkbox_id;
+
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+jqXHR.status);
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data : jQuery.param({'department_id': checkbox_id, "switch":"make_active",
+                     "csrfmiddlewaretoken": $('[name=csrfmiddlewaretoken]').val()}),
+                    success : function() {
+                        span_id = "inactive" + checkbox_id
+                        console.log(span_id)
+                        this_span = document.getElementById(span_id)
+                        this_span.className = "badge rounded-pill badge-light-success me-1"
+                        this_span.innerHTML = "Active"
+                        document.getElementById(span_id).id = "active" + checkbox_id;
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+jqXHR.status);
+                    }
+                });
+            }
+        }
+
+        function open_modal(department_id){
+
+        //    job_title_department = document.getElementById("department_id" + Job_title_id).innerHTML;
+        //    console.log(job_title_department);
+        //    var text1 = job_title_department;
+        //    $("#modal_department_field option").filter(function() {
+        //    return $(this).text() == text1;
+        //    }).prop('selected', true);
+
+            department_name = document.getElementById("department_name" + department_id).innerHTML;
+            document.getElementById("modal_department_name_field").value = department_name;
+
+        //    job_title_hour_price = document.getElementById("job_title_hour_price" + Job_title_id).innerHTML;
+        //    document.getElementById("modal_hour_price_field").value = job_title_hour_price;
+
+            document.getElementById("modal_department_id_field").value = department_id;
+
+
+
+        }
     </script>
 
 

@@ -1,23 +1,25 @@
 from distutils.log import error
-from django.shortcuts import redirect, render
-from .forms import create_department_form
+from django.shortcuts import redirect, render, HttpResponse 
 from pprint import pprint
 from HRM.CRUD import *
-from .models import job_titles
+from .models import job_titles as job_titles_model
+from .models import departments as departments_model
+
 
 # Create your views here.
 
 def create_department(request):
     context = {}
     context['departments'] = Read('departments')
+    pprint(context["departments"])
     if request.method == "POST":
-
-        result = Create(request.POST, 'department')
+        result = Create(request.POST, 'departments')
         if result["status"] == True:
             context["success_message"] = "Department has been added 👍"
+            context['departments'] = Read('departments')
             return render(request, 'job_management/departments.html', context)
         else:
-            context["create_department_form"] = result['form']
+            context["form_errors"] = result['form']
             return render(request, 'job_management/departments.html', context)
 
     else:
@@ -25,16 +27,71 @@ def create_department(request):
         return render(request, 'job_management/departments.html', context)
 
 def job_titles(request):
-    if request.method == 'POST':
-        department = request.POST.get('deptname')
-        jobTitle = request.POST.get('jtname')
-        hourPrice = request.POST.get('hourPrice')
+    context = {}
+    context['departments'] = Read('departments')
+    context["job_titles"] = Read('job_titles')
 
-        var_jobTitle = add_job_titles(deptname = department, jtname = jobTitle, hourPrice = hourPrice)
-        var_jobTitle.save()
-        return render(request, 'job_management/thanks.html')
+    if request.method == "POST":
+        if request.POST['request_type'] == "update":
+            job_title_id = request.POST['job_title_id']
+            result = Update(request.POST, "job_titles", job_title_id)
+
+            if result['status'] == True:
+                context["job_titles"] = Read('job_titles')
+                return render(request, 'job_management/job_titles.html', context)
+
+            else:
+                context["form_errors"] = result['form_errors']
+                return render(request, 'job_management/job_titles.html', context)
+
+        else:
+            result = Create(request.POST, 'job_titles')
+            if result["status"] == True:
+                context["success_message"] = "Job Title has been added 👍"
+                context['job_titles'] = Read('job_titles')
+                return render(request, 'job_management/job_titles.html', context)
+            else:
+                context["form_errors"] = result['form']
+                return render(request, 'job_management/job_titles.html', context)
+
     else:
-        return render(request, 'job_management/job_titles.html')
+        return render(request, 'job_management/job_titles.html', context)
+
+
+def change_job_title_status(request):
+
+    job_title_id = request.POST['job_title_id']
+    switch = request.POST['switch']
+    Job_title = job_titles_model.objects.get(pk=job_title_id)
+    
+    if switch == "make_active":
+        Job_title.job_title_status = True
+    else:
+        Job_title.job_title_status = False
+
+    Job_title.save() 
+    
+    html = "<html><body>Success.</body></html>" 
+    return HttpResponse(html)
+
+
+def change_department_status(request):
+    department_id = request.POST['department_id']
+    switch = request.POST['switch']
+    department = departments_model.objects.get(pk=department_id)
+
+    if switch == "make_active":
+        department.department_status = True
+    else:
+        department.department_status = False
+
+    department.save()
+
+    html = "<html><body>Success.</body></html>"
+    return HttpResponse(html)
+    
+   
+
 
 #def added_jobs(request):
 #    var_1 = add_job_titles.objects.all()

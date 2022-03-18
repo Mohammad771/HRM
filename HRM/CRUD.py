@@ -8,8 +8,10 @@ def create_form(post, table):
 
     if table == 'departments':
         return(create_department_form(post))
+
     elif table == 'job_titles':
         return(create_job_title_form(post))
+
     else:
         print("Table Not Found!! Check if you typed its name correctly.")
 
@@ -17,8 +19,10 @@ def fetch_all_rows(table):
     
     if table == 'departments':
         return(departments.objects.all())
+
     elif table == 'job_titles':
         return(job_titles.objects.all())
+
     else:
         print("Table Not Found!! Check if you typed its name correctly.")
 
@@ -27,8 +31,10 @@ def fetch_one_row(post, table, primary_key):
     
     if table == 'departments':
         return(create_department_form(post, instance=job_titles.objects.get(pk=primary_key)))
+
     elif table == 'job_titles':
         return(create_job_title_form(post, instance=job_titles.objects.get(pk=primary_key)))
+
     else:
         print("Table Not Found!! Check if you typed its name correctly.")
 
@@ -64,7 +70,7 @@ def Update(post, table, row_id):
     result = {}
 
     job_title_form = fetch_one_row(post, table, row_id)
-
+    
     if job_title_form.is_valid():
         job_title_form.save()
         result['status'] = True

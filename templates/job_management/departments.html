@@ -80,16 +80,26 @@
                                 <span class="fw-bold">{{ department.number }}</span>
                             </td>
                             <td>{{department.info.department_name}}</td>
-                            <td id="inactive" style="display: none"><span class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
-                            <td id="active"><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
-                            <td>
-                                <div class="form-check form-check-secondary form-switch">
-                                    <input type="checkbox" class="form-check-input" id="suspend">
-                                </div>
-                            </td>
-                            <td>
-                                <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
-                            </td>
+                                {% if department.info.department_status %}
+                                    <td id="active_OR_inactive"><span id="inactive{{department.info.department_id}}" class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
+                                    <td>
+                                        <div class="form-check form-check-secondary form-switch">
+                                                <input type="checkbox" class="form-check-input" id="{{department.info.department_id}}"
+                                                  onclick="change_status(this.id)" checked>
+                                        </div>
+                                    </td>
+                                {% else %}
+                                    <td id="active_OR_inactive"><span id="active{{department.info.department_id}}" class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                                    <td>
+                                        <div class="form-check form-check-secondary form-switch">
+                                            <input type="checkbox" class="form-check-input" id="{{department.info.department_id}}"
+                                              onclick="change_status(this.id)">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
+                                    </td>
+                                {% endif %}
         
                         </tr>
                     {% endfor%}
@@ -176,20 +186,19 @@
 
         function open_modal(department_id){
 
-        //    job_title_department = document.getElementById("department_id" + Job_title_id).innerHTML;
-        //    console.log(job_title_department);
-        //    var text1 = job_title_department;
-        //    $("#modal_department_field option").filter(function() {
-        //    return $(this).text() == text1;
-        //    }).prop('selected', true);
-
             department_name = document.getElementById("department_name" + department_id).innerHTML;
             document.getElementById("modal_department_name_field").value = department_name;
 
-        //    job_title_hour_price = document.getElementById("job_title_hour_price" + Job_title_id).innerHTML;
-        //    document.getElementById("modal_hour_price_field").value = job_title_hour_price;
-
+            if (document.getElementById(department_id).checked){
+                document.getElementById("modal_department_status_field").value = 0;
+            }
+            else{
+                document.getElementById("modal_department_status_field").value = 1;
+            }
             document.getElementById("modal_department_id_field").value = department_id;
+
+        }
+
 
 
 

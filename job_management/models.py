@@ -9,6 +9,7 @@ from finance.models import accounts
 class departments(models.Model):
     department_id = models.AutoField(max_length=24, primary_key=True)
     department_name = models.CharField(max_length=50)
+    department_status = models.BooleanField(default=True)
     department_created_at = models.DateTimeField(default=timezone.now)
     department_updated_at = models.DateTimeField(null=True)
     department_deleted_at = models.DateTimeField(null=True)

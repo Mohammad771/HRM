@@ -115,6 +115,7 @@ class users(AbstractBaseUser):
     user_first_name = models.CharField(max_length=24)
     user_last_name = models.CharField(max_length=24)
     user_mobile = models.CharField(max_length=13, unique=True)
+    user_id_number = models.CharField(max_length=10, default=str(random.randint(1, 9999999999))) # this needs to be changed to unique=True, i am not doing it now because it requires database deletion
     user_DOB = models.DateField()
     user_nationality_ID = models.IntegerField()
     # user_middle_name = models.CharField(max_length=24)

@@ -182,9 +182,9 @@
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='archive'></i><span class="menu-title text-truncate" data-i18n="Invoice">Job Management</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="app-invoice-list.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Departments</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'job_management:job_management/departments' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Departments</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" href="app-invoice-preview.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Job Titles</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'job_management:job_management/job_titles' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Job Titles</span></a>
                         </li>
 
                     </ul>

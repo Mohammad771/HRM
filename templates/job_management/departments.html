@@ -30,7 +30,7 @@
                     {{field.errors}}
                 {% endfor %}
             {% endif %}
-            <form action="{% url 'job_management:job_management/create_department' %}" method="POST" id="basic-input">
+            <form action="{% url 'job_management:job_management/departments' %}" method="POST" id="basic-input">
                 {% csrf_token %}
                 <div class="row">
                     <i class="fa-regular fa-face-clouds"></i>
@@ -69,7 +69,6 @@
                     <th>Status</th>
                     <th>Suspend</th>
                     <th>Edit</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -95,7 +94,6 @@
                     {% endfor%}
                 {% endif %}
 
-
                 </tbody>
             </table>
         </div>
@@ -106,7 +104,7 @@
                         <h4 class="modal-title" id="myModalLabel33">Edit Department Form</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="#">
+                    <form action="departments">
                         <div class="modal-body">
                             <input type="text" class="form-control" value="Implementation" id="departmentName" placeholder="Enter department name">
 
@@ -120,7 +118,6 @@
         </div>
 
     </div>
-
     <!-- END: Page JS-->
 {% endblock %}
 

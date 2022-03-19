@@ -152,9 +152,9 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label" for="hourPrice">Hour Price</label>
-                                    <input type="text" name="job_title_hour_price" value="90" class="form-control" id="modal_hour_price_field" placeholder="Ex; 80">
+                                    <input type="text" name="job_title_hour_price" value="" class="form-control" id="modal_hour_price_field" placeholder="Ex; 80">
                                     <input type="hidden" name="job_title_id" value="" class="form-control" id="modal_job_title_id_field" placeholder="Ex; 80">
-                                    <input type="hidden" name="job_title_status" value="1" class="form-control" id="modal_job_title_status_field" placeholder="Ex; 80">
+                                    <input type="hidden" name="job_title_status" value="" class="form-control" id="modal_job_title_status_field" placeholder="Ex; 80">
                                 </div>
                             </div>
                         </div>
@@ -224,10 +224,8 @@
         function open_modal(Job_title_id){
             
             job_title_department = document.getElementById("department_id" + Job_title_id).innerHTML;
-            console.log(job_title_department);
-            var text1 = job_title_department;
             $("#modal_department_field option").filter(function() {
-            return $(this).text() == text1;
+            return $(this).text() == job_title_department;
             }).prop('selected', true);
 
             job_title_name = document.getElementById("job_title_name" + Job_title_id).innerHTML;
@@ -243,12 +241,7 @@
                 document.getElementById("modal_job_title_status_field").value = 1;  
             }
             document.getElementById("modal_job_title_id_field").value = Job_title_id;
-
-
-            
-
-            
-        
+ 
         }
 
     </script>

@@ -25,7 +25,7 @@
         </div>
 
         <div class="card-body">
-            {% if create_department_form %}
+            {% if form_errors %}
                 {% for field in form_errors %}
                     {{field.errors}}
                 {% endfor %}
@@ -36,6 +36,7 @@
                     <i class="fa-regular fa-face-clouds"></i>
                     <div class="col-md-8">
                         <label class="form-label" for="basicInput">Department Name</label>
+                        <input type="hidden" name="request_type" value="create" class="form-control" id="request_type">
                         <input type="text" class="form-control" name="department_name" id="department_Name" placeholder="Enter department name">
                     </div>
 
@@ -78,17 +79,28 @@
                             <td>
                                 <span class="fw-bold">{{ department.number }}</span>
                             </td>
-                            <td>{{department.info.department_name}}</td>
-                            <td id="inactive" style="display: none"><span class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
-                            <td id="active"><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                            <td id="department_name{{department.info.department_id}}">{{department.info.department_name}}</td>
+                            {% if department.info.department_status %}
+                            <td id="active_OR_inactive"><span id="active{{department.info.department_id}}" class="badge rounded-pill badge-light-success me-1">Active</span></td>
                             <td>
                                 <div class="form-check form-check-secondary form-switch">
-                                    <input type="checkbox" class="form-check-input" id="suspend">
+                                    <input type="checkbox" class="form-check-input" id="{{department.info.department_id}}"
+                                      onclick="change_status(this.id)">
                                 </div>
                             </td>
+                        {% else %}
+                            <td id="active_OR_inactive"><span id="inactive{{department.info.department_id}}" class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
                             <td>
-                                <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
+                                <div class="form-check form-check-secondary form-switch">
+                                    <input type="checkbox" class="form-check-input" id="{{department.info.department_id}}"
+                                      onclick="change_status(this.id)" checked>
+                                </div>
                             </td>
+                        {% endif %}
+                        
+                    <td>
+                        <i id="{{department.info.department_id}}" onclick="open_modal(this.id)" class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
+                    </td>
         
                         </tr>
                     {% endfor%}
@@ -104,13 +116,16 @@
                         <h4 class="modal-title" id="myModalLabel33">Edit Department Form</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="departments">
+                    <form action="{% url 'job_management:job_management/departments' %}" method="post">
+                        {%csrf_token%}
                         <div class="modal-body">
-                            <input type="text" class="form-control" value="Implementation" id="departmentName" placeholder="Enter department name">
+                            <input type="text" name="department_name" class="form-control" value="" id="modal_department_name_field" placeholder="Enter department name">
+                            <input type="hidden" name="department_id" value="" class="form-control" id="modal_department_id_field" placeholder="Ex; 80">
+                            <input type="hidden" name="request_type" value="update" class="form-control" id="request_type">
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                            <button class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                         </div>
                     </form>
                 </div>
@@ -173,24 +188,13 @@
 
         function open_modal(department_id){
 
-        //    job_title_department = document.getElementById("department_id" + Job_title_id).innerHTML;
-        //    console.log(job_title_department);
-        //    var text1 = job_title_department;
-        //    $("#modal_department_field option").filter(function() {
-        //    return $(this).text() == text1;
-        //    }).prop('selected', true);
-
             department_name = document.getElementById("department_name" + department_id).innerHTML;
             document.getElementById("modal_department_name_field").value = department_name;
-
-        //    job_title_hour_price = document.getElementById("job_title_hour_price" + Job_title_id).innerHTML;
-        //    document.getElementById("modal_hour_price_field").value = job_title_hour_price;
-
             document.getElementById("modal_department_id_field").value = department_id;
 
 
-
         }
+
     </script>
 
 

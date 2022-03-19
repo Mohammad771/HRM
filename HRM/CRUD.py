@@ -30,7 +30,7 @@ def fetch_all_rows(table):
 def fetch_one_row(post, table, primary_key):
     
     if table == 'departments':
-        return(create_department_form(post, instance=job_titles.objects.get(pk=primary_key)))
+        return(create_department_form(post, instance=departments.objects.get(pk=primary_key)))
 
     elif table == 'job_titles':
         return(create_job_title_form(post, instance=job_titles.objects.get(pk=primary_key)))
@@ -49,7 +49,7 @@ def Create(post, table):
         return result
     else:
         result["status"] = False
-        result["form"] = form
+        result["form_errors"] = form
         return result
 
 def Read(table):
@@ -69,15 +69,15 @@ def Read(table):
 def Update(post, table, row_id):
     result = {}
 
-    job_title_form = fetch_one_row(post, table, row_id)
+    form = fetch_one_row(post, table, row_id)
     
-    if job_title_form.is_valid():
-        job_title_form.save()
+    if form.is_valid():
+        form.save()
         result['status'] = True
         return(result)
     else:
         result['status'] = False
-        result['form_errors':job_title_form.errors]
+        result['form_errors'] = form
         return(result)
     
 

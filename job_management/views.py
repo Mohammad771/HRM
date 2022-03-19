@@ -11,8 +11,15 @@ def departments_handler(request):
     context = {} # Declaring the variable which will be sent to the html file
 
     if request.method == "POST": # if the received request is "POST", it means that the user wants to add or update a department
+        if request.POST['request_type'] == "update": 
+            department_id = request.POST['department_id'] 
+            result = Update(request.POST, "departments", department_id) 
 
-        result = Create(request.POST, 'departments') # The "Create" functinon takes the post array (which contains a create department
+            if result['status'] == False: 
+                context["form_errors"] = result['form_errors']
+            
+        else:
+            result = Create(request.POST, 'departments') # The "Create" functinon takes the post array (which contains a create department
         #  form which was filled by the user) and the table name and adds a new row to the DB, this function returns an array
         #  that contains the status of the operation and the form validation errors if any
 
@@ -20,8 +27,10 @@ def departments_handler(request):
             context["success_message"] = "Department has been added 👍" # inserting a success message in the context variable 
              
         else:
-            context["form_errors"] = result['form'] # if the create operation failed, the errors are taken from the the array
+            print(result['form_errors'])
+            context["form_errors"] = result['form_errors'] # if the create operation failed, the errors are taken from the the array
             # that was returned from the "Create" function and put inside the context dictionary
+            print(context)
 
     context['departments'] = Read('departments')  # creating a new element (departments) in the context dictionary that will contain
     #  all departments records from the database, the function "Read" takes the table name as input and returns all database records  

@@ -79,12 +79,13 @@ def change_job_title_status(request):
     else: # if user wants to make the job title inactive
         Job_title.job_title_status = False # deactivate the jobtitle
 
+    Job_title.department_updated_at = timezone.now() # changing the "department_updated_at" field for this row to the current date and time
     Job_title.save() # saving the changes
     
     html = "<html><body>Success.</body></html>" # a variable that contains a success message to be sent as an http respone back to ajax function
     return HttpResponse(html) # returning "success" as an http response because an error is produced when noting is returned.
 
-
+# Please refer to the above change_job_title_status function, because the beloew function does the same but for a job title
 def change_department_status(request):
     department_id = request.POST['department_id']
     switch = request.POST['switch']
@@ -95,14 +96,12 @@ def change_department_status(request):
     else:
         department.department_status = False
 
+    department.department_updated_at = timezone.now()
     department.save()
 
     html = "<html><body>Success.</body></html>"
     return HttpResponse(html)
     
-#def added_jobs(request):
-#    var_1 = add_job_titles.objects.all()
-#    return render(request, 'job_management/job_titles.html', {'var_1':var_1})
 
 def create_contract(request):
     return render(request, 'job_management/create_contract.html')

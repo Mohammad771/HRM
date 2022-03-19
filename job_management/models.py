@@ -11,8 +11,8 @@ class departments(models.Model):
     department_name = models.CharField(max_length=50)
     department_status = models.BooleanField(default=True)
     department_created_at = models.DateTimeField(default=timezone.now)
-    department_updated_at = models.DateTimeField(null=True)
-    department_deleted_at = models.DateTimeField(null=True)
+    department_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    department_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
     def __str__(self):
         return self.department_name
@@ -32,8 +32,8 @@ class job_titles(models.Model):
     # job_title_days_off = models.IntegerField()
     job_title_status = models.BooleanField(default=True)
     job_title_created_at = models.DateTimeField(auto_now=True)
-    job_title_updated_at = models.DateTimeField(null = True)
-    job_title_deleted_at = models.DateTimeField(null = True)
+    job_title_updated_at = models.DateTimeField(null = True, default=None, blank=True)
+    job_title_deleted_at = models.DateTimeField(null = True, default=None, blank=True)
 
     def __str__(self):
         return self.job_title_name

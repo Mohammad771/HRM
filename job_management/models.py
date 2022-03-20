@@ -9,9 +9,10 @@ from finance.models import accounts
 class departments(models.Model):
     department_id = models.AutoField(max_length=24, primary_key=True)
     department_name = models.CharField(max_length=50)
+    department_status = models.BooleanField(default=True)
     department_created_at = models.DateTimeField(default=timezone.now)
-    department_updated_at = models.DateTimeField(null=True)
-    department_deleted_at = models.DateTimeField(null=True)
+    department_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    department_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
     def __str__(self):
         return self.department_name
@@ -31,18 +32,18 @@ class job_titles(models.Model):
     # job_title_days_off = models.IntegerField()
     job_title_status = models.BooleanField(default=True)
     job_title_created_at = models.DateTimeField(auto_now=True)
-    job_title_updated_at = models.DateTimeField(null = True)
-    job_title_deleted_at = models.DateTimeField(null = True)
+    job_title_updated_at = models.DateTimeField(null = True, default=None, blank=True)
+    job_title_deleted_at = models.DateTimeField(null = True, default=None, blank=True)
 
     def __str__(self):
         return self.job_title_name
 
 
 
-class add_job_titles(models.Model):
-    deptname = models.CharField(max_length=150)
-    jtname = models.CharField(max_length=80)
-    hourPrice = models.CharField(max_length=5)
+# class add_job_titles (models.Model):
+#     deptname = models.CharField(max_length=150)
+#     jtname = models.CharField(max_length=80)
+#     hourPrice = models.CharField(max_length=5)
 
 
 class job_locations(models.Model):

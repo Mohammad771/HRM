@@ -45,6 +45,8 @@
                     <div class="col-md-3">
                         <label class="form-label" for="basicInput">Job Titles Name</label>
                         <input type="text" class="form-control" id="departmentName" name = "job_title_name" placeholder="Enter Job Titles name">
+                        <input type="hidden" name="request_type" value="create" class="form-control" id="request_type">
+
                     </div>
 
                     <div class="col-md-3">
@@ -88,31 +90,31 @@
                     {%  for job_title in job_titles %}
                 <tr>
                     <td>
-                        <span class="fw-bold">1</span>
+                        <span class="fw-bold">{{job_title.number}}</span>
                     </td>
-                    <td id="department_id{{job_title.job_title_id}}">{{job_title.job_title_department_id}}</td>
-                    <td id="job_title_name{{job_title.job_title_id}}">{{job_title.job_title_name}}</td>
-                    <td id="job_title_hour_price{{job_title.job_title_id}}">{{job_title.job_title_hour_price}}</td>
-                        {% if job_title.job_title_status %}
-                            <td id="active_OR_inactive"><span id="active{{job_title.job_title_id}}" class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                    <td id="department_id{{job_title.info.job_title_id}}">{{job_title.info.job_title_department_id}}</td>
+                    <td id="job_title_name{{job_title.info.job_title_id}}">{{job_title.info.job_title_name}}</td>
+                    <td id="job_title_hour_price{{job_title.info.job_title_id}}">{{job_title.info.job_title_hour_price}}</td>
+                        {% if job_title.info.job_title_status %}
+                            <td id="active_OR_inactive"><span id="active{{job_title.info.job_title_id}}" class="badge rounded-pill badge-light-success me-1">Active</span></td>
                             <td>
                                 <div class="form-check form-check-secondary form-switch">
-                                    <input type="checkbox" class="form-check-input" id="{{job_title.job_title_id}}"
+                                    <input type="checkbox" class="form-check-input" id="{{job_title.info.job_title_id}}"
                                       onclick="change_status(this.id)">
                                 </div>
                             </td>
                         {% else %}
-                            <td id="active_OR_inactive"><span id="inactive{{job_title.job_title_id}}" class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
+                            <td id="active_OR_inactive"><span id="inactive{{job_title.info.job_title_id}}" class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
                             <td>
                                 <div class="form-check form-check-secondary form-switch">
-                                    <input type="checkbox" class="form-check-input" id="{{job_title.job_title_id}}"
+                                    <input type="checkbox" class="form-check-input" id="{{job_title.info.job_title_id}}"
                                       onclick="change_status(this.id)" checked>
                                 </div>
                             </td>
                         {% endif %}
 
                     <td>
-                        <i id="{{job_title.job_title_id}}" onclick="open_modal(this.id)" class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
+                        <i id="{{job_title.info.job_title_id}}" onclick="open_modal(this.id)" class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editForm"></i>
                     </td>
 
                 </tr>
@@ -150,8 +152,9 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label" for="hourPrice">Hour Price</label>
-                                    <input type="text" name="job_title_hour_price" value="90" class="form-control" id="modal_hour_price_field" placeholder="Ex; 80">
+                                    <input type="text" name="job_title_hour_price" value="" class="form-control" id="modal_hour_price_field" placeholder="Ex; 80">
                                     <input type="hidden" name="job_title_id" value="" class="form-control" id="modal_job_title_id_field" placeholder="Ex; 80">
+                                    <input type="hidden" name="job_title_status" value="" class="form-control" id="modal_job_title_status_field" placeholder="Ex; 80">
                                 </div>
                             </div>
                         </div>
@@ -221,10 +224,8 @@
         function open_modal(Job_title_id){
             
             job_title_department = document.getElementById("department_id" + Job_title_id).innerHTML;
-            console.log(job_title_department);
-            var text1 = job_title_department;
             $("#modal_department_field option").filter(function() {
-            return $(this).text() == text1;
+            return $(this).text() == job_title_department;
             }).prop('selected', true);
 
             job_title_name = document.getElementById("job_title_name" + Job_title_id).innerHTML;
@@ -233,10 +234,14 @@
             job_title_hour_price = document.getElementById("job_title_hour_price" + Job_title_id).innerHTML;
             document.getElementById("modal_hour_price_field").value = job_title_hour_price;
             
+            if (document.getElementById(Job_title_id).checked){
+                document.getElementById("modal_job_title_status_field").value = 0;
+            }
+            else{
+                document.getElementById("modal_job_title_status_field").value = 1;  
+            }
             document.getElementById("modal_job_title_id_field").value = Job_title_id;
-
-            
-        
+ 
         }
 
     </script>

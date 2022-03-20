@@ -1,86 +1,107 @@
 from distutils.log import error
 from django.shortcuts import redirect, render, HttpResponse 
-from .forms import create_department_form, create_job_title_form
 from pprint import pprint
 from HRM.CRUD import *
 from .models import job_titles as job_titles_model
+from .models import departments as departments_model
 
 
-# Create your views here.
+# This is the function which is responsible for all crud operations for the departments table
+def departments_handler(request): 
+    context = {} # Declaring the variable which will be sent to the html file
 
-def create_department(request):
-    context = {}
-    context['departments'] = Read('departments')
-    print(context["departments"])
-    if request.method == "POST":
-        result = Create(request.POST, 'department')
-        if result["status"] == True:
-            context["success_message"] = "Department has been added 👍"
-            context['departments'] = Read('departments')
-            return render(request, 'job_management/departments.html', context)
+    if request.method == "POST": # if the received request is "POST", it means that the user wants to add or update a department
+        if request.POST['request_type'] == "update": 
+            department_id = request.POST['department_id'] 
+            result = Update(request.POST, "departments", department_id) 
+
+            if result['status'] == False: 
+                context["form_errors"] = result['form_errors']
+            
         else:
-            context["form_errors"] = result['form']
-            return render(request, 'job_management/departments.html', context)
+            result = Create(request.POST, 'departments') # The "Create" functinon takes the post array (which contains a create department
+        #  form which was filled by the user) and the table name and adds a new row to the DB, this function returns an array
+        #  that contains the status of the operation and the form validation errors if any
 
-    else:
-        context['departments'] = Read('departments')
-        return render(request, 'job_management/departments.html', context)
+        if result["status"] == True: # checking if the create operation was successful
+            context["success_message"] = "Department has been added 👍" # inserting a success message in the context variable 
+             
+        else:
+            print(result['form_errors'])
+            context["form_errors"] = result['form_errors'] # if the create operation failed, the errors are taken from the the array
+            # that was returned from the "Create" function and put inside the context dictionary
+            print(context)
 
-def job_titles(request):
-    context = {}
-    Job_titles = job_titles_model.objects.all()
-    context['departments'] = Read('departments')
-    context["job_titles"] = Job_titles
-    if request.method == "POST":
+    context['departments'] = Read('departments')  # creating a new element (departments) in the context dictionary that will contain
+    #  all departments records from the database, the function "Read" takes the table name as input and returns all database records  
+    #  for that table, this function is defined in HRM/CRUD.py file 
+    return render(request, 'job_management/departments.html', context) # rendering the departments.html file and passing the context variable 
+         # which contains all the departments rows and any other success or error messages 
 
-        if request.POST['request_type'] == "update":
-            job_title_id = request.POST['job_title_id']
-            Job_title = job_titles_model.objects.get(pk=job_title_id)
-            form = create_job_title_form(request.POST, instance=Job_title)
-            if form.is_valid():
-                form.save()
-                Job_titles = job_titles_model.objects.all()
-                context["job_titles"] = Job_titles
-                return render(request, 'job_management/job_titles.html', context)
-            else:
-                context["form_errors"] = form
-                return render(request, 'job_management/job_titles.html', context)
+
+# This is the function which is responsible for all crud operations for the job_titles table, please refer to the above departments_handler
+#  function for any uncommented line in the job_titles_handler function, because they are the same.
+def job_titles_handler(request):
+    context = {} 
+
+    if request.method == "POST": 
+
+        if request.POST['request_type'] == "update": 
+            job_title_id = request.POST['job_title_id'] 
+            result = Update(request.POST, "job_titles", job_title_id) 
+
+            if result['status'] == False: 
+                context["form_errors"] = result['form_errors'] 
 
         else:
-            form = create_job_title_form(request.POST)
-            if form.is_valid():
-                form.save()
-                return render(request, 'job_management/job_titles.html', context)
+            result = Create(request.POST, 'job_titles')
+            if result["status"] == True:
+                context["success_message"] = "Job Title has been added 👍"
             else:
-                context["form_errors"] = form
-                return render(request, 'job_management/job_titles.html', context)
+                context["form_errors"] = result['form']
+  
+    context['departments'] = Read('departments') # Here, we are sending the departments rows because we need to list the
+    # departments in the job title creation form so the user can select the department which the job title will be under
+    context["job_titles"] = Read('job_titles')
+    return render(request, 'job_management/job_titles.html', context)
 
-    else:
-        return render(request, 'job_management/job_titles.html', context)
 
-
+# this function has only one job, which is to change the job title status when the checkbox in the job titles table is clicked,
+# this function receives a post request sent by ajax function (you can take a look in the job_titles.html file)
 def change_job_title_status(request):
 
-    job_title_id = request.POST['job_title_id']
+    job_title_id = request.POST['job_title_id'] # get the id of the job title to be changed
+    switch = request.POST['switch'] # check if the user wants to activate or deativate the job title
+    Job_title = job_titles_model.objects.get(pk=job_title_id) # fetch the job title row that the user wants to change
+    
+    if switch == "make_active":  # if user wants to make the job title active
+        Job_title.job_title_status = True # activate the jobtitle
+    else: # if user wants to make the job title inactive
+        Job_title.job_title_status = False # deactivate the jobtitle
+
+    Job_title.department_updated_at = timezone.now() # changing the "department_updated_at" field for this row to the current date and time
+    Job_title.save() # saving the changes
+    
+    html = "<html><body>Success.</body></html>" # a variable that contains a success message to be sent as an http respone back to ajax function
+    return HttpResponse(html) # returning "success" as an http response because an error is produced when noting is returned.
+
+# Please refer to the above change_job_title_status function, because the beloew function does the same but for a job title
+def change_department_status(request):
+    department_id = request.POST['department_id']
     switch = request.POST['switch']
-    Job_title = job_titles_model.objects.get(pk=job_title_id)
-    print(Job_title.job_title_status)
-    
+    department = departments_model.objects.get(pk=department_id)
+
     if switch == "make_active":
-        Job_title.job_title_status = True
+        department.department_status = True
     else:
-        Job_title.job_title_status = False
+        department.department_status = False
 
-    Job_title.save()
-    print(Job_title.job_title_status)
- 
-    
-    html = "<html><body>Success.</body></html>" 
+    department.department_updated_at = timezone.now()
+    department.save()
+
+    html = "<html><body>Success.</body></html>"
     return HttpResponse(html)
-
     
-   
-
 
 def create_contract(request):
     return render(request, 'job_management/create_contract.html')

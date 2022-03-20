@@ -35,20 +35,27 @@
                 </tr>
                 </thead>
                 <tbody>
+                {%  if viewUser %}
+                    {% for user in viewUser %}
                 <tr>
-                    <td>
-                        <span class="fw-bold">John الخطير</span>
-                    </td>
-                    <td>Implementation</td>
-                    <td>UI developer</td>
+                    <td> {{ user.username }}</td>
+                    <td>{{ user.department_id}}</td>
+                    <td>{{ user.job_title_id }}</td>
 
-                    <td><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
-                    <td>
-                        Admin
-                    </td>
+                    {% if user.is_active %}
+                        <td><span class="badge rounded-pill badge-light-success me-1">Active</span></td>
+                    {% else %}
+                        <td id="active_OR_inactive"><span id="inactive" class="badge rounded-pill badge-light-danger me-1">Inactive</span></td>
+                    {% endif %}
+                    {% if user.is_admin %}
+                        <td> Admin </td>
+                    {% else %}
+                        <td> Not Admin </td>
+                    {% endif %}
 
                 </tr>
-
+                {%endfor%}
+                {% endif %}
 
                 </tbody>
             </table>

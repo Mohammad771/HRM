@@ -11,6 +11,8 @@ def departments_handler(request):
     context = {} # Declaring the variable which will be sent to the html file
 
     if request.method == "POST": # if the received request is "POST", it means that the user wants to add or update a department
+
+        print(request.POST)
         if request.POST['request_type'] == "update": 
             department_id = request.POST['department_id'] 
             result = Update(request.POST, "departments", department_id) 
@@ -27,7 +29,6 @@ def departments_handler(request):
             context["success_message"] = "Department has been added 👍" # inserting a success message in the context variable 
              
         else:
-            print(result['form_errors'])
             context["form_errors"] = result['form_errors'] # if the create operation failed, the errors are taken from the the array
             # that was returned from the "Create" function and put inside the context dictionary
             print(context)
@@ -104,7 +105,8 @@ def change_department_status(request):
     
 
 def create_contract(request):
-    return render(request, 'job_management/create_contract.html')
+
+    return render(request, 'job_management/create_contract.html', context)
 
 def viewContract(request):
     return render(request, 'job_management/viewContract.html')

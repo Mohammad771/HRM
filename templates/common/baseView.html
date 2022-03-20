@@ -200,9 +200,9 @@
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i class="fa-solid fa-chart-column"></i><span class="menu-title text-truncate" data-i18n="Invoice">Track Performance</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="app-invoice-list.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Create New Evaluation</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'track_performance:track_performance/createEvaluations' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Create New Evaluation</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" href="app-invoice-preview.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">View Evaluations</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'track_performance:track_performance/viewEvaluations' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">View Evaluations</span></a>
                         </li>
 
                     </ul>

@@ -27,27 +27,30 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Job Title</th>
+                    <th>Evaluation For</th>
                     <th>Overall Evaluation</th>
                     <th>Date</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <span class="fw-bold">John الخطير</span>
-                    </td>
-                    <td>Implementation</td>
-                    <td>UI developer</td>
+                
+                {% if evaluations %}
+                    {% for evaluation in evaluations %}
 
-                    <td><span class="badge rounded-pill badge-light-success me-1">97%</span></td>
-                    <td>
-                        Feb 2022
-                    </td>
+                        <tr>
+                            <td>
+                                <span class="fw-bold">{{evaluation.info}}</span>
+                            </td>
 
-                </tr>
+                            <td><span class="badge rounded-pill badge-light-success me-1">%{{evaluation.info.evaluation_overall_rate}}</span></td>
+                            <td>
+                                {{evaluation.info.evaluation_date}}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+                {% endif %}
 
 
                 </tbody>

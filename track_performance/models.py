@@ -1,6 +1,5 @@
 ##NO EDIT HERE
-from datetime import timezone
-
+from django.utils import timezone
 from django.db import models
 from users.models import users
 from job_management.models import departments, job_titles
@@ -17,7 +16,7 @@ class evaluations(models.Model):
     evaluation_time_rate = models.IntegerField()
     evaluation_quality_rate = models.IntegerField()
     evaluation_overall_rate = models.IntegerField()
-    evaluation_date = models.DateTimeField()
+    evaluation_date = models.DateField()
     evaluation_created_at = models.DateTimeField(auto_now=True)
     evaluation_updated_at = models.DateTimeField(null = True, default=None, blank=True)
     evaluation_deleted_at = models.DateTimeField(null = True, default=None, blank=True)

@@ -1,6 +1,5 @@
 from django.db import models
-
-# Create your models here.
+from django.utils import timezone
 from job_management.models import job_titles, departments
 from users.models import attachments, users
 

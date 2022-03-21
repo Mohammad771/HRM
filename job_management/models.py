@@ -65,6 +65,6 @@ class contracts(models.Model):
     contract_date_of_performing = models.DateField
     contract_approval = models.BooleanField()
     contract_conditions = models.TextField(blank=True, null=True)
-    contract_created_at = models.DateTimeField()
-    contract_updated_at = models.DateTimeField()
-    contract_deleted_at = models.DateTimeField()
+    contract_created_at = models.DateTimeField(default=timezone.now)
+    contract_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    contract_deleted_at = models.DateTimeField(null=True, default=None, blank=True)

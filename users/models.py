@@ -9,9 +9,9 @@ class attachment_types(models.Model):
     attachment_type_id = models.AutoField(max_length=24, primary_key=True)
     attachment_type_name = models.CharField(max_length=24)
     attachment_type_status = models.IntegerField()
-    attachment_type_created_at = models.DateTimeField()
-    attachment_type_updated_at = models.DateTimeField()
-    attachment_type_deleted_at = models.DateTimeField()
+    attachment_type_created_at = models.DateTimeField(default=timezone.now)
+    attachment_type_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    attachment_type_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class attachments(models.Model):
@@ -21,9 +21,9 @@ class attachments(models.Model):
     attachment_name = models.CharField(max_length=50)
     attachment_type = models.CharField(max_length=24)
     attachment_path = models.TextField()
-    attachment_created_at = models.DateTimeField()
-    attachment_updated_at = models.DateTimeField()
-    attachment_deleted_at = models.DateTimeField()
+    attachment_created_at = models.DateTimeField(default=timezone.now)
+    attachment_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    attachment_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class attachments_users(models.Model):
@@ -31,9 +31,9 @@ class attachments_users(models.Model):
     attachment_user_user_id = models.ForeignKey('users', on_delete=models.CASCADE, related_name="+")
     attachment_user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE,
                                                       related_name="+")
-    attachment_user_created_at = models.DateTimeField()
-    attachment_user_updated_at = models.DateTimeField()
-    attachment_user_deleted_at = models.DateTimeField()
+    attachment_user_created_at = models.DateTimeField(default=timezone.now)
+    attachment_user_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    attachment_user_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class countries(models.Model):
@@ -63,9 +63,9 @@ class addresses(models.Model):
     address_unit_number = models.IntegerField()
     address_created_by = models.ForeignKey('users', on_delete=models.CASCADE, related_name="+")
     address_country_id = models.ForeignKey(countries, on_delete=models.CASCADE, related_name="+")
-    address_created_at = models.DateTimeField()
-    address_updated_at = models.DateTimeField()
-    address_deleted_at = models.DateTimeField()
+    address_created_at = models.DateTimeField(default=timezone.now)
+    address_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    address_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class MyAccountManager(BaseUserManager):
@@ -136,7 +136,6 @@ class users(AbstractBaseUser):
     # user_status = models.BooleanField()
     # user_education_degree = models.CharField(max_length=24)
 
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -159,25 +158,25 @@ class users(AbstractBaseUser):
 class user_types(models.Model):
     user_type_id = models.AutoField(max_length=24, primary_key=True)
     user_type_user_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name="+")
-    user_type_created_at = models.DateTimeField()
-    user_type_updated_at = models.DateTimeField()
-    user_type_deleted_at = models.DateTimeField()
+    user_type_created_at = models.DateTimeField(default=timezone.now)
+    user_type_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    user_type_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class roles(models.Model):
     role_id = models.AutoField(max_length=24, primary_key=True)
     role_name = models.CharField(max_length=50)
-    roles_created_at = models.DateTimeField()
-    role_updated_at = models.DateTimeField()
-    role_deleted_at = models.DateTimeField()
+    roles_created_at = models.DateTimeField(default=timezone.now)
+    role_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    role_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class permissions(models.Model):
     permission_id = models.AutoField(max_length=24, primary_key=True)
     permission_name = models.CharField(max_length=50)
-    permission_created_at = models.DateTimeField()
-    permission_updated_at = models.DateTimeField()
-    permission_deleted_at = models.DateTimeField()
+    permission_created_at = models.DateTimeField(default=timezone.now)
+    permission_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    permission_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class roles_and_permissions(models.Model):
@@ -186,9 +185,9 @@ class roles_and_permissions(models.Model):
     role_and_permission_permissions_id = models.ForeignKey(permissions, on_delete=models.CASCADE, related_name="+")
     role_and_permission_name = models.CharField(max_length=50)
     role_and_permission_level = models.IntegerField()
-    role_and_permission_created_at = models.DateTimeField()
-    role_and_permission_updated_at = models.DateTimeField()
-    role_and_permission_name_deleted_at = models.DateTimeField()
+    role_and_permission_created_at = models.DateTimeField(default=timezone.now)
+    role_and_permission_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    role_and_permission_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class courses(models.Model):
@@ -199,9 +198,9 @@ class courses(models.Model):
     course_DOC = models.DateField()
     course_length = models.IntegerField()
     course_provider = models.CharField(max_length=264)
-    course_created_at = models.DateTimeField()
-    course_updated_at = models.DateTimeField()
-    course_deleted_at = models.DateTimeField()
+    course_created_at = models.DateTimeField(default=timezone.now)
+    course_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    course_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class skills(models.Model):
@@ -209,9 +208,9 @@ class skills(models.Model):
     skill_user_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name="+")
     skill_name = models.CharField(max_length=50)
     skill_rating = models.IntegerField()
-    skill_created_at = models.DateTimeField()
-    skill_updated_at = models.DateTimeField()
-    skill_deleted_at = models.DateTimeField()
+    skill_created_at = models.DateTimeField(default=timezone.now)
+    skill_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    skill_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 ''' class spoken_languages(models.Model):

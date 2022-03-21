@@ -1,4 +1,6 @@
 ##NO EDIT HERE
+from datetime import timezone
+
 from django.db import models
 from users.models import users
 from job_management.models import departments, job_titles
@@ -40,6 +42,6 @@ class attendance(models.Model):
     attendance_total_hours = models.IntegerField()
     attendance_half_day = models.BooleanField()
     attendance_working_from = models.CharField(max_length=24)
-    attendance_created_at = models.DateTimeField()
-    attendance_updated_at = models.DateTimeField()
-    attendance_deleted_at = models.DateTimeField()
+    attendance_created_at = models.DateTimeField(default=timezone.now)
+    attendance_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    attendance_deleted_at = models.DateTimeField(null=True, default=None, blank=True)

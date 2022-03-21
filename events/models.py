@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from django.db import models
 
 # Create your models here.
@@ -14,6 +16,6 @@ class events(models.Model):
     event_title = models.CharField(max_length=50)
     event_date = models.DateField()
     event_location = models.CharField(max_length=50)
-    event_created_at = models.DateTimeField()
-    event_updated_at = models.DateTimeField()
-    event_deleted_at = models.DateTimeField()
+    event_created_at = models.DateTimeField(default=timezone.now)
+    event_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    event_deleted_at = models.DateTimeField(null=True, default=None, blank=True)

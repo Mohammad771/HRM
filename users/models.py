@@ -99,6 +99,8 @@ class MyAccountManager(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
+        user.user_first_name = "Admin"
+        user.user_last_name = str(user.user_id)
         user.save(using=self._db)
 
 
@@ -118,6 +120,9 @@ class users(AbstractBaseUser):
     user_id_number = models.CharField(max_length=10, default=str(1)) # this needs to be changed to unique=True, i am not doing it now because it requires database deletion
     user_DOB = models.DateField()
     user_nationality_ID = models.IntegerField()
+    user_created_at = models.DateTimeField(auto_now=True)
+    user_updated_at = models.DateTimeField(null = True, default=None, blank=True)
+    user_deleted_at = models.DateTimeField(null = True, default=None, blank=True)
     # user_middle_name = models.CharField(max_length=24)
     # user_password_hash      = models.TextField()
     # user_id = models.AutoField(max_length=24, primary_key=True)
@@ -130,9 +135,7 @@ class users(AbstractBaseUser):
     # user_is_active = models.BooleanField()
     # user_status = models.BooleanField()
     # user_education_degree = models.CharField(max_length=24)
-    # user_created_at = models.DateTimeField()
-    # user_updated_at = models.DateTimeField()
-    # user_deleted_at = models.DateTimeField()
+
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -140,7 +143,7 @@ class users(AbstractBaseUser):
     objects = MyAccountManager()
 
     def __str__(self):
-        return self.email
+        return self.user_first_name +  ' ' + self.user_last_name
 
         # For checking permissions. to keep it simple all admin have ALL permissons
 

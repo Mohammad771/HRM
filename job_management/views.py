@@ -1,6 +1,5 @@
 from distutils.log import error
 from django.shortcuts import redirect, render, HttpResponse 
-from pprint import pprint
 from HRM.CRUD import *
 from .models import job_titles as job_titles_model
 from .models import departments as departments_model

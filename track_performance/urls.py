@@ -8,6 +8,7 @@ app_name = "track_performance"
 urlpatterns = [
     path('viewEvaluations/', views.viewEvaluations,name='track_performance/viewEvaluations'),
     path('createEvaluations/', views.createEvaluations, name='track_performance/createEvaluations'),
+    path('manageAttendance/', views.manageAttendance, name='track_performance/manageAttendance'),
 
 
 ]

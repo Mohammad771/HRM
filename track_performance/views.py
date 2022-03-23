@@ -25,3 +25,8 @@ def createEvaluations(request):
     context['job_titles'] = Read('job_titles')
     context['users'] = Read('users')
     return render(request, 'track_performance/createEvaluations.html', context)
+
+
+def manageAttendance(request):
+
+    return render(request, 'track_performance/manageAttendance.html')

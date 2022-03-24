@@ -16,6 +16,16 @@ class payrolls(models.Model):
     payroll_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     payroll_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
+class bank_account(models.Model):
+    bank_account_id = models.AutoField(max_length=24, primary_key=True)
+    bank_account_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
+    bank_account_bank_name = models.CharField(max_length=50)
+    bank_account_card_holder_name = models.CharField(max_length=100)
+    bank_account_iban_number = models.CharField(max_length=30)
+    payroll_created_at = models.DateTimeField(default=timezone.now)
+    payroll_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    payroll_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
 
 class punishments(models.Model):
     punishment_id = models.AutoField(max_length=24, primary_key=True)
@@ -77,13 +87,13 @@ class social_insurances(models.Model):
     social_insurance_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
-class annual_bounces(models.Model):
-    annual_bounce_id = models.AutoField(max_length=24, primary_key=True)
-    annual_bounce_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
-    annual_bounce_amount = models.IntegerField()
-    annual_bounce_created_at = models.DateTimeField(default=timezone.now)
-    annual_bounce_updated_at = models.DateTimeField(null=True, default=None, blank=True)
-    annual_bounce_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+class annual_bonuses(models.Model):
+    annual_bonus_id = models.AutoField(max_length=24, primary_key=True)
+    annual_bonus_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
+    annual_bonus_amount = models.IntegerField()
+    annual_bonus_created_at = models.DateTimeField(default=timezone.now)
+    annual_bonus_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    annual_bonus_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
 
 class incentives(models.Model):

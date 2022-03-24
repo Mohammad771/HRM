@@ -120,6 +120,9 @@ class users(AbstractBaseUser):
     user_id_number = models.CharField(max_length=10, default=str(1)) # this needs to be changed to unique=True, i am not doing it now because it requires database deletion
     user_DOB = models.DateField()
     user_nationality_ID = models.IntegerField()
+    user_experience_years = models.IntegerField(default=None, null=True, blank=True)
+    user_education_degree = models.CharField(max_length=24, default=None, null=True, blank=True)
+    user_job_title_id = models.ForeignKey(job_titles, on_delete=models.CASCADE, related_name="+", default=None, null=True, blank=True)
     user_created_at = models.DateTimeField(auto_now=True)
     user_updated_at = models.DateTimeField(null = True, default=None, blank=True)
     user_deleted_at = models.DateTimeField(null = True, default=None, blank=True)
@@ -128,13 +131,11 @@ class users(AbstractBaseUser):
     # user_id = models.AutoField(max_length=24, primary_key=True)
     # user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")
     # user_address_id = models.ForeignKey(addresses, default=None, on_delete=models.CASCADE, related_name="+")
-    # user_job_title_id = models.ForeignKey(job_titles, on_delete=models.CASCADE, related_name="+")
     # user_type_id = models.ForeignKey('user_types', default=None, on_delete=models.CASCADE, related_name="+")
     # user_employee_department = models.ForeignKey(departments, on_delete=models.CASCADE, related_name="+")
     # user_activation_hash = models.TextField()
     # user_is_active = models.BooleanField()
     # user_status = models.BooleanField()
-    # user_education_degree = models.CharField(max_length=24)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

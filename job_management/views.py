@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render, HttpResponse
 from HRM.CRUD import *
 from .models import job_titles as job_titles_model
 from .models import departments as departments_model
+from users.models import users
 
 
 # This is the function which is responsible for all crud operations for the departments table
@@ -104,7 +105,23 @@ def change_department_status(request):
     
 
 def create_contract(request):
+    context = {}
+    if request.method == "POST": 
+        user_idd =  request.method['contract_user_id']
+        current_user = users.objects.get(pk=user_idd)
+        current_user.user_experience_years = request.method['user_experience_years']
+        current_user.user_job_title_id = request.method['user_job_title_id']
+        current_user.user_education_degree = request.method['user_education_degree']
+        current_user.save()
 
+        contract_creation_result = Create(request.POST, 'contracts')
+
+
+
+
+    # obj = Foo.objects.latest('id')
+    context["users"] = Read('users')
+    context["job_titles"] = Read('job_titles')
     return render(request, 'job_management/create_contract.html', context)
 
 def viewContract(request):

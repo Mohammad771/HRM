@@ -1,7 +1,7 @@
 from job_management.forms import create_department_form, create_job_title_form
 from django.utils import timezone
 from job_management.forms import *
-from job_management.models import departments, job_titles
+from job_management.models import departments, job_titles, contracts
 from track_performance.models import evaluations
 from track_performance.forms import *
 from users.models import users
@@ -20,6 +20,9 @@ def create_form(post, table):
         return(create_job_title_form(post))
 
     elif table == 'evaluations':
+        return(create_evaluation_form(post))
+
+    elif table == 'contracts':
         return(create_evaluation_form(post))
 
     else:

@@ -57,14 +57,15 @@ class job_locations(models.Model):
 
 class contracts(models.Model):
     contract_id = models.AutoField(max_length=24, primary_key=True)
-    contract_account_id = models.ForeignKey(accounts, on_delete=models.CASCADE, related_name="+")
-    contract_status = models.BooleanField()
+    contract_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
+    contract_auto_renewal = models.BooleanField()
     contract_hour_price = models.IntegerField()
-    contract_has_trail_period = models.BooleanField()
+    # contract_has_trail_period = models.BooleanField()
+    contract_starting_date = models.DateField()
     contract_expiry_date = models.DateField()
-    contract_date_of_performing = models.DateField
-    contract_approval = models.BooleanField()
-    contract_conditions = models.TextField(blank=True, null=True)
+    # contract_date_of_performing = models.DateField
+    # contract_approval = models.BooleanField()
+    contract_conditions = models.TextField(default=None, blank=True, null=True)
     contract_created_at = models.DateTimeField(default=timezone.now)
     contract_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     contract_deleted_at = models.DateTimeField(null=True, default=None, blank=True)

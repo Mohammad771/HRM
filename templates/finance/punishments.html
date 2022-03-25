@@ -1,0 +1,110 @@
+{% extends 'common\baseView.html' %}
+{% load staticfiles %}
+
+{% block pageCSS %}
+    <!-- BEGIN: Page CSS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+
+    <!-- END: Custom CSS-->
+{% endblock %}
+
+{% block viewName %}
+    <h2 class="content-header-title float-start mb-0">Manage Punishments</h2>
+{% endblock %}
+
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">ِAdd New Punishment</h4>
+        </div>
+        <div class="card-body">
+            <form id="basic-input" action="{% url 'finance:finance/punishments' %}" method="post">
+                {%csrf_token%}
+                <div class="row">
+                    <div class="col-md-5">
+                        <label class="form-label" for="basicSelect">Choose Employee by National ID</label>
+                        <div class="position-relative" data-select2-id="45">
+                            <select name="user_nationality_ID" class="select2 form-select select2-hidden-accessible" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                <option value=""></option>
+                                <option value="1" data-select2-id="2">317889331</option>
+                                <option value="2" data-select2-id="57">234678732</option>
+                                <option value="3" data-select2-id="58">214415768</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label" for="basicInput">Amount</label>
+                        <input type="text" class="form-control" id="pun_amount" name = "pun_amount" placeholder="1000">
+                        <input type="hidden" name="request_type" value="create" class="form-control" id="request_type">
+
+                    </div>
+
+
+                    <div class="col-md-2 mt-2">
+                        <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect">Add</button>
+                    </div>
+                </div>
+                <!-- onclick="document.getElementById('basic-input').submit();" -->
+            </form>
+        </div>
+
+    </div>
+
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title"></h4>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Job Titles</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Delete</th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <td>
+                        <span class="fw-bold">1</span>
+                    </td>
+                    <td>Ali Hassan</td>
+                    <td >Marketing Manager</td>
+                    <td>1500</td>
+                    <td>17-3-2022</td>
+                    <td><i class="fa-solid fa-trash-can"></i></td>
+
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- END: Page JS-->
+{% endblock %}
+
+{% block pageCJs %}
+    <script>
+
+    $(function (){
+        $(".form-select").select2();
+    })
+
+
+    </script>
+
+
+{% endblock %}

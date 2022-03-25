@@ -69,3 +69,6 @@ class contracts(models.Model):
     contract_created_at = models.DateTimeField(default=timezone.now)
     contract_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     contract_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
+    def __str__(self):
+        return "Contract " + str(self.contract_id)

@@ -26,6 +26,9 @@ class bank_account(models.Model):
     payroll_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     payroll_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
+    def __str__(self):
+        return "Bank Account " + str(self.bank_account_id)
+
 
 class punishments(models.Model):
     punishment_id = models.AutoField(max_length=24, primary_key=True)
@@ -68,6 +71,9 @@ class allowances(models.Model):
     allowance_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     allowance_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
+    def __str__(self):
+        return "Allownce " + str(self.allowance_id)
+
 
 class allowances_and_contracts(models.Model):
     allowance_and_contract_id = models.AutoField(max_length=24, primary_key=True)
@@ -94,6 +100,9 @@ class annual_bonuses(models.Model):
     annual_bonus_created_at = models.DateTimeField(default=timezone.now)
     annual_bonus_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     annual_bonus_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
+    def __str__(self):
+        return "Annual Bonus " + str(self.annual_bonus_id)
 
 
 class incentives(models.Model):

@@ -1,10 +1,12 @@
-from job_management.forms import create_department_form, create_job_title_form
 from django.utils import timezone
+from users.models import users
 from job_management.forms import *
 from job_management.models import departments, job_titles, contracts
 from track_performance.models import evaluations
 from track_performance.forms import *
-from users.models import users
+# from finance.models import bank_account, allowances, annual_bonuses
+# from finance.forms import *
+
 
 # This component manages most of the Create, Read, Update and Delete operations. This component is called from many apps to do the CRUD
 # operations on their behalf.
@@ -23,7 +25,16 @@ def create_form(post, table):
         return(create_evaluation_form(post))
 
     elif table == 'contracts':
-        return(create_evaluation_form(post))
+        return(create_contract_form(post))
+
+    elif table == 'annual_bonuses':
+        return(create_annual_bonuses_form(post))
+
+    elif table == 'banks_accounts':
+        return(create_bank_account_form(post))
+
+    elif table == 'allownces':
+        return(create_allowances_form(post))
 
     else:
         print("Table Not Found!! Check if you typed its name correctly.") # debugging alert which means that the table was not found

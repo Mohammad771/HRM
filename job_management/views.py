@@ -1,9 +1,14 @@
 from distutils.log import error
-from django.shortcuts import redirect, render, HttpResponse 
+from django.shortcuts import redirect, render, HttpResponse
+from users.models import users
 from HRM.CRUD import *
 from .models import job_titles as job_titles_model
 from .models import departments as departments_model
-from users.models import users
+from job_management.forms import *
+# from job_management.models import departments, job_titles, contracts
+# from finance.models import bank_account, allowances, annual_bonuses
+from finance.forms import *
+
 
 
 # This is the function which is responsible for all crud operations for the departments table
@@ -106,23 +111,71 @@ def change_department_status(request):
 
 def create_contract(request):
     context = {}
-    if request.method == "POST": 
-        user_idd =  request.method['contract_user_id']
-        current_user = users.objects.get(pk=user_idd)
-        current_user.user_experience_years = request.method['user_experience_years']
-        current_user.user_job_title_id = request.method['user_job_title_id']
-        current_user.user_education_degree = request.method['user_education_degree']
-        current_user.save()
+    if request.method == "POST":
 
-        contract_creation_result = Create(request.POST, 'contracts')
+        new_post = request.POST.copy()
+        user_idd =  request.POST['contract_user_id']
+        new_post['annual_bonus_user_id'] = user_idd
+        new_post['bank_account_user_id'] = user_idd
+        new_post['allowance_user_id'] = user_idd
 
+        creation_forms = [create_contract_form(new_post), create_annual_bonuses_form(new_post), create_bank_account_form(new_post), 
+        create_allowances_form(new_post)]
 
+        form_validation_error = False
+        form_errors = []
+        for form in creation_forms:
+            if not form.is_valid():
+                form_errors.append(form.errors)
+                validation_error = True
+        
+        if form_validation_error == True:
+            context['form_errors'] = form_errors
 
+        else:
+            print("validation success")
+            for form in creation_forms:
+                form.save()
 
-    # obj = Foo.objects.latest('id')
+            current_user = users.objects.get(pk=user_idd)
+            current_user.user_experience_years = request.POST['user_experience_years']
+            current_user.user_job_title_id = job_titles_model.objects.get(pk=request.POST['user_job_title_id'])
+            current_user.user_education_degree = request.POST['user_education_degree']
+            current_user.save()
+
+   
     context["users"] = Read('users')
     context["job_titles"] = Read('job_titles')
     return render(request, 'job_management/create_contract.html', context)
 
 def viewContract(request):
     return render(request, 'job_management/viewContract.html')
+
+                    
+
+        
+        # contract_creation_result = Create(request.POST, 'contracts')
+        # if contract_creation_result['status'] == False:
+        #     context['form_errors'] = contract_creation_result['form_errors']
+        
+        # annual_bonus_creation_result = Create(new_post, 'annual_bonuses')
+        # if annual_bonus_creation_result['status'] == False:
+        #     context['form_errors'] = annual_bonus_creation_result['form_errors']
+
+        # allownce_creation_result = Create(new_post, 'allowances')
+        # if allownce_creation_result['status'] == False:
+        #     context['form_errors'] = allownce_creation_result['form_errors']
+   
+
+        # bank_account_result = Create(new_post, 'bank_accounts')
+        # if bank_account_creation_result['status'] == False:
+        #     context['form_errors'] = bank_account_creation_result['form_errors']
+
+        #         form_validation_error = False
+        # form_errors = []
+        # for form in creation_forms:
+        #     if not form.is_valid():
+        #         for error in form:
+        #             form_errors.append(error)
+        #         # print(form_errors)
+        #         validation_error = True

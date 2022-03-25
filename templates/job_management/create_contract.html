@@ -24,6 +24,11 @@
         <div class="card-body">
             <div class="card-title">
                 <h4>Career Info</h4>
+                {% if form_errors %}
+                    {% for field in form_errors %}
+                        {{field}}
+                    {% endfor %}
+                {% endif %}
                 <hr>
             </div>
             <form action="{% url 'job_management:job_management/create_contract' %}" method="post">
@@ -118,17 +123,19 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label class="form-label" for="house_allowance">Housing Allowance</label>
-                        <input type="text" name="housing_allownce" class="form-control" id="house_allowance" placeholder="25">
+                        <label class="form-label" for="house_allowance">Allowance Name</label>
+                        <input type="text" name="allowance_type" class="form-control" id="house_allowance" placeholder="25">
+                        <label class="form-label" for="house_allowance">Allowance Amount</label>
+                        <input type="text" name="allowance_amount" class="form-control" id="house_allowance" placeholder="25">
                     </div>
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <label class="form-label" for="tran_allowance">Transportation Allowance</label>
                         <input type="text" name="transportation_allownce" class="form-control" id="tran_allowance" placeholder="7">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label" for="holder_name">Self Development Allowance</label>
                         <input type="text" name="self_development_allownce" class="form-control" id="self_allowance" placeholder="6">
-                    </div>
+                    </div> -->
                     <div class="card-title" style="margin-top: 40px">
                         <h4>Conditions & Terms</h4>
                         <hr>

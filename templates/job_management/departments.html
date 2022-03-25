@@ -25,11 +25,11 @@
         </div>
 
         <div class="card-body">
-            {% if form_errors %}
-                {% for field in form_errors %}
-                    {{field.errors}}
+            {% for field, errors in form_errors.errors.items %}
+                {% for error in errors %}
+                    {{error}}
                 {% endfor %}
-            {% endif %}
+            {% endfor %}
             <form action="{% url 'job_management:job_management/departments' %}" method="POST" id="basic-input">
                 {% csrf_token %}
                 <div class="row">

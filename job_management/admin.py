@@ -5,3 +5,4 @@ from .models import *
 
 admin.site.register(departments)
 admin.site.register(job_titles)
+admin.site.register(contracts)

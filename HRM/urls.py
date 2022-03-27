@@ -24,5 +24,6 @@ urlpatterns = [
     path('',include(('users.urls'), namespace='users')),
     path('',include(('job_management.urls'), namespace='job_management')),
     path('',include(('track_performance.urls'), namespace='track_performance')),
+    path('',include(('finance.urls'), namespace='finance')),
 
 ]

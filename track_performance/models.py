@@ -1,5 +1,6 @@
 ##NO EDIT HERE
 from django.utils import timezone
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from users.models import users
 from job_management.models import departments, job_titles
@@ -35,7 +36,7 @@ class evaluations(models.Model):
 class attendance(models.Model):
     attendance_id = models.AutoField(max_length=24, primary_key=True)
     attendance_user_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name="+")
-    attendance_date = models.DateField
+    attendance_date = models.DateField()
     attendance_clock_in = models.DateTimeField()
     attendance_clock_out = models.DateTimeField()
     attendance_total_hours = models.IntegerField()
@@ -44,3 +45,15 @@ class attendance(models.Model):
     attendance_created_at = models.DateTimeField(default=timezone.now)
     attendance_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     attendance_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
+class attendance_file(models.Model):
+    attendance_file_id = models.AutoField(max_length=24, primary_key=True)
+    attendance_file = models.FileField(upload_to='static/upload/attendance_files', validators=[FileExtensionValidator(allowed_extensions=['xlsx'])])
+    attendance_file_date = models.DateField()
+    attendance_file_created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return "Attendance Sheet: " + str(self.attendance_file_date)
+
+
+    

@@ -1,5 +1,5 @@
 from django import forms 
-from .models import evaluations
+from .models import *
 
 class create_evaluation_form(forms.ModelForm):
 
@@ -14,4 +14,7 @@ class create_evaluation_form(forms.ModelForm):
         }
 
 
-
+class attendance_file_form(forms.ModelForm):
+    class  Meta():
+        model = attendance_file
+        fields = ('attendance_file', 'attendance_file_date')

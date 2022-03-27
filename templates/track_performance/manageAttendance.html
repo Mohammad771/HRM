@@ -17,6 +17,9 @@
         <div class="card-header border-bottom">
             <div class="col-md-8">
                 <h4 class="card-title">Attendance Records</h4>
+                {% if file_upload_error%}
+                    {{file_upload_error}}
+                {% endif %}
             </div>
             <div class="col-md-4">
                 <button style="width: 250px" type="submit" class="btn btn-outline-success round waves-effect" data-bs-toggle="modal" data-bs-target="#UploadModal">Upload Attendance Sheet</button>
@@ -56,6 +59,14 @@
                         <th>Clock-out</th>
                         <th>Total hours</th>
                     </tr>
+                    <!-- <tr>
+                        <td>#</td>
+                        <td>Name</td>
+                        <td>Date</td>
+                        <td>Clock-in</td>
+                        <td>Clock-out</td>
+                        <td>Total hours</td>
+                    </tr> -->
                     </thead>
 
                 </table>
@@ -70,17 +81,17 @@
                         <h4 class="modal-title" id="myModalLabel33">Upload New Record</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="#" method="post">
+                    <form action="" method="post" enctype="multipart/form-data">
                         {%csrf_token%}
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="formFile" class="form-label">Choose Excel File</label>
-                                    <input class="form-control" type="file" id="Att_File">
+                                    <input class="form-control" name="attendance_file" type="file" id="Att_File">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="att_date">Date</label>
-                                    <input type="text" id="att_date" name="att_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                    <input type="text" id="att_date" name="attendance_file_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
                                 </div>
                             </div>
                         </div>

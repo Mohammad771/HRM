@@ -4,3 +4,4 @@ from .models import *
 # Register your models here.
 admin.site.register(evaluations)
 admin.site.register(attendance_file)
+admin.site.register(attendance)

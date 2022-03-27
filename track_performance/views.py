@@ -2,8 +2,10 @@ from distutils.log import error
 import pandas as pd
 from django.shortcuts import redirect, render, HttpResponse 
 from HRM.CRUD import *
-from .models import attendance_file
+from .models import attendance_file, attendance
 from .forms import attendance_file_form
+from users.models import users as users_model
+from datetime import datetime
 
 # Create your views here.
 def viewEvaluations(request):
@@ -37,14 +39,20 @@ def manageAttendance(request):
     # d.save()
     # print(d.attendance_file_created_at)
     context = {}
-    df = pd.read_excel("static/upload/attendance_files/Attendance_Sheet_1.xlsx")
-    # df.to_dict()
-    df = df.to_dict()
-    print(df)
-    users_count = len(df['attendance_user_id'])
+    attendance_rows = pd.read_excel("static/upload/attendance_files/Attendance_Sheet_1.xlsx")
+    attendance_rows = attendance_rows.to_dict()
+    users_count = len(attendance_rows['attendance_user_id'])
     insert_dict = {}
-    for index in df:
-        print(df[index])
+    print(substract_dates(attendance_rows['attendance_clock_in'][0], attendance_rows['attendance_clock_out'][0]))
+    for index in range (users_count):
+        attendance.objects.create(
+            attendance_user_id = users_model.objects.get(pk=attendance_rows['attendance_user_id'][index]),
+            attendance_date = attendance_rows['attendance_date'][index],
+            attendance_clock_in = attendance_rows['attendance_clock_in'][index],
+            attendance_clock_out = attendance_rows['attendance_clock_out'][index],
+            attendance_duration = substract_dates(attendance_rows['attendance_clock_in'][index], attendance_rows['attendance_clock_out'][index]),
+            attendance_working_from = attendance_rows['attendance_working_from'][index]
+            )
 
 
 
@@ -59,14 +67,11 @@ def manageAttendance(request):
     return render(request, 'track_performance/manageAttendance.html', context)
 
 
-# def handle_uploaded_file(file):  
-#     with open('static/upload/attendace_files/', 'wb+') as destination:  
-#         for chunk in file.chunks():  
-#             destination.write(chunk)  
+def substract_dates(start, end):
 
-# from datetime import datetime
-# then = datetime(2012, 3, 5, 23, 8, 15)        # Random date in the past
-# now  = datetime.now()                         # Now
-# duration = now - then                         # For build-in functions
-# duration_in_s = duration.total_seconds()      # Total number of seconds between dates
-# hours = divmod(duration_in_s, 3600)[0]        # Duration in hours
+    # duration = end - start
+    days = end - start
+    hours = divmod(days.total_seconds(), 3600) 
+    result = "{}:{}".format(int(hours[0]), int(hours[1] * 60))
+    return result
+

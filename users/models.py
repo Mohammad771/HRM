@@ -99,8 +99,8 @@ class MyAccountManager(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
-        user.user_first_name = "Admin"
-        user.user_last_name = str(user.user_id)
+        user.user_first_name = "An"
+        user.user_last_name = "Admin"
         user.save(using=self._db)
 
 
@@ -143,7 +143,7 @@ class users(AbstractBaseUser):
     objects = MyAccountManager()
 
     def __str__(self):
-        return self.user_first_name +  ' ' + self.user_last_name
+        return self.user_first_name +  ' ' + self.user_last_name + " " + str(self.user_id)
 
         # For checking permissions. to keep it simple all admin have ALL permissons
 

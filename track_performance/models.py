@@ -32,20 +32,6 @@ class evaluations(models.Model):
         else:
             return str(self.evaluation_id)
 
-
-class attendance(models.Model):
-    attendance_id = models.AutoField(max_length=24, primary_key=True)
-    attendance_user_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name="+")
-    attendance_date = models.DateField()
-    attendance_clock_in = models.DateTimeField()
-    attendance_clock_out = models.DateTimeField()
-    attendance_duration = models.TimeField()
-    attendance_half_day = models.BooleanField(null=True, default=None, blank=True)
-    attendance_working_from = models.CharField(max_length=24)
-    attendance_created_at = models.DateTimeField(default=timezone.now)
-    attendance_updated_at = models.DateTimeField(null=True, default=None, blank=True)
-    attendance_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
-
 class attendance_file(models.Model):
     attendance_file_id = models.AutoField(max_length=24, primary_key=True)
     attendance_file = models.FileField(upload_to='static/upload/attendance_files', validators=[FileExtensionValidator(allowed_extensions=['xlsx'])])
@@ -54,6 +40,22 @@ class attendance_file(models.Model):
 
     def __str__(self):
         return "Attendance Sheet: " + str(self.attendance_file_date)
+
+class attendance(models.Model):
+    attendance_id = models.AutoField(max_length=24, primary_key=True)
+    attendance_source_file_id = models.ForeignKey(attendance_file, on_delete=models.CASCADE, null=True, default=None, blank=True)
+    attendance_user_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name="+")
+    attendance_date = models.DateField()
+    attendance_clock_in = models.TimeField()
+    attendance_clock_out = models.TimeField()
+    attendance_duration = models.TimeField()
+    attendance_half_day = models.BooleanField(null=True, default=None, blank=True)
+    attendance_working_from = models.CharField(max_length=24)
+    attendance_created_at = models.DateTimeField(default=timezone.now)
+    attendance_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    attendance_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
+
 
 
     

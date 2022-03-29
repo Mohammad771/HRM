@@ -17,9 +17,46 @@
         <div class="card-header border-bottom">
             <div class="col-md-8">
                 <h4 class="card-title">Attendance Records</h4>
-                {% if file_upload_error%}
-                    {{file_upload_error}}
+                {% if duplicate_attendance_file_date%}
+                    <h3 style="color: red;">Error: A file with the same date already exists</h3>
                 {% endif %}
+
+                {% if file_upload_errors%}
+                    {{file_upload_errors}}
+                {% endif %}
+
+                {% if empty_file%}
+                <h3 style="color: red;">{{empty_file}}</h3>   
+                {% endif %}
+
+                {% if excel_row_automatic_errors%}
+                    <h3 style="color: red;">While handling the file, the following errors have happened:</h3>
+                    <h5>File Row Number: {{excel_row_automatic_errors.row}}</h5>
+                    <h5>User ID: {{excel_row_automatic_errors.user_id}}</h5>
+                    <h5>Error Text: {{excel_row_automatic_errors.errors}}</h5>
+                {% endif %}
+
+                {% if missing_columns_in_file%}
+                    <h3 style="color: red;">The uploaded file does not contain the following required columns:</h3>
+
+                    {% for column in missing_columns_in_file %}
+                        <ul>
+                            <li>{{column}}</li>
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+
+                {% if excel_row_manual_errors%}
+                    <h3 style="color: red;">The uploaded file does not comply with the following requirements:</h3>
+
+                    {% for error in excel_row_manual_errors %}
+                        <ul>
+                            <li>{{error}}</li>
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+
+
             </div>
             <div class="col-md-4">
                 <button style="width: 250px" type="submit" class="btn btn-outline-success round waves-effect" data-bs-toggle="modal" data-bs-target="#UploadModal">Upload Attendance Sheet</button>

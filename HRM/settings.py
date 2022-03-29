@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'job_management',
     'referendum',
     'track_performance',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

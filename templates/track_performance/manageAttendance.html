@@ -4,6 +4,7 @@
 {% block pageCSS %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/track_performance/dataTables.bootstrap5.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/track_performance/responsive.bootstrap5.min.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"> -->
 
 {% endblock %}
 
@@ -68,44 +69,51 @@
                     <strong>Info:</strong> You can filter the table results by searching about specific name or sepcific date.
                 </div>
             </div>
-            <form class="dt_adv_search" method="POST">
+            <form action="" method="POST">
+                {%csrf_token%}
                 <div class="row g-1 mb-md-1">
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <label class="form-label">Name:</label>
                         <input type="text" class="form-control dt-input dt-full-name" data-column="1" placeholder="Alaric Beslier" data-column-index="0" />
-                    </div>
+                    </div> -->
                     <div class="col-md-4">
                         <label class="form-label">Date:</label>
                         <div class="mb-0">
-                            <input type="text" class="form-control dt-date flatpickr-range dt-input" data-column="5" placeholder="StartDate to EndDate" data-column-index="4" name="dt_date" />
-                            <input type="hidden" class="form-control dt-date start_date dt-input" data-column="5" data-column-index="4" name="value_from_start_date" />
-                            <input type="hidden" class="form-control dt-date end_date dt-input" name="value_from_end_date" data-column="5" data-column-index="4" />
+                            <input id="1" type="text" class="form-control dt-date flatpickr-range dt-input" data-column="5" placeholder="StartDate to EndDate" data-column-index="4" name="beginning_to_end" />
+                            <input id="2" type="hidden" class="form-control dt-date start_date dt-input" name="attendance_rows_beginning_date" data-column="5" data-column-index="4"  />
+                            <input id="3" type="hidden" class="form-control dt-date end_date dt-input" name="attendance_rows_ending_date" data-column="5" data-column-index="4"  >
+                            <input type="hidden" name="request_type" value="search_date" data-column="5" data-column-index="4"  >
+                            <button class="btn btn-primary" onclick="console.log($('#2').val())">Search</button>
+
                         </div>
                     </div>
                 </div>
             </form>
 
             <div class="card-datatable">
-                <table class="dt-advanced-search table">
+                <table id="main_table" class="dt-advanced-search table">
                     <thead>
                     <tr>
-                        <th>#</th>
                         <th>Name</th>
                         <th>Date</th>
                         <th>Clock-in</th>
                         <th>Clock-out</th>
                         <th>Total hours</th>
                     </tr>
-                    <!-- <tr>
-                        <td>#</td>
-                        <td>Name</td>
-                        <td>Date</td>
-                        <td>Clock-in</td>
-                        <td>Clock-out</td>
-                        <td>Total hours</td>
-                    </tr> -->
-                    </thead>
-
+                </thead>
+                <tbody>
+                {% if attendance_rows %}
+                    {% for row in attendance_rows %}
+                    <tr>
+                        <td>{{row.attendance_user_id}}</td>
+                        <td>{{row.attendance_date}}</td>
+                        <td>{{row.attendance_clock_in}}</td>
+                        <td>{{row.attendance_clock_out}}</td>
+                        <td>{{row.attendance_duration}}</td>
+                    </tr>             
+                    {% endfor %}
+                {% endif %}
+                </tbody>
                 </table>
             </div>
         </div>
@@ -119,6 +127,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="request_type" value="form_submission" data-column="5" data-column-index="4"  >
                         {%csrf_token%}
                         <div class="modal-body">
                             <div class="row">
@@ -144,14 +153,26 @@
 {% endblock %}
 
 {% block pageCJs %}
-    <script src="{% static 'js/track_performance/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'js/track_performance/dataTables.bootstrap5.min.js' %}"></script>
-    <script src="{% static 'js/track_performance/dataTables.responsive.min.js' %}"></script>
-    <script src="{% static 'js/track_performance/responsive.bootstrap5.js' %}"></script>
-    <script src="{% static 'js/track_performance/table-datatables-advanced.min.js' %}"></script>
-{#    <script src="{% static 'js/track_performance/table-datatables-advanced.js' %}"></script>#}
 
-    <script>
+    <!-- <script src="{% static 'js/track_performance/jquery.dataTables.min.js' %}"></script> -->
+    <script src="{% static 'js/track_performance/dataTables.bootstrap5.min.js' %}"></script>
+    <!-- <script src="{% static 'js/track_performance/dataTables.responsive.min.js' %}"></script> -->
+    <script src="{% static 'js/track_performance/responsive.bootstrap5.js' %}"></script>
+    <!-- <script src="{% static 'js/track_performance/table-datatables-advanced.min.js' %}"></script>
+    <script src="{% static 'js/track_performance/table-datatables-advanced.js' %}"></script> -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
+
+
+<script>
+$(document).ready( function () {
+    $('#main_table').DataTable();
+    console.log("success")
+} );
+
+</script>
+    <!-- <script>
         $(function (){
             // Advanced Search
             // --------------------------------------------------------------------
@@ -160,7 +181,7 @@
             // Advanced Filter table
             if (dt_adv_filter_table.length) {
                 var dt_adv_filter = dt_adv_filter_table.DataTable({
-                    ajax: assetPath + 'data/table-datatable.json',
+                    ajax: datapath,
                     columns: [
                         { data: 'attendance_id' },//here you write the column name of the DB that match the first column in DataTable.
                         { data: '' },
@@ -227,6 +248,6 @@
                 filterColumn($(this).attr('data-column'), $(this).val());
             });
         })
-    </script>
+    </script> -->
 
 {% endblock %}

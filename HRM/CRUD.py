@@ -6,6 +6,8 @@ from track_performance.models import evaluations
 from track_performance.forms import *
 # from finance.models import bank_account, allowances, annual_bonuses
 # from finance.forms import *
+from finance.forms import *
+from finance.models import punishments, rewards
 
 
 # This component manages most of the Create, Read, Update and Delete operations. This component is called from many apps to do the CRUD
@@ -35,6 +37,12 @@ def create_form(post, table):
 
     elif table == 'allownces':
         return(create_allowances_form(post))
+
+    elif table == 'rewards':
+        return(create_reward(post))
+
+    elif table == 'punishments':
+        return(create_punishment(post))
 
     else:
         print("Table Not Found!! Check if you typed its name correctly.") # debugging alert which means that the table was not found

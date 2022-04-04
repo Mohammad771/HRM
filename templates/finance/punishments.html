@@ -20,25 +20,27 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">ِAdd New Punishment</h4>
+            {% if form_errors %}
+                {{ form_errors.errors }}
+            {% endif %}
         </div>
         <div class="card-body">
-            <form id="basic-input" action="{% url 'finance:finance/punishments' %}" method="post">
+            <form id="basic-input" action="#" method="post">
                 {%csrf_token%}
                 <div class="row">
                     <div class="col-md-5">
                         <label class="form-label" for="basicSelect">Choose Employee by National ID</label>
                         <div class="position-relative" data-select2-id="45">
-                            <select name="user_nationality_ID" class="select2 form-select select2-hidden-accessible" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
-                                <option value=""></option>
-                                <option value="1" data-select2-id="2">317889331</option>
-                                <option value="2" data-select2-id="57">234678732</option>
-                                <option value="3" data-select2-id="58">214415768</option> -->
+                            <select name="punishment_user_id" class="select2 form-select select2-hidden-accessible" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                {% for user in users %}
+                                <option value="{{user.info.user_id}}" data-select2-id="2">{{ user.info.user_nationality_ID }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <label class="form-label" for="basicInput">Amount</label>
-                        <input type="text" class="form-control" id="pun_amount" name = "pun_amount" placeholder="1000">
+                        <input type="text" class="form-control" id="pun_amount" name = "punishment_amount" placeholder="1000">
                         <input type="hidden" name="request_type" value="create" class="form-control" id="request_type">
 
                     </div>
@@ -75,18 +77,22 @@
                 </thead>
                 <tbody>
 
+                {%  if viewPunishment %}
+                    {% for punishment in viewPunishments %}
                 <tr>
                     <td>
                         <span class="fw-bold">1</span>
                     </td>
-                    <td>Ali Hassan</td>
-                    <td >Marketing Manager</td>
-                    <td>1500</td>
-                    <td>17-3-2022</td>
+                    <th>{{punishment.punishment_id}}</th>
+                    <th>{{ punishment.punishment_name }}</th>
+                    <-- <th>{{ punishment.punishment_job_title_id }}</th> -->
+                    <th>{{ punishment.amount }}</th>
+                    <th>{{ punishment.created_at}}</th>
                     <td><i class="fa-solid fa-trash-can"></i></td>
 
                 </tr>
-
+                    {%endfor%}
+                    {% endif %}
                 </tbody>
             </table>
         </div>

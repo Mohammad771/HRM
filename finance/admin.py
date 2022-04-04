@@ -5,3 +5,5 @@ from .models import *
 admin.site.register(bank_account)
 admin.site.register(allowances)
 admin.site.register(annual_bonuses)
+admin.site.register(punishments)
+admin.site.register(rewards)

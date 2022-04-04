@@ -33,8 +33,9 @@ class bank_account(models.Model):
 class punishments(models.Model):
     punishment_id = models.AutoField(max_length=24, primary_key=True)
     punishment_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
+    #punishment_job_title_id = models.ForeignKey('job_management.job_titles', on_delete=models.CASCADE, related_name="+")
     punishment_amount = models.IntegerField()
-    punishments_cause = models.TextField()
+    punishments_cause = models.TextField(null=True, default=None, blank=True)
     punishment_created_at = models.DateTimeField(default=timezone.now)
     punishment_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     punishment_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
@@ -43,6 +44,7 @@ class punishments(models.Model):
 class rewards(models.Model):
     reward_id = models.AutoField(max_length=24, primary_key=True)
     reward_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
+    #reward_job_title_id = models.ForeignKey('job_management.job_titles', on_delete=models.CASCADE, related_name="+")
     reward_amount = models.IntegerField()
     reward_cause = models.TextField()
     reward_created_at = models.DateTimeField(default=timezone.now)

@@ -47,10 +47,10 @@
                     {% endfor %}
                 {% endif %}
 
-                {% if excel_row_manual_errors%}
-                    <h3 style="color: red;">The uploaded file does not comply with the following requirements:</h3>
+                {% if manual_errors_array%}
+                    <h3 style="color: red;">The uploaded file has the following errors:</h3>
 
-                    {% for error in excel_row_manual_errors %}
+                    {% for error in manual_errors_array %}
                         <ul>
                             <li>{{error}}</li>
                         </ul>
@@ -79,7 +79,7 @@
                     <div class="col-md-4">
                         <label class="form-label">Date:</label>
                         <div class="mb-0">
-                            <input id="1" type="text" class="form-control dt-date flatpickr-range dt-input" data-column="5" placeholder="StartDate to EndDate" data-column-index="4" name="beginning_to_end" />
+                            <input id="1" type="text" class="form-control dt-date flatpickr-range dt-input" data-column="5" placeholder="Select Date Period" data-column-index="4" name="beginning_to_end" />
                             <input id="2" type="hidden" class="form-control dt-date start_date dt-input" name="attendance_rows_beginning_date" data-column="5" data-column-index="4"  />
                             <input id="3" type="hidden" class="form-control dt-date end_date dt-input" name="attendance_rows_ending_date" data-column="5" data-column-index="4"  >
                             <input type="hidden" name="request_type" value="search_date" data-column="5" data-column-index="4"  >
@@ -166,6 +166,7 @@
 
 
 <script>
+console.log(myVariable)
 $(document).ready( function () {
     $('#main_table').DataTable();
     console.log("success")

@@ -83,6 +83,7 @@ def manageAttendance(request):
                         missing_columns_in_file.append("attendance_working_from")
 
                     if required_column_is_not_in_file:
+                        attendance_file.objects.latest('attendance_file_id').delete()
                         context['missing_columns_in_file'] = missing_columns_in_file
                     
                     else:
@@ -92,10 +93,10 @@ def manageAttendance(request):
 
                         insert_dict = {}
                         attendance_forms_array = []
-                        manual_errors_array = []
-                        automatic_errors_dict = {}
+                        context['manual_errors_array'] = []
+                        context['automatic_errors_dict'] = {}
                         allowed_time_formats = ["%H:%M:%S", "%H:%M"]
-                        success = True
+                        sucess = True
                         if users_count == 0:
                             context['empty_file'] = "The uploaded file does not contain any records"
                             attendance_file.objects.latest('attendance_file_id').delete()
@@ -106,10 +107,15 @@ def manageAttendance(request):
                                 user_row = users_model.objects.get(pk=user_id)
                                 insert_dict['attendance_user_id'] = user_id
                             except (users_model.DoesNotExist):
-                                manual_errors_array.append("The user with id {} in the row {} does not exist in the system"
+                                context['manual_errors_array'].append("The user with id {} in the row {} does not exist in the system"
                                 .format(user_id, index + 2))
-                                success = False
-                                
+                                sucess = False
+                                break
+                            except ValueError:
+                                context['manual_errors_array'].append("invalid input detected in row {}, user id must be an integer"
+                                .format(index + 2))
+                                sucess = False
+                                break                          
                             
                             try:
                                 clock_in_time = attendance_rows['attendance_clock_in'][index]
@@ -120,9 +126,10 @@ def manageAttendance(request):
                                     datetime.strptime(str(clock_in_time), allowed_time_formats[1])
                                     insert_dict['attendance_clock_in'] = clock_in_time
                                 except ValueError:
-                                    manual_errors_array.append("""The Clock in time for the user with id {} in the row {} does not match
+                                    context['manual_errors_array'].append("""The Clock in time for the user with id {} in the row {} does not match
                                     the correct time formatting, Must be hh:mm or hh:mm:ss""".format(user_id, index + 2))
-                                    success = False
+                                    sucess = False
+                                    break
                                         
                             try:
                                 clock_out_time = attendance_rows['attendance_clock_out'][index]
@@ -133,14 +140,24 @@ def manageAttendance(request):
                                     datetime.strptime(str(clock_in_time), allowed_time_formats[1])
                                     insert_dict['attendance_clock_in'] = clock_out_time
                                 except ValueError:
-                                    manual_errors_array.append("""The Clock out time for the user with id {} in the row {} does not match
+                                    context['manual_errors_array'].append("""The Clock out time for the user with id {} in the row {} does not match
                                     the correct time formatting, Must be hh:mm or hh:mm:ss""".format(user_id, index + 2))
-                                    success = False
+                                    sucess = False
+                                    break
 
-                            result = substract_dates(clock_in_time, clock_out_time)
+                            try:
+                                result = substract_dates(clock_in_time, clock_out_time)
+                            except TypeError:
+                                context['manual_errors_array'].append("""invalid time input for user {} in the row {}"""
+                                .format(user_id, index + 2))
+                                sucess = False
+                                break
+
                             if result['sucess'] == False:
-                                manual_errors_array.append(result['error'])
-                                success = False
+                                context['manual_errors_array'].append(result['error'])
+                                sucess = False
+                                break
+
                             else:
                                 insert_dict['attendance_duration'] = result['duration']
 
@@ -148,23 +165,20 @@ def manageAttendance(request):
                             insert_dict['attendance_source_file_id'] = attendance_file.objects.latest('attendance_file_id').attendance_file_id
                             insert_dict['attendance_date'] = uploaded_file_date
 
-                            if not success:
-                                context['excel_row_manual_errors'] = manual_errors_array
-                                attendance_file.objects.latest('attendance_file_id').delete()
+
+                            attendance_form = create_attendance_form(insert_dict)
+                            attendance_forms_array.append(attendance_form)
+                            if not attendance_form.is_valid():
+                                context['excel_row_automatic_errors'] = {"row":index+2, "user_id":attendance_rows['attendance_user_id'][index],
+                                "errors":attendance_form.errors}
+                                sucess = False
                                 break
                             else:
-                                attendance_form = create_attendance_form(insert_dict)
-                                attendance_forms_array.append(attendance_form)
-                                if not attendance_form.is_valid():
-                                    attendance_file.objects.latest('attendance_file_id').delete()
-                                    automatic_errors_dict = {"row":index+2, "user_id":attendance_rows['attendance_user_id'][index],
-                                    "errors":attendance_form.errors}
-                                    context['excel_row_automatic_errors'] = automatic_errors_dict
-                                    break
-                                else:
-                                    for attendance_form_loop in attendance_forms_array:
-                                        attendance_form_loop.save()
-                                
+                                for attendance_form_loop in attendance_forms_array:
+                                    attendance_form_loop.save()
+
+                        if not sucess:
+                            attendance_file.objects.latest('attendance_file_id').delete()
 
                 else:
                     context['file_upload_errors'] = attendance_sheet_form.errors
@@ -177,34 +191,34 @@ def manageAttendance(request):
 
         for day in daterange(attendance_rows_beginning_date_object, attendance_rows_ending_date_object):
             day = day.date()
-            print(day)
-            print(attendance.objects.filter(attendance_date=day))
             total_attendance_rows_in_period.extend(
                 attendance.objects.filter(attendance_date=day)
             )
         context['attendance_rows'] = total_attendance_rows_in_period
-        print(total_attendance_rows_in_period)
 
     else:
         context['attendance_rows'] = attendance.objects.filter(attendance_date=attendance_rows_beginning_date)
-
+    print(context)
     return render(request, 'track_performance/manageAttendance.html', context)
 
 
 def substract_dates(start, end):
     result = {}
     result['sucess'] = True
+    
     days = datetime.combine(date.min, end) - datetime.combine(date.min, start)
     hours = divmod(days.total_seconds(), 3600)
 
     if hours[0] <= 0:
-        result['sucess'] = False
-        result['error'] = "The clock out time is before the clock in time, please verify."
+        if hours[1] <= 0:
+            result['sucess'] = False
+            result['error'] = "The clock out time is before the clock in time,  or both times are the equal, please verify your input."
     elif hours[0] > 24:
         result['sucess'] = False
-        result['error'] = "The difference between clock in and clock out time is more than 24 hours, please verify."
+        result['error'] = "The difference between clock in and clock out time is more than 24 hours, please verify your input."
 
-    result['duration'] = "{}:{}".format(int(hours[0]), int(hours[1] * 60))
+    result['duration'] = "{}:{}".format(int(hours[0]), int(hours[1] / 60))
+
     return result
 
 

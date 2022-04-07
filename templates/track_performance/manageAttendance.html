@@ -26,6 +26,10 @@
                     {{file_upload_errors}}
                 {% endif %}
 
+                {% if search_error%}
+                <h3 style="color: red;">{{search_error}}</h3>
+                {% endif %}
+
                 {% if empty_file%}
                 <h3 style="color: red;">{{empty_file}}</h3>   
                 {% endif %}

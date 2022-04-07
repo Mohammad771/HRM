@@ -75,16 +75,17 @@
                 <tbody>
 
                 {%  if viewReward %}
-                    {% for reward in viewRewards %}
+                    {% for reward in viewReward %}
                 <tr>
                     <td>
                         <span class="fw-bold">1</span>
                     </td>
                     <th>{{reward.reward_id}}</th>
                     <th>{{ reward.reward_name }}</th>
-                    <-- <th>{{ reward }}</th> -->
+                    <th>{{ reward }}</th>
                     <th>{{ reward.amount }}</th>
-                    <th>{{ reward.created_at}}</th>
+                    <th>{{ reward.info.reward_date}}</th>
+                    <th>{{ punishment.created_at}}</th>
                     <td><i class="fa-solid fa-trash-can"></i></td>
 
                 </tr>

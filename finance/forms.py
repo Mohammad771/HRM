@@ -1,5 +1,5 @@
 from django import forms 
-from finance.models import annual_bonuses, bank_account, allowances
+from finance.models import annual_bonuses, bank_account, allowances, rewards, punishments
 
 
 class create_annual_bonuses_form(forms.ModelForm):
@@ -40,3 +40,16 @@ class create_allowances_form(forms.ModelForm):
                 'required': ("Department name cannot be empty 😥"),
             },
         }
+
+class create_reward(forms.ModelForm):
+
+    class  Meta():
+        model = rewards
+        fields = ('reward_user_id', 'reward_amount')
+
+
+class create_punishment(forms.ModelForm):
+
+    class  Meta():
+        model = punishments
+        fields = ('punishment_user_id', 'punishment_amount')

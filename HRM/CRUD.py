@@ -101,6 +101,7 @@ def change_updated_at_field(table, primary_key): # This function is usually call
 
     elif table == 'job_titles':
         row = job_titles.objects.get(pk=primary_key)
+        row = job_titles.objects.get(pk=primary_key)
         row.job_title_updated_at = timezone.now()
         row.save()
 

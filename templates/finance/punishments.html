@@ -25,7 +25,7 @@
             {% endif %}
         </div>
         <div class="card-body">
-            <form id="basic-input" action="#" method="post">
+            <form id="basic-input" action="{% url 'finance:finance/punishments' %}" method="post">
                 {%csrf_token%}
                 <div class="row">
                     <div class="col-md-5">
@@ -78,15 +78,16 @@
                 <tbody>
 
                 {%  if viewPunishment %}
-                    {% for punishment in viewPunishments %}
+                    {% for punishment in viewPunishment %}
                 <tr>
                     <td>
                         <span class="fw-bold">1</span>
                     </td>
                     <th>{{punishment.punishment_id}}</th>
                     <th>{{ punishment.punishment_name }}</th>
-                    <-- <th>{{ punishment.punishment_job_title_id }}</th> -->
                     <th>{{ punishment.amount }}</th>
+                    <th>{{ punishment.punishment_job_title_id }}</th>
+                    <th>{{ punishment.info.punishment_date}}</th>
                     <th>{{ punishment.created_at}}</th>
                     <td><i class="fa-solid fa-trash-can"></i></td>
 

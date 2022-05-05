@@ -18,17 +18,19 @@ class vacations(models.Model):
 class loans(models.Model):
     loan_id = models.AutoField(max_length=24, primary_key=True)
     loan_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
-    loan_type = models.CharField(max_length=24)
+    # loan_type = models.CharField(max_length=24)
     loan_amount = models.IntegerField()
     loan_started_date = models.DateField()
     loan_period = models.IntegerField()
-    loan_number_of_complete_payment = models.IntegerField()
-    loan_status = models.BooleanField()
-    loan_admin_approval = models.BooleanField()
+    loan_number_of_complete_payment = models.IntegerField(null=True, default=0)
+    loan_status = models.BooleanField(null=True, default=False)
+    loan_is_approved = models.BooleanField(null=True, default=False)
     loan_created_at = models.DateTimeField(default=timezone.now)
     loan_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     loan_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
+    def __str__(self):
+        return "Loan " + str(self.loan_id)
 
 class overtime_types(models.Model):
     overtime_type_id = models.AutoField(max_length=24, primary_key=True)

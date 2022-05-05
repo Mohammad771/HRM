@@ -11,9 +11,18 @@ from .models import job_titles
 
 
 def user_login(request):
+
+    print(request.GET)
+    if request.user.is_authenticated:
+        return redirect('/dashboard')
+
+    if 'next' in request.GET:
+        request.session['next'] = request.GET['next']
     context = {}
 
     if request.method == "POST":
+        requried_page = request.GET.get('next', None)
+        print(request.GET)
         email = request.POST.get('login_email')
         password = request.POST.get('login_password')
 
@@ -22,7 +31,11 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect('/dashboard')
+                if 'next' in request.session:
+                    requested_url = request.session['next']
+                    return redirect(requested_url)
+                else:
+                    return redirect('/dashboard')
 
             else:
                 print("User is not yet activated")

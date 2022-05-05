@@ -4,11 +4,10 @@ from job_management.forms import *
 from job_management.models import departments, job_titles, contracts
 from track_performance.models import evaluations
 from track_performance.forms import *
-# from finance.models import bank_account, allowances, annual_bonuses
-# from finance.forms import *
 from finance.forms import *
 from finance.models import punishments, rewards
-
+from employees_requests.models import loans
+from employees_requests.forms import *
 
 # This component manages most of the Create, Read, Update and Delete operations. This component is called from many apps to do the CRUD
 # operations on their behalf.
@@ -44,6 +43,9 @@ def create_form(post, table):
     elif table == 'punishments':
         return(create_punishment(post))
 
+    elif table == 'loans':
+        return(create_loan_form(post))
+
     else:
         print("Table Not Found!! Check if you typed its name correctly.") # debugging alert which means that the table was not found
 
@@ -60,6 +62,9 @@ def fetch_all_rows(table): # This function is usually called by the "Read" funct
 
     elif table == 'evaluations':
         return(evaluations.objects.filter(evaluation_deleted_at=None))
+
+    elif table == 'loans':
+        return(loans.objects.filter(loan_deleted_at=None))
 
     elif table == 'users':
         return(users.objects.filter(user_deleted_at=None))
@@ -85,6 +90,10 @@ def fetch_one_row(post, table, primary_key): # This function is usually called b
         row_to_update = evaluations.objects.get(pk=primary_key)
         return (create_evaluation_form(post, instance=row_to_update))
 
+    elif table == 'loans':
+        row_to_update = loans.objects.get(pk=primary_key)
+        return (create_loan_form(post, instance=row_to_update))
+
     else:
         print("Table Not Found!! Check if you typed its name correctly.")
 
@@ -108,6 +117,11 @@ def change_updated_at_field(table, primary_key): # This function is usually call
     elif table == 'evaluations':
         row = evaluations.objects.get(pk=primary_key)
         row.evaluation_updated_at = timezone.now()
+        row.save()
+
+    elif table == 'loans':
+        row = loans.objects.get(pk=primary_key)
+        row.loan_updated_at = timezone.now()
         row.save()
 
     else:

@@ -34,13 +34,13 @@ def createEvaluations(request):
 def manageAttendance(request):
     attendance_rows_beginning_date = date.today()
     attendance_rows_ending_date = False
+    initial_search = True
     context = {}
     context['duplicate_attendance_file_date'] = False
     search_result = True
 
-
-        
     if request.method == 'POST':
+        initial_search = False
         if request.POST['request_type'] == "search_date":
             date_period = request.POST['beginning_to_end']
             if len(str(date_period)) < 8:
@@ -50,8 +50,6 @@ def manageAttendance(request):
                 attendance_rows_beginning_date = date_period[:10]
                 if "to" in date_period:
                     attendance_rows_ending_date = date_period[14:]
-
-
 
         else:
             all_attendance_files = attendance_file.objects.all()
@@ -208,11 +206,10 @@ def manageAttendance(request):
             if len(attendance_rows):
                 context['attendance_rows'] = attendance_rows
 
-
-    if not 'attendance_rows' in context:
-        if not 'search_error' in context:
-            context['search_error'] = "The search returned no results"
-    print(context)   
+    if not initial_search:
+        if not 'attendance_rows' in context:
+            if not 'search_error' in context:
+                context['search_error'] = "The search returned no results"
     return render(request, 'track_performance/manageAttendance.html', context)
 
 

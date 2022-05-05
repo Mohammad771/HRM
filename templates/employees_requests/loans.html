@@ -1,5 +1,6 @@
 {% extends 'common\baseView.html' %}
 {% load staticfiles %}
+{% load custom_tags %}
 
 {% block pageCSS %}
     <!-- BEGIN: Page CSS-->
@@ -21,6 +22,9 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Manage Loans</h3>
+            {% if form_errors %}
+                {{ form_errors }}
+            {% endif %}
             <div class="col-md-5 mt-2">
                 <button style="width: 190px; float: right" type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#inlineForm">
                 New Loan
@@ -31,70 +35,172 @@
     <hr>
     <div class="row match-height">
         <div class="col-lg-4 col-md-6 col-12">
-            <div class="card card-employee-task justify-content-between align-items-center">
-                <div class="card-header row justify-content-between align-items-center">
-                    <div class="d-flex flex-row">
-                        <div class="col-6">
-                            <b>Mohammed Ali</b>
-                        </div>
-                        <div class="col-6 mx-5">
-                            <b>Designer</b>
-                        </div>
-                    </div>
-                <div class="card-body">
-                    <div class="row justify-content-between align-items-center">
 
-                        <div class="d-flex flex-row">
-                            <div class="col-6">
-                                <i class="fa-solid fa-money-bill-1-wave"></i> Amount
-                            </div>
-                            <div class="col-6 mx-5">
-                                5000 SAR
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row">
-                            <div class="col-6">
-                                <i class="fa-solid fa-clock"></i> Periods
-                            </div>
-                            <div class="col-6 mx-5">
-                                12 Months
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row">
-                            <div class="col-6">
-                                <i class="fa-solid fa-calendar-days"></i> Start Date
-                            </div>
-                            <div class="col-6 mx-5">
-                                06/07/2022
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row mb-1">
-                            <div class="col-6">
-                                <i class="fa-solid fa-spinner"></i> Progress
-                            </div>
-                            <div class="col-6 mx-5">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="45" aria-valuemax="100" style="width: 45%">
-                                    45%
+            {% if loans %}
+                {% if user.is_admin %}
+                    {% for loan in loans %}
+                        <div class="card card-employee-task justify-content-between align-items-center">
+
+                            <div class="card-header row justify-content-between align-items-center">
+
+                                <div class="d-flex flex-row">
+                                    
+                                    <div class="col-6">
+                                        <b>{{loan.info.loan_user_id}}</b>   
+                                    </div>
+                                    <div class="col-6 mx-5">
+                                        <b>{{loan.info.loan_user_id.user_job_title_id}}</b>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex flex-row">
-                            <div class="col-6">
-                                Status
-                            </div>
-                            <div class="col-6 mx-5">
-                                <b class="alert-success">Approved</b>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="card-body">
+                                <div class="row justify-content-between align-items-center">
 
-                </div>
-            </div>
-        </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="col-6">
+                                            <i class="fa-solid fa-money-bill-1-wave"></i> Amount
+                                        </div>
+                                        <div class="col-6 mx-5">
+                                            {{loan.info.loan_amount}} SAR
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="col-6">
+                                            <i class="fa-solid fa-clock"></i> Periods
+                                        </div>
+                                        <div class="col-6 mx-5">
+                                            {{loan.info.loan_period}} Months
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="col-6">
+                                            <i class="fa-solid fa-calendar-days"></i> Start Date
+                                        </div>
+                                        <div class="col-6 mx-5">
+                                            {{loan.info.loan_started_date}}
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row mb-1">
+                                        <div class="col-6">
+                                            <i class="fa-solid fa-spinner"></i> Progress
+                                        </div>
+                                        <div class="col-6 mx-5">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="45" aria-valuemax="100" style="width: 45%">
+                                                {% calculate_loan_percentage loan.info.loan_number_of_complete_payment loan.info.loan_period %}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex flex-row">
+                                        <div class="col-6">
+                                            Status
+                                        </div>
+                                        <div class="col-6 mx-5">
+                                            {% if loan.info.loan_is_approved %}
+                                                <b id="loanstatus_{{loan.info.loan_id}}" class="alert-success">Approved</b>
+                                                <div class="form-check form-check-secondary form-switch">
+                                                    <input type="checkbox" class="form-check-input" id="{{loan.info.loan_id}}" checked
+                                                      onclick="change_status(this.id)">
+                                                </div>
+                                            {% else %}
+                                                <b id="loanstatus_{{loan.info.loan_id}}" class="alert-failure">Not Approved</b>
+                                                <div class="form-check form-check-secondary form-switch">
+                                                    <input type="checkbox" class="form-check-input" id="{{loan.info.loan_id}}"
+                                                    onclick="change_status(this.id)" >
+                                                </div>
+                                            {% endif %}
+     
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>      
+
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% for loan in loans %}
+                        {% if loan.info.loan_user_id == user %}
+                            <div class="card card-employee-task justify-content-between align-items-center">
+
+                                <div class="card-header row justify-content-between align-items-center">
+
+                                    <div class="d-flex flex-row">
+                                        
+                                        <div class="col-6">
+                                            <b>{{loan.info.loan_user_id}}</b>   
+                                        </div>
+                                        <div class="col-6 mx-5">
+                                            <b>{{loan.info.loan_user_id.user_job_title_id}}</b>
+                                        </div>
+                                    </div>
+                                <div class="card-body">
+                                    <div class="row justify-content-between align-items-center">
+
+                                        <div class="d-flex flex-row">
+                                            <div class="col-6">
+                                                <i class="fa-solid fa-money-bill-1-wave"></i> Amount
+                                            </div>
+                                            <div class="col-6 mx-5">
+                                                {{loan.info.loan_amount}} SAR
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <div class="col-6">
+                                                <i class="fa-solid fa-clock"></i> Periods
+                                            </div>
+                                            <div class="col-6 mx-5">
+                                                {{loan.info.loan_period}} Months
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <div class="col-6">
+                                                <i class="fa-solid fa-calendar-days"></i> Start Date
+                                            </div>
+                                            <div class="col-6 mx-5">
+                                                {{loan.info.loan_started_date}}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row mb-1">
+                                            <div class="col-6">
+                                                <i class="fa-solid fa-spinner"></i> Progress
+                                            </div>
+                                            <div class="col-6 mx-5">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="45" aria-valuemax="100" style="width: 45%">
+                                                    {% calculate_loan_percentage loan.info.loan_number_of_complete_payment loan.info.loan_period %}%
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex flex-row">
+                                            <div class="col-6">
+                                                Status
+                                            </div>
+                                            <div class="col-6 mx-5">
+                                                {% if loan.info.loan_is_approved %}
+                                                    <b id="loanstatus_{{loan.info.loan_id}}" class="alert-success">Approved</b>
+                                                {% else %}
+                                                    <b id="loanstatus_{{loan.info.loan_id}}" class="alert-failure">Not Approved</b>
+                                                {% endif %}
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>      
+
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
 
     </div>
-
 
     <div class="modal fade text-start" id="inlineForm" tabindex="-1" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -103,24 +209,56 @@
                     <h4 class="modal-title" id="myModalLabel33">Apply for New Loan</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="#">
-                    <div class="modal-body">
-                        <label>Amount: </label>
-                        <div class="mb-1">
-                            <input type="text" placeholder="10000" class="form-control" />
-                        </div>
+                {% if user.is_admin %}
+                    <form action="" method="POST">
+                        {%csrf_token%}
+                        <div class="modal-body">
+                            <label>Amount: </label>
+                            <div class="mb-1">
+                                <input type="text" name="loan_amount" placeholder="10000" class="form-control" />
+                            </div>
 
-                        <label>Periods: </label>
-                        <div class="mb-1">
-                            <input type="text" placeholder="12 " class="form-control" />
-                            <spam>12 Means the loan will be divided on 12 months</spam>
-                        </div>
+                            <label>Periods: </label>
+                            <div class="mb-1">
+                                <input type="text" name="loan_period" placeholder="12 " class="form-control" />
+                                <spam>12 Means the loan will be divided on 12 months</spam>
+                            </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Submit</button>
-                    </div>
-                </form>
+                            <label class="form-label" for="select2-basic">User National ID</label>
+                                <div class="position-relative" data-select2-id="45">
+                                    <select name="loan_user_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                        {% for user in users %}
+                                            <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button  class="btn btn-success" data-bs-dismiss="modal">Submit</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <form action="" method="POST">
+                        {%csrf_token%}
+                        <div class="modal-body">
+                            <label>Amount: </label>
+                            <div class="mb-1">
+                                <input type="text" name="loan_amount" placeholder="10000" class="form-control" />
+                            </div>
+
+                            <label>Periods: </label>
+                            <div class="mb-1">
+                                <input type="text" name="loan_period" placeholder="12 " class="form-control" />
+                                <spam>12 Means the loan will be divided on 12 months</spam>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" data-bs-dismiss="modal">Submit</button>
+                        </div>
+                    </form>
+                {% endif %}
+
             </div>
         </div>
     </div>
@@ -134,6 +272,37 @@
     $(function (){
         $(".form-select").select2();
     })
+
+    function change_status(checkbox_id)
+        {
+            var url = 'change_loan_status/';
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data : jQuery.param({'loan_id': checkbox_id,
+                     "csrfmiddlewaretoken": $('[name=csrfmiddlewaretoken]').val()}),
+                    success : function() {
+                        if (document.getElementById(checkbox_id).checked){
+                            
+                            status_id = "loanstatus_" + checkbox_id
+                            this_status = document.getElementById(status_id)
+                            this_status.className = "alert-success"
+                            this_status.innerHTML = "Approved"
+                        }
+                        else {
+
+                            status_id = "loanstatus_" + checkbox_id
+                            this_status = document.getElementById(status_id)
+                            this_status.className = "alert-failure"
+                            this_status.innerHTML = "Not Approved"
+                        }
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+jqXHR.status);
+                    } 
+                });
+            
+        }
 
 
     </script>

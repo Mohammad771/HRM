@@ -49,16 +49,23 @@ def create_form(post, table):
     else:
         print("Table Not Found!! Check if you typed its name correctly.") # debugging alert which means that the table was not found
 
-def fetch_all_rows(table): # This function is usually called by the "Read" function, it fetches all rows (except soft-deleted ones) and
+def fetch_all_rows(table, filter=None): # This function is usually called by the "Read" function, it fetches all rows (except soft-deleted ones) and
     # return them back to the "Read" function
 
     if table == 'departments': # if the passed "table" is "departments"
-
-        return(departments.objects.filter(department_deleted_at=None)) # return all departments rows that have the field
+        if filter: # checking if there is a constraint on the fetched tables, for example, filter=active_only brings only active departments
+            if filter == "active_only":
+                return(departments.objects.filter(department_deleted_at=None, department_status=True))
+        else:
+            return(departments.objects.filter(department_deleted_at=None)) # return all departments rows that have the field
         # department_deleted_at = Null
 
     elif table == 'job_titles':
-        return(job_titles.objects.filter(job_title_deleted_at=None))
+        if filter:
+            if filter == "active_only":
+                return(job_titles.objects.filter(job_title_deleted_at=None, job_title_status=True))
+        else:
+            return(job_titles.objects.filter(job_title_deleted_at=None))
 
     elif table == 'evaluations':
         return(evaluations.objects.filter(evaluation_deleted_at=None))
@@ -68,6 +75,12 @@ def fetch_all_rows(table): # This function is usually called by the "Read" funct
 
     elif table == 'users':
         return(users.objects.filter(user_deleted_at=None))
+
+    elif table == 'rewards':
+        return(rewards.objects.filter(reward_deleted_at=None))
+
+    elif table == 'punishments':
+        return(punishments.objects.filter(punishment_deleted_at=None))
 
     else:
         print("Table Not Found!! Check if you typed its name correctly.")
@@ -154,12 +167,12 @@ def Create(post, table): # The Create function, this function is called from the
 
         return result # returning the result dictionary to the calling function
 
-def Read(table): # The Read function, this function is called from the file "views.py" from several apps, it receives the table name
+def Read(table, filter=None): # The Read function, this function is called from the file "views.py" from several apps, it receives the table name
     # and returns all objects for that table that were not deleted
 
     result = [] # creating the result array that will be returned to the calling function
 
-    rows = fetch_all_rows(table) # calling the "fetch_all_rows" function that will fetch all rows from the database, refer to the function 
+    rows = fetch_all_rows(table, filter) # calling the "fetch_all_rows" function that will fetch all rows from the database, refer to the function 
     # above
     
     count = 1 # this variable is used to count the number of fetched rows, the numbers are stored in the array here because it is not 

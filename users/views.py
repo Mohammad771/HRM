@@ -14,7 +14,7 @@ def user_login(request):
 
     print(request.GET)
     if request.user.is_authenticated:
-        return redirect('/dashboard')
+        return redirect('/departments')
 
     if 'next' in request.GET:
         request.session['next'] = request.GET['next']
@@ -35,7 +35,7 @@ def user_login(request):
                     requested_url = request.session['next']
                     return redirect(requested_url)
                 else:
-                    return redirect('/dashboard')
+                    return redirect('/departments')
 
             else:
                 print("User is not yet activated")

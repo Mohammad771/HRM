@@ -67,11 +67,11 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Name</th>
-                    <th>Job Titles</th>
+                    <th>Employee</th>
+                    <th>Job Title</th>
                     <th>Amount</th>
                     <th>Date</th>
-                    <th>Delete</th>
+                    <th></th>
 
                 </tr>
                 </thead>
@@ -79,21 +79,18 @@
 
                 {%  if viewPunishment %}
                     {% for punishment in viewPunishment %}
-                <tr>
-                    <td>
-                        <span class="fw-bold">1</span>
-                    </td>
-                    <th>{{punishment.punishment_id}}</th>
-                    <th>{{ punishment.punishment_name }}</th>
-                    <th>{{ punishment.amount }}</th>
-                    <th>{{ punishment.punishment_job_title_id }}</th>
-                    <th>{{ punishment.info.punishment_date}}</th>
-                    <th>{{ punishment.created_at}}</th>
-                    <td><i class="fa-solid fa-trash-can"></i></td>
-
-                </tr>
+                        <tr>
+                            <td>
+                                <span class="fw-bold">{{ punishment.number }}</span>
+                            </td>
+                            <td>{{ punishment.info.punishment_user_id }}</td>
+                            <td>{{ punishment.info.punishment_user_id.user_job_title_id }}</td>
+                            <td>{{ punishment.info.punishment_amount }}</td>
+                            <td>{{ punishment.info.punishment_created_at}}</td>
+                            <td><i class="fa-solid fa-trash-can"></i></td>
+                        </tr>
                     {%endfor%}
-                    {% endif %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

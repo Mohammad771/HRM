@@ -167,16 +167,16 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span><span class="badge badge-light-warning rounded-pill ms-auto me-1">2</span></a>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{% url 'users:users/dashboard' %}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span><span class="badge badge-light-warning rounded-pill ms-auto me-1">2</span></a>
 
                 </li>
 
 
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="Invoice">Users</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="app-invoice-list.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Add New Employee</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'users:users/register' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Add New Employee</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" href="app-invoice-preview.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">View Employees List</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'users:users/dashboard' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">View Employees List</span></a>
                         </li>
 
                     </ul>
@@ -192,9 +192,9 @@
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='file-text'></i><span class="menu-title text-truncate" data-i18n="Invoice">Contracts</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="app-invoice-list.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Create New Contract</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'job_management:job_management/create_contract' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Create New Contract</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" href="app-invoice-preview.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">View Contracts List</span></a>
+                        <li><a class="d-flex align-items-center" href="{% url 'users:users/dashboard' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">View Contracts List</span></a>
                         </li>
 
                     </ul>

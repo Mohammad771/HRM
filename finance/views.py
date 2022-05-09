@@ -6,9 +6,8 @@ from HRM.CRUD import *
 # Create your views here.
 
 def punishments(request):
+
     context = {}
-    viewPunishments = punishments_model.objects.all()
-    context['viewPunishment'] = viewPunishments
     if request.method == "POST":
         print(request.POST)
         result = Create(request.POST, 'punishments')
@@ -16,14 +15,13 @@ def punishments(request):
             context["success_message"] = "Alhamdulillah"
         else:
             context["form_errors"] = result['form_errors']
+
+    context['viewPunishment'] = Read("punishments")
     context["users"] = Read("users")
     return render(request, 'finance/punishments.html', context)
 
 def rewards(request):
     context = {}
-    viewRewards = rewards_model.objects.all()
-    # jobTitles = job_titles.objects.all()
-    context['viewReward'] = viewRewards
     if request.method == "POST":
         print(request.POST)
         result = Create(request.POST, 'rewards')
@@ -31,5 +29,7 @@ def rewards(request):
             context["success_message"] = "Alhamdulillah"
         else:
             context["form_errors"] = result['form_errors']
+
+    context['viewReward'] = Read("rewards")
     context["users"] = Read("users")
     return render(request, 'finance/rewards.html', context)

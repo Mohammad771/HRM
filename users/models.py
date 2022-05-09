@@ -143,7 +143,7 @@ class users(AbstractBaseUser):
     objects = MyAccountManager()
 
     def __str__(self):
-        return self.user_first_name +  ' ' + self.user_last_name + " " + str(self.user_id)
+        return self.user_first_name +  ' ' + self.user_last_name
 
         # For checking permissions. to keep it simple all admin have ALL permissons
 

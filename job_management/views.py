@@ -66,7 +66,7 @@ def job_titles_handler(request):
             else:
                 context["form_errors"] = result['form']
   
-    context['departments'] = Read('departments') # Here, we are sending the departments rows because we need to list the
+    context['departments'] = Read('departments', 'active_only') # Here, we are sending the departments rows because we need to list the
     # departments in the job title creation form so the user can select the department which the job title will be under
     context["job_titles"] = Read('job_titles')
     return render(request, 'job_management/job_titles.html', context)
@@ -127,7 +127,7 @@ def create_contract(request):
         for form in creation_forms:
             if not form.is_valid():
                 form_errors.append(form.errors)
-                validation_error = True
+                form_validation_error = True
         
         if form_validation_error == True:
             context['form_errors'] = form_errors

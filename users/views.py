@@ -74,7 +74,7 @@ def register(request):
             password1 = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=password1)
             login(request, user)
-            return redirect('/dashboard')
+            return redirect('/departments')
 
         else:
             print(form.errors)

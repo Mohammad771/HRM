@@ -31,7 +31,7 @@ def departments_handler(request):
         #  that contains the status of the operation and the form validation errors if any
 
         if result["status"] == True: # checking if the create operation was successful
-            context["success_message"] = "Department has been added 👍" # inserting a success message in the context variable 
+            context["success_message"] = "Department has been added 👍" # inserting a success message in the context variable
              
         else:
             context["form_errors"] = result['form_errors'] # if the create operation failed, the errors are taken from the the array

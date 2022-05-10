@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+import datetime
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from job_management.models import job_titles, departments
 import random
@@ -154,6 +156,14 @@ class users(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+    def clean(self):
+        birthdate = self.user_DOB
+        today = datetime.date.today()
+        age = today - birthdate
+        if age.days < 365:
+            raise ValidationError(
+                {'user_DOB': "cannot register users below the age of 18"})
 
 
 class user_types(models.Model):

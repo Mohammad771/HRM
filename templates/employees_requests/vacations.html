@@ -1,0 +1,155 @@
+{% extends 'common\baseView.html' %}
+{% load staticfiles %}
+
+{% block pageCSS %}
+    <!-- BEGIN: Page CSS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+
+    <!-- END: Custom CSS-->
+{% endblock %}
+
+{% block viewName %}
+    <h2 class="content-header-title float-start mb-0">Manage Vacations</h2>
+{% endblock %}
+
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Apply for New Vacations</h4>
+            <button style="width: 250px" type="submit" class="btn btn-outline-success round waves-effect" data-bs-toggle="modal" data-bs-target="#UploadModal">Apply for New Vacation</button>
+
+        </div>
+
+    </div>
+
+        <div class="modal fade text-start" id="UploadModal" tabindex="-1" aria-labelledby="myModalLabel33" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33">New Vacation</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="request_type" value="form_submission" data-column="5" data-column-index="4"  >
+                        {%csrf_token%}
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="form-label" for="att_date">Leaving Date</label>
+                                    <input type="text" id="att_date" name="attendance_file_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" for="att_date">Coming Date</label>
+                                    <input type="text" id="att_date" name="attendance_file_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-check-label mb-50" for="customSwitch15">paid vacation?</label>
+                                    <div class="form-check form-switch form-check-dark">
+                                        <input type="checkbox" name="is_admin" class="form-check-input"
+                                               id="customSwitch15" checked="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title"></h4>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Leaving Data</th>
+                    <th>Coming Date</th>
+                    <th>Type</th>
+                    <th>Satus</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <span class="fw-bold">2</span>
+                    </td>
+                    <td>Hassan Ali</td>
+                    <td >14-06-2022</td>
+                    <td >28-06-2022</td>
+                    <td>Unpaid</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-check-label mb-50" for="customSwitch15">Approved?</label>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch form-check-dark">
+                                    <input type="checkbox" name="is_admin" class="form-check-input"
+                                           id="customSwitch15" checked="">
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="fw-bold">1</span>
+                    </td>
+                    <td>Ali Hassan</td>
+                    <td >14-06-2022</td>
+                    <td >24-06-2022</td>
+                    <td>paid</td>
+                    <td>on hold</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold">2</span>
+                    </td>
+                    <td>Hassan Ali</td>
+                    <td >14-06-2022</td>
+                    <td >28-06-2022</td>
+                    <td>Unpaid</td>
+                    <td>approved</td>
+
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- END: Page JS-->
+{% endblock %}
+
+{% block pageCJs %}
+    <script>
+
+    $(function (){
+        $(".form-select").select2();
+    })
+
+
+    </script>
+
+
+{% endblock %}

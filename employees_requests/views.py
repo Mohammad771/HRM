@@ -50,5 +50,7 @@ def change_loan_status(request):
     loan_row.department_updated_at = timezone.now() 
     loan_row.save() 
     html = "<html><body>Success.</body></html>" 
-    return HttpResponse(html) 
+    return HttpResponse(html)
 
+def vacations(request):
+    return render(request, 'employees_requests/vacations.html')

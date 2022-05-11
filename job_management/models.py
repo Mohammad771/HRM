@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+import datetime
+from django.core.exceptions import ValidationError
 
 
 # Create your models here.
@@ -69,6 +71,14 @@ class contracts(models.Model):
     contract_created_at = models.DateTimeField(default=timezone.now)
     contract_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     contract_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
+    def clean(self):
+        starting_date = self.contract_starting_date
+        expirey_date = self.contract_expiry_date
+        time_difference = expirey_date - starting_date  
+        if time_difference.days < 0:
+            raise ValidationError(
+                {'contract_expiry_date': "contract's expiery date cannot be before starting date"})
 
     def __str__(self):
         return "Contract " + str(self.contract_id)

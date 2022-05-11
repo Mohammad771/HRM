@@ -161,7 +161,7 @@ class users(AbstractBaseUser):
         birthdate = self.user_DOB
         today = datetime.date.today()
         age = today - birthdate
-        if age.days < 365:
+        if age.days < 6570:
             raise ValidationError(
                 {'user_DOB': "cannot register users below the age of 18"})
 

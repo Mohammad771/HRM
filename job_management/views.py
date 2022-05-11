@@ -17,7 +17,6 @@ def departments_handler(request):
 
     if request.method == "POST": # if the received request is "POST", it means that the user wants to add or update a department
 
-        print(request.POST)
         if request.POST['request_type'] == "update": 
             department_id = request.POST['department_id'] 
             result = Update(request.POST, "departments", department_id) 
@@ -64,7 +63,7 @@ def job_titles_handler(request):
             if result["status"] == True:
                 context["success_message"] = "Job Title has been added 👍"
             else:
-                context["form_errors"] = result['form']
+                context["form_errors"] = result['form_errors']
   
     context['departments'] = Read('departments', 'active_only') # Here, we are sending the departments rows because we need to list the
     # departments in the job title creation form so the user can select the department which the job title will be under
@@ -154,28 +153,11 @@ def viewContract(request):
                     
 
         
-        # contract_creation_result = Create(request.POST, 'contracts')
-        # if contract_creation_result['status'] == False:
-        #     context['form_errors'] = contract_creation_result['form_errors']
-        
-        # annual_bonus_creation_result = Create(new_post, 'annual_bonuses')
-        # if annual_bonus_creation_result['status'] == False:
-        #     context['form_errors'] = annual_bonus_creation_result['form_errors']
-
-        # allownce_creation_result = Create(new_post, 'allowances')
-        # if allownce_creation_result['status'] == False:
-        #     context['form_errors'] = allownce_creation_result['form_errors']
-   
-
-        # bank_account_result = Create(new_post, 'bank_accounts')
-        # if bank_account_creation_result['status'] == False:
-        #     context['form_errors'] = bank_account_creation_result['form_errors']
-
-        #         form_validation_error = False
-        # form_errors = []
-        # for form in creation_forms:
-        #     if not form.is_valid():
-        #         for error in form:
-        #             form_errors.append(error)
-        #         # print(form_errors)
-        #         validation_error = True
+            # {{form_errors}}
+            # {% if form_errors %}
+            #     {% for field, errors in form_errors.errors.items %}
+            #         {% for error in errors %}
+            #             {{error}}
+            #         {% endfor %}
+            #     {% endfor %}
+            # {% endif %}

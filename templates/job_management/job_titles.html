@@ -27,9 +27,6 @@
             {% endfor %}
         {% endif %}
 
-        <!-- {% for error in form_errors %}
-        {{error}}
-    {% endfor %} -->
         <div class="card-body">
             <form id="basic-input" action="{% url 'job_management:job_management/job_titles' %}" method="post">
                 {%csrf_token%}
@@ -38,20 +35,24 @@
                         <label class="form-label" for="basicSelect">Choose Department</label>
                         <select class="form-select" id="basicSelect" name = "job_title_department_id">
                             {% for department in departments %}
-                                <option value="{{department.info.department_id}}">{{department.info.department_name}}</option>
+                                {% if department.info == form_errors.cleaned_data.job_title_department_id %}
+                                    <option selected value="{{department.info.department_id}}">{{department.info.department_name}}</option>
+                                {% else %}
+                                    <option value="{{department.info.department_id}}">{{department.info.department_name}}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="basicInput">Job Titles Name</label>
-                        <input type="text" class="form-control" id="departmentName" name = "job_title_name" placeholder="Enter Job Titles name">
+                        <input type="text" value="{{form_errors.cleaned_data.job_title_name}}"  class="form-control" id="departmentName" name = "job_title_name" placeholder="Enter Job Titles name">
                         <input type="hidden" name="request_type" value="create" class="form-control" id="request_type">
 
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label" for="hourPrice">Hour Price</label>
-                        <input type="text" class="form-control" id="job_title_hour_price" name ="job_title_hour_price" placeholder="Ex; 80">
+                        <input type="text" value="{{form_errors.cleaned_data.job_title_hour_price}}" class="form-control" id="job_title_hour_price" name ="job_title_hour_price" placeholder="Ex; 80">
                         <input type="hidden" name ="job_title_status" value="True" >
                     </div>
 

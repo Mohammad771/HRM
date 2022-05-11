@@ -159,6 +159,8 @@ class users(AbstractBaseUser):
 
     def clean(self):
         birthdate = self.user_DOB
+        if not birthdate:
+            return
         today = datetime.date.today()
         age = today - birthdate
         if age.days < 6570:

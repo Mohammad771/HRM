@@ -39,7 +39,11 @@
                         <div class="position-relative" data-select2-id="45">
                             <select name="contract_user_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                 {% for user in users %}
-                                    <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                    {% if user.info == form_errors.cleaned_data.contract_user_id %}
+                                        <option selected value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                    {% else %}                                
+                                        <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
@@ -48,7 +52,6 @@
                         <label class="form-label" for="select2-basic">Education Degree</label>
                         <div class="position-relative" data-select2-id="45">
                             <select name="user_education_degree" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
-                                <!-- {{register_form.user_nationality_ID}} -->
                                 <option value="Associate's degree" data-select2-id="2">Associate's degree</option>
                                 <option value="Bachelor's degree" data-select2-id="57">Bachelor's degree</option>
                                 <option value="Master's degree" data-select2-id="58">Master's degree</option> -->
@@ -60,7 +63,11 @@
                         <div class="position-relative" data-select2-id="45">
                             <select name="user_job_title_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                 {% for job_title in job_titles %}
-                                    <option value="{{job_title.info.job_title_id}}" data-select2-id="2">{{job_title.info.job_title_name}}</option>
+                                    {% if job_title.info == form_errors.cleaned_data.user_job_title_id %}
+                                        <option selected value="{{job_title.info.job_title_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                    {% else %}                                   
+                                        <option value="{{job_title.info.job_title_id}}" data-select2-id="2">{{job_title.info.job_title_name}}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>

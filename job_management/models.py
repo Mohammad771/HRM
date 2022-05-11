@@ -75,6 +75,8 @@ class contracts(models.Model):
     def clean(self):
         starting_date = self.contract_starting_date
         expirey_date = self.contract_expiry_date
+        if not (starting_date and expirey_date):
+            return
         time_difference = expirey_date - starting_date  
         if time_difference.days < 0:
             raise ValidationError(

@@ -218,6 +218,16 @@
 
                     </ul>
                 </li>
+                </li>
+                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i class="fa-solid fa-money-check-dollar"></i><span class="menu-title text-truncate" data-i18n="Invoice">Employee Requests</span></a>
+                    <ul class="menu-content">
+                        <li><a class="d-flex align-items-center" href="{% url 'employees_requests:employees_requests/loans' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Loans</span></a>
+                        </li>
+                        <li><a class="d-flex align-items-center" href="{% url 'employees_requests:employees_requests/vacations' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Vacations</span></a>
+                        </li>
+
+                    </ul>
+                </li>
 
             </ul>
         </div>

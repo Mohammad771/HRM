@@ -1,6 +1,8 @@
 from datetime import timezone
 from django.utils import timezone
 from django.db import models
+import datetime
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -10,9 +12,23 @@ class vacations(models.Model):
     vacation_leaving_date = models.DateField()
     vacation_coming_date = models.DateField()
     vacation_is_paid = models.BooleanField()
+    vacation_is_approved = models.BooleanField(null=True, default=False, blank=True)
     vacation_created_at = models.DateTimeField(default=timezone.now)
     vacation_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     vacation_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
+    def clean(self):
+        leaving_date = self.vacation_leaving_date
+        returning_date = self.vacation_coming_date
+        if not (leaving_date and returning_date):
+            return
+        time_difference = returning_date - leaving_date
+        if time_difference.days < 0:
+            raise ValidationError(
+                {'vacation_coming_date': "vacations's returning date cannot be before leaving date"})
+
+    def __str__(self):
+        return str(self.vacation_user_id) + "'s vacation " + str(self.vacation_id)
 
 
 class loans(models.Model):

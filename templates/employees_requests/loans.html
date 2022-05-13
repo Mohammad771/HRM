@@ -22,15 +22,17 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Manage Loans</h3>
-            {% if form_errors %}
-                {{ form_errors }}
-            {% endif %}
             <div class="col-md-5 mt-2">
                 <button style="width: 190px; float: right" type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#inlineForm">
                 New Loan
               </button>
             </div>
         </div>
+        {% if form_errors %}
+            {% for field in form_errors %}
+                {{field.errors}}
+            {% endfor %}
+        {% endif %}
     </div>
     <hr>
     <div class="row match-height">

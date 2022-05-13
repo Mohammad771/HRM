@@ -52,5 +52,26 @@ def change_loan_status(request):
     html = "<html><body>Success.</body></html>" 
     return HttpResponse(html)
 
+@login_required
 def vacations(request):
-    return render(request, 'employees_requests/vacations.html')
+    context = {} 
+
+    if request.method == "POST": 
+        new_post = request.POST.copy()
+
+        if "vacation_user_id" in request.POST:
+            user_idd = request.POST['vacation_user_id']
+        else:
+            user_idd =  request.user.user_id
+
+        new_post['vacation_user_id'] = user_idd
+        
+        result = Create(new_post, 'vacations')
+        if result["status"] == True:
+            context["success_message"] = "Vacation has been created 👍"
+        else:
+            context["form_errors"] = result['form_errors']
+  
+    context["vacations"] = Read('vacations')
+    context["users"] = Read('users')
+    return render(request, 'employees_requests/vacations.html', context)

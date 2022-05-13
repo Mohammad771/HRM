@@ -20,10 +20,15 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Apply for New Vacations</h4>
+
             <button style="width: 250px" type="submit" class="btn btn-outline-success round waves-effect" data-bs-toggle="modal" data-bs-target="#UploadModal">Apply for New Vacation</button>
 
         </div>
-
+        {% if form_errors %}
+            {% for field in form_errors %}
+                {{field.errors}}
+            {% endfor %}
+        {% endif %}
     </div>
 
         <div class="modal fade text-start" id="UploadModal" tabindex="-1" aria-labelledby="myModalLabel33" aria-hidden="true">
@@ -33,32 +38,66 @@
                         <h4 class="modal-title" id="myModalLabel33">New Vacation</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="request_type" value="form_submission" data-column="5" data-column-index="4"  >
-                        {%csrf_token%}
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="form-label" for="att_date">Leaving Date</label>
-                                    <input type="text" id="att_date" name="attendance_file_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label" for="att_date">Coming Date</label>
-                                    <input type="text" id="att_date" name="attendance_file_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-check-label mb-50" for="customSwitch15">paid vacation?</label>
-                                    <div class="form-check form-switch form-check-dark">
-                                        <input type="checkbox" name="is_admin" class="form-check-input"
-                                               id="customSwitch15" checked="">
+                    {% if user.is_admin %}
+                        <form action="" method="post">
+                            {%csrf_token%}
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Employee</label>
+                                            <select name="vacation_user_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                                {% for user in users %}
+                                                    <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                                {% endfor %}
+                                            </select>                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label" for="att_date">Leaving Date</label>
+                                        <input type="text" name="vacation_leaving_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label" for="att_date">Returning Date</label>
+                                        <input type="text" name="vacation_coming_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-check-label mb-50" for="customSwitch15">Paid Vacation?</label>
+                                        <div class="form-check form-switch form-check-dark">
+                                            <input type="checkbox" name="vacation_is_paid" class="form-check-input"
+                                                id="customSwitch15" checked="">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <form action="" method="post">
+                            {%csrf_token%}
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-label" for="att_date">Leaving Date</label>
+                                        <input type="text" name="vacation_leaving_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label" for="att_date">Returning Date</label>
+                                        <input type="text" name="vacation_coming_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-check-label mb-50" for="customSwitch15">Paid Vacation?</label>
+                                        <div class="form-check form-switch form-check-dark">
+                                            <input type="checkbox" name="vacation_is_paid" class="form-check-input"
+                                                id="customSwitch15" checked="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                            </div>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -77,61 +116,54 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Leaving Data</th>
-                    <th>Coming Date</th>
+                    <th>Returning Date</th>
                     <th>Type</th>
                     <th>Satus</th>
 
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <span class="fw-bold">2</span>
-                    </td>
-                    <td>Hassan Ali</td>
-                    <td >14-06-2022</td>
-                    <td >28-06-2022</td>
-                    <td>Unpaid</td>
-                    <td>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-check-label mb-50" for="customSwitch15">Approved?</label>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check form-switch form-check-dark">
-                                    <input type="checkbox" name="is_admin" class="form-check-input"
-                                           id="customSwitch15" checked="">
+                {% for vacation in vacations %}
+                    {% if user.is_admin or vacation.info.vacation_user_id == user %}
+                        <tr>
+                            <td>
+                                <span class="fw-bold">{{vacation.number}}</span>
+                            </td>
+                            <td>{{vacation.info.vacation_user_id}}</td>
+                            <td >{{vacation.info.vacation_leaving_date}}</td>
+                            <td >{{vacation.info.vacation_coming_date}}</td>
+                            {% if vacation.info.vacation_is_paid %}
+                                <td>Paid</td>
+                            {% else %}
+                                <td>Unpaid</td>
+                            {% endif %}
+                            <td>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {% if vacation.info.vacation_is_approved %}
+                                            <label class="form-check-label mb-50">Approved</label>
+                                        {% else %}
+                                            <label class="form-check-label mb-50">Not Approved</label>
+                                        {% endif %}
+                                    </div>
+                            {% if user.is_admin %}
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch form-check-dark">
+                                                {% if vacation.info.vacation_is_approved %}
+                                                    <input id="vacationstatus_{{vacation.info.vacation_id}}" type="checkbox" class="form-check-input"
+                                                    id="vacation_is_approved" checked >
+                                                {% else %}
+                                                    <input id="vacationstatus_{{vacation.info.vacation_id}}" type="checkbox" class="form-check-input"
+                                                    id="vacation_is_approved">
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                            {% endif %}
                                 </div>
-                            </div>
-                        </div>
-
-                    </td>
-
-                </tr>
-
-                <tr>
-                    <td>
-                        <span class="fw-bold">1</span>
-                    </td>
-                    <td>Ali Hassan</td>
-                    <td >14-06-2022</td>
-                    <td >24-06-2022</td>
-                    <td>paid</td>
-                    <td>on hold</td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <span class="fw-bold">2</span>
-                    </td>
-                    <td>Hassan Ali</td>
-                    <td >14-06-2022</td>
-                    <td >28-06-2022</td>
-                    <td>Unpaid</td>
-                    <td>approved</td>
-
-                </tr>
-
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>

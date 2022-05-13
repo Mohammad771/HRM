@@ -27,6 +27,7 @@
             {% endfor %}
         {% endif %}
 
+
         <div class="card-body">
             <form id="basic-input" action="{% url 'job_management:job_management/job_titles' %}" method="post">
                 {%csrf_token%}

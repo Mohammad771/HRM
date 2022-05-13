@@ -80,7 +80,7 @@ class contracts(models.Model):
         time_difference = expirey_date - starting_date  
         if time_difference.days < 0:
             raise ValidationError(
-                {'contract_expiry_date': "contract's expiery date cannot be before starting date"})
+                {'contract_expiry_date': "contract's expiry date cannot be before starting date"})
 
     def __str__(self):
         return "Contract " + str(self.contract_id)

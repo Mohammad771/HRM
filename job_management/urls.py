@@ -12,5 +12,5 @@ urlpatterns = [
     path('job_titles/change_job_title_status/', views.change_job_title_status, name='job_management/change_job_title_status'),
     path('create_contract/', views.create_contract, name='job_management/create_contract'),
     path('viewContract/', views.viewContract, name='job_management/viewContract'),
-
+    path('contracts-list/', views.contracts_list, name='job_management/contracts_list'),
 ]

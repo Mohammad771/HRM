@@ -82,6 +82,9 @@ def fetch_all_rows(table, filter=None): # This function is usually called by the
     elif table == 'punishments':
         return(punishments.objects.filter(punishment_deleted_at=None))
 
+    elif table == 'contracts':
+        return(contracts.objects.filter(contract_deleted_at=None))
+
     else:
         print("Table Not Found!! Check if you typed its name correctly.")
 

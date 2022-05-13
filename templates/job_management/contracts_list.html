@@ -30,20 +30,22 @@
                     <th>Employee</th>
                     <th>Department</th>
                     <th>Job Title</th>
-                    <th>Expire Date</th>
+                    <th>Expiry Date</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <span class="fw-bold">John الخطير</span>
-                    </td>
-                    <td>Implementation</td>
-                    <td>UI developer</td>
+                {% for contract in contracts %}
+                    <tr>
+                        <td>
+                            <span class="fw-bold">{{contract.info.contract_user_id}}</span>
+                        </td>
+                        <td>{{contract.info.contract_user_id.user_job_title_id.job_title_department_id}}</td>
+                        <td>{{contract.info.contract_user_id.user_job_title_id}}</td>
 
-                    <td><span class="badge rounded-pill badge-light-danger me-1">23-08-2023</span></td>
+                        <td><span class="badge rounded-pill badge-light-danger me-1">{{contract.info.contract_expiry_date}}</span></td>
 
-                </tr>
+                    </tr>
+                {% endfor %}
 
 
                 </tbody>

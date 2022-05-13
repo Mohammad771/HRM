@@ -152,10 +152,10 @@
                         <textarea class="form-control" name="contract_conditions" id="conditions_terms" rows="7" placeholder=""></textarea>
                     </div>
                     <div class="d-flex justify-content-between mt-2">
-                        <button class="btn btn-outline-danger btn-prev">
-                            <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
-                            <span class="align-middle d-sm-inline-block d-none">Cancel</span>
-                        </button>
+                        <a href="{% url 'job_management:job_management/contracts_list' %}" class="btn btn-outline-danger btn-prev">
+                            <i style="color: #EA5455;" data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
+                            <span style="color: #EA5455;" class="align-middle d-sm-inline-block d-none">Cancel</span>
+                        </a>
                         <button class="btn btn-primary btn-next">
                             <span class="align-middle d-sm-inline-block d-none">Save</span>
                             <i data-feather="chevron-right" class="align-middle ms-sm-25 ms-0"></i>

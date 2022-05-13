@@ -150,14 +150,13 @@ def create_contract(request):
 def viewContract(request):
     return render(request, 'job_management/viewContract.html')
 
+
+
+def contracts_list(request):
+    context = {}
+    context["contracts"] = Read('contracts')
+    return render(request, 'job_management/contracts_list.html', context)
+
                     
 
         
-            # {{form_errors}}
-            # {% if form_errors %}
-            #     {% for field, errors in form_errors.errors.items %}
-            #         {% for error in errors %}
-            #             {{error}}
-            #         {% endfor %}
-            #     {% endfor %}
-            # {% endif %}

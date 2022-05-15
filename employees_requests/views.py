@@ -4,6 +4,7 @@ from django.shortcuts import HttpResponse
 from HRM.CRUD import *
 from datetime import datetime
 from .models import loans as loans_model
+from .models import vacations as vacations_model
 
 # Create your views here.
 
@@ -47,7 +48,7 @@ def change_loan_status(request):
     else: 
         loan_row.loan_is_approved = True 
 
-    loan_row.department_updated_at = timezone.now() 
+    loan_row.loan_updated_at = timezone.now() 
     loan_row.save() 
     html = "<html><body>Success.</body></html>" 
     return HttpResponse(html)
@@ -75,3 +76,18 @@ def vacations(request):
     context["vacations"] = Read('vacations')
     context["users"] = Read('users')
     return render(request, 'employees_requests/vacations.html', context)
+
+def change_vacation_status(request):
+
+    vacation_id = request.POST['vacation_id'] 
+    vacation_row = vacations_model.objects.get(pk=vacation_id) 
+    
+    if vacation_row.vacation_is_approved:  
+        vacation_row.vacation_is_approved = False 
+    else: 
+        vacation_row.vacation_is_approved = True 
+
+    vacation_row.vacation_updated_at = timezone.now() 
+    vacation_row.save() 
+    html = "<html><body>Success.</body></html>" 
+    return HttpResponse(html)

@@ -141,20 +141,20 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         {% if vacation.info.vacation_is_approved %}
-                                            <label class="form-check-label mb-50">Approved</label>
+                                            <label id="vacationstatus_{{vacation.info.vacation_id}}" class="alert-success">Approved</label>
                                         {% else %}
-                                            <label class="form-check-label mb-50">Not Approved</label>
+                                            <label id="vacationstatus_{{vacation.info.vacation_id}}" class="form-check-label mb-50">Not Approved</label>
                                         {% endif %}
                                     </div>
                             {% if user.is_admin %}
                                         <div class="col-md-6">
                                             <div class="form-check form-switch form-check-dark">
                                                 {% if vacation.info.vacation_is_approved %}
-                                                    <input id="vacationstatus_{{vacation.info.vacation_id}}" type="checkbox" class="form-check-input"
-                                                    id="vacation_is_approved" checked >
+                                                    <input id="{{vacation.info.vacation_id}}" type="checkbox" class="form-check-input"
+                                                     checked onclick="change_status(this.id)">
                                                 {% else %}
-                                                    <input id="vacationstatus_{{vacation.info.vacation_id}}" type="checkbox" class="form-check-input"
-                                                    id="vacation_is_approved">
+                                                    <input id="{{vacation.info.vacation_id}}" type="checkbox" class="form-check-input"
+                                                    onclick="change_status(this.id)"> 
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -180,6 +180,36 @@
         $(".form-select").select2();
     })
 
+    function change_status(checkbox_id)
+        {
+            var url = 'change_vacation_status/';
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data : jQuery.param({'vacation_id': checkbox_id,
+                     "csrfmiddlewaretoken": $('[name=csrfmiddlewaretoken]').val()}),
+                    success : function() {
+                        if (document.getElementById(checkbox_id).checked){
+                            
+                            status_id = "vacationstatus_" + checkbox_id
+                            this_status = document.getElementById(status_id)
+                            this_status.className = "alert-success"
+                            this_status.innerHTML = "Approved"
+                        }
+                        else {
+
+                            status_id = "vacationstatus_" + checkbox_id
+                            this_status = document.getElementById(status_id)
+                            this_status.className = "alert-failure"
+                            this_status.innerHTML = "Not Approved"
+                        }
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+jqXHR.status);
+                    } 
+                });
+            
+        }
 
     </script>
 

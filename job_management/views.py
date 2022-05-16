@@ -5,13 +5,14 @@ from HRM.CRUD import *
 from .models import job_titles as job_titles_model
 from .models import departments as departments_model
 from job_management.forms import *
+from django.contrib.auth.decorators import login_required
 # from job_management.models import departments, job_titles, contracts
 # from finance.models import bank_account, allowances, annual_bonuses
 from finance.forms import *
 
 
-
 # This is the function which is responsible for all crud operations for the departments table
+@login_required  # require login to access this function
 def departments_handler(request): 
     context = {} # Declaring the variable which will be sent to the html file
 
@@ -46,6 +47,7 @@ def departments_handler(request):
 
 # This is the function which is responsible for all crud operations for the job_titles table, please refer to the above departments_handler
 #  function for any uncommented line in the job_titles_handler function, because they are the same.
+@login_required 
 def job_titles_handler(request):
     context = {} 
 
@@ -73,6 +75,7 @@ def job_titles_handler(request):
 
 # this function has only one job, which is to change the job title status when the checkbox in the job titles table is clicked,
 # this function receives a post request sent by ajax function (you can take a look in the job_titles.html file)
+
 def change_job_title_status(request):
 
     job_title_id = request.POST['job_title_id'] # get the id of the job title to be changed
@@ -107,7 +110,7 @@ def change_department_status(request):
     html = "<html><body>Success.</body></html>"
     return HttpResponse(html)
     
-
+@login_required
 def create_contract(request):
     context = {}
     if request.method == "POST":
@@ -147,11 +150,12 @@ def create_contract(request):
     context["job_titles"] = Read('job_titles')
     return render(request, 'job_management/create_contract.html', context)
 
+@login_required
 def viewContract(request):
     return render(request, 'job_management/viewContract.html')
 
 
-
+@login_required
 def contracts_list(request):
     context = {}
     context["contracts"] = Read('contracts')

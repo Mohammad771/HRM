@@ -1,6 +1,7 @@
 from distutils.log import error
 import pandas as pd
 from django.shortcuts import redirect, render, HttpResponse 
+from django.contrib.auth.decorators import login_required
 from HRM.CRUD import *
 from .models import attendance_file, attendance
 from .forms import attendance_file_form, create_attendance_form
@@ -8,12 +9,14 @@ from users.models import users as users_model
 from datetime import datetime, date, timedelta
 
 # Create your views here.
+@login_required 
 def viewEvaluations(request):
     context = {}
 
     context['evaluations'] = Read('evaluations')
     return render(request, 'track_performance/viewEvaluations.html', context)
 
+@login_required 
 def createEvaluations(request):
     context = {}
 
@@ -30,7 +33,7 @@ def createEvaluations(request):
     context['users'] = Read('users')
     return render(request, 'track_performance/createEvaluations.html', context)
 
-
+@login_required 
 def manageAttendance(request):
     attendance_rows_beginning_date = date.today()
     attendance_rows_ending_date = False

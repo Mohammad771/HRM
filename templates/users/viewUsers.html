@@ -38,9 +38,9 @@
                 {%  if viewUser %}
                     {% for user in viewUser %}
                 <tr>
-                    <td> {{ user.username }}</td>
-                    <td>{{ user.department_id}}</td>
-                    <td>{{ user.job_title_id }}</td>
+                    <td> {{ user }}</td>
+                    <td>{{ user.user_job_title_id.job_title_department_id}}</td>
+                    <td>{{ user.user_job_title_id }}</td>
 
                     {% if user.is_active %}
                         <td><span class="badge rounded-pill badge-light-success me-1">Active</span></td>

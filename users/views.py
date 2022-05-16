@@ -11,7 +11,6 @@ from .models import job_titles
 
 
 def user_login(request):
-
     print(request.GET)
     if request.user.is_authenticated:
         return redirect('/departments')
@@ -91,11 +90,11 @@ def register(request):
         
         return render(request, 'users/register.html', context)
     
-
+@login_required 
 def dashboard(request):
     return render(request, 'users/dashboard.html')
 
-
+@login_required 
 def viewUsers(request):
     context = {}
     viewUsers = users_model.objects.all()

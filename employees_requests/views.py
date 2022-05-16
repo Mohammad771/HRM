@@ -94,3 +94,6 @@ def change_vacation_status(request):
 
 def overtimeCategories(request):
     return render(request, 'employees_requests/overtimeCategories.html')
+
+def overtime(request):
+    return render(request, 'employees_requests/overtime.html')

@@ -91,3 +91,6 @@ def change_vacation_status(request):
     vacation_row.save() 
     html = "<html><body>Success.</body></html>" 
     return HttpResponse(html)
+
+def overtimeCategories(request):
+    return render(request, 'employees_requests/overtimeCategories.html')

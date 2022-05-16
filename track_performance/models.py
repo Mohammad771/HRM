@@ -17,7 +17,7 @@ class evaluations(models.Model):
     evaluation_time_rate = models.IntegerField()
     evaluation_quality_rate = models.IntegerField()
     evaluation_overall_rate = models.IntegerField()
-    evaluation_date = models.DateField()
+    # evaluation_date = models.DateField()
     evaluation_created_at = models.DateTimeField(auto_now=True)
     evaluation_updated_at = models.DateTimeField(null = True, default=None, blank=True)
     evaluation_deleted_at = models.DateTimeField(null = True, default=None, blank=True)

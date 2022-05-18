@@ -48,24 +48,54 @@ class loans(models.Model):
     def __str__(self):
         return "Loan " + str(self.loan_id)
 
-class overtime_types(models.Model):
-    overtime_type_id = models.AutoField(max_length=24, primary_key=True)
-    overtime_type_name = models.CharField(max_length=50)
-    overtime_type_created_at = models.DateTimeField(default=timezone.now)
-    overtime_type_updated_at = models.DateTimeField(null=True, default=None, blank=True)
-    overtime_type_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+class overtime_categories(models.Model):
+    overtime_category_id = models.AutoField(max_length=24, primary_key=True)
+    overtime_category_name = models.CharField(max_length=50)
+    overtime_category_created_at = models.DateTimeField(default=timezone.now)
+    overtime_category_updated_at = models.DateTimeField(null=True, default=None, blank=True)
+    overtime_category_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
+    def __str__(self):
+        return self.overtime_category_name
 
 class overtime(models.Model):
     overtime_id = models.AutoField(max_length=24, primary_key=True)
-    overtime_overtime_type_id = models.ForeignKey(overtime_types, on_delete=models.CASCADE, related_name="+")
-    overtime_status = models.BooleanField()
+    overtime_overtime_category_id = models.ForeignKey(overtime_categories, on_delete=models.CASCADE, related_name="+")
+    overtime_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
+    overtime_status = models.BooleanField(null=True, default=False)
     overtime_hours = models.IntegerField()
-    overtime_amount = models.IntegerField()
+    # overtime_amount = models.IntegerField() what's the difference between amount and hours?
+    overtime_date = models.DateField()
     overtime_created_at = models.DateTimeField(default=timezone.now)
     overtime_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     overtime_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
 
+    def __str__(self):
+        return "overtime " + str(self.overtime_id)
+
+    def clean(self):
+        overtime_date = self.overtime_date
+        if not overtime_date:
+            return
+        today = datetime.date.today()
+        time_difference = today - overtime_date
+        if time_difference.days < -30:
+            raise ValidationError(
+                {'overtime_date': "overtime's date should be within 30 days from now"})
+        elif time_difference.days > 0:
+            raise ValidationError(
+                {'overtime_date': "overtime's date cannot be in the past"})
+
+        overtime_hours = self.overtime_hours
+        print(overtime_hours)
+        if overtime_hours == None:
+            return
+        if overtime_hours > 8:
+            raise ValidationError(
+                {'overtime_hours': "overtime's hours cannot exceed 8"})
+        elif overtime_hours < 1:
+            raise ValidationError(
+                {'overtime_hours': "overtime's hours cannot be less than 1"})
 
 class complains_and_suggestions(models.Model):
     complains_and_suggestions_id = models.AutoField(max_length=24, primary_key=True)

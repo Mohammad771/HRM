@@ -31,3 +31,33 @@ class create_vacation_form(forms.ModelForm):
                 'required': ("Please enter the returning date"),
             },
         }
+
+class create_overtime_category_form(forms.ModelForm):
+
+    class  Meta():
+        model = overtime_categories
+        fields = ('overtime_category_name',)
+        error_messages = {
+            'overtime_category_name': {
+                'required': ("Please enter the overtime category's name"),
+            },
+        }
+        
+class create_overtime_form(forms.ModelForm):
+
+    class  Meta():
+        model = overtime
+        fields = ('overtime_overtime_category_id','overtime_hours','overtime_date', 'overtime_user_id')
+        error_messages = {
+            'overtime_hours': {
+                'required': ("Please enter the number of hours for the overtime"),
+                'invalid': ("overtime hours should be a number"),
+            },
+            'overtime_date': {
+                'required': ("Please enter the date of the overtime"),
+            },
+            'overtime_user_id': {
+                'required': ("Please select a user for this overtime"),
+            },
+        }
+

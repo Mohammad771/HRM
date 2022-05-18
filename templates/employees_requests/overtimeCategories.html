@@ -21,27 +21,33 @@
         <div class="card-header">
             <h4 class="card-title">ِAdd New Overtime Category</h4>
         </div>
-        <div class="card-body">
-            <form id="basic-input" action="{% url 'employees_requests:employees_requests/overtimeCategories' %}" method="post">
-                {%csrf_token%}
-                <div class="row">
-                    <div class="col-md-5">
-                        <label class="form-label" for="basicInput">Category Name</label>
-                        <input type="text" class="form-control" id="cat_name" name = "cat_name" placeholder="Code Review">
-                        <input type="hidden" name="request_type" value="create" class="form-control" id="request_type">
+        {% if user.is_admin %}
+            {% if form_errors %}
+                {% for field in form_errors %}
+                    {{field.errors}}
+                {% endfor %}
+            {% endif %}
+            <div class="card-body">
+                <form id="basic-input" action="" method="post">
+                    {%csrf_token%}
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label class="form-label" for="basicInput">Category Name</label>
+                            <input type="text" class="form-control" id="cat_name" name = "overtime_category_name" placeholder="Code Review">
 
+                        </div>
+
+                        <div class="col-md-2 mt-2">
+                            <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect">Add</button>
+                        </div>
                     </div>
-
-
-                    <div class="col-md-2 mt-2">
-                        <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect">Add</button>
-                    </div>
-                </div>
-                <!-- onclick="document.getElementById('basic-input').submit();" -->
-            </form>
+                    <!-- onclick="document.getElementById('basic-input').submit();" -->
+                </form>
+            </div>
+        {% else %}
+            <center><h2 style="color: #FEAA5A; font-weight: bold;" class="card-title">Sorry, you are not authorized to create new overtime categories.</h2></center>
+        {% endif %}
         </div>
-
-    </div>
 
     <hr>
     <div class="card">
@@ -61,15 +67,19 @@
                 </thead>
                 <tbody>
 
+            {% for overtime_category in overtime_categories %}
                 <tr>
-                    <td>
-                        <span class="fw-bold">1</span>
-                    </td>
-                    <td>Collect Requirements</td>
-                    <td><i class="fa-solid fa-trash-can"></i></td>
+
+                        <td>
+                            <span class="fw-bold">{{overtime_category.number}}</span>
+                        </td>
+                        <td>{{overtime_category.info.overtime_category_name}}</td>
+                        <td><i class="fa-solid fa-trash-can"></i></td>
+
+                    
 
                 </tr>
-
+            {% endfor %}
                 </tbody>
             </table>
         </div>

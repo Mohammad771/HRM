@@ -21,43 +21,89 @@
         <div class="card-header">
             <h4 class="card-title">ِWork more, gain more!</h4>
         </div>
-        <div class="card-body">
-            <form id="basic-input" action="{% url 'finance:finance/punishments' %}" method="post">
-                {%csrf_token%}
-                <div class="row">
-                    <div class="col-md-3">
-                        <label class="form-label" for="basicSelect">Choose Overtime Category</label>
-                        <div class="position-relative" data-select2-id="45">
-                            <select name="user_nationality_ID" class="select2 form-select select2-hidden-accessible" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
-                                <option value=""></option>
-                                <option value="1" data-select2-id="2">317889331</option>
-                                <option value="2" data-select2-id="57">234678732</option>
-                                <option value="3" data-select2-id="58">214415768</option> -->
-                            </select>
+        {% if form_errors %}
+            {% for field in form_errors %}
+                {{field.errors}}
+            {% endfor %}
+        {% endif %}
+        {% if user.is_admin %}
+            <div class="card-body">
+                <form id="basic-input" action="" method="post">
+                    {%csrf_token%}
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label class="form-label" for="basicSelect">Choose User</label>
+                            <div class="position-relative" data-select2-id="45">
+                                <select name="overtime_user_id" class="select2 form-select select2-hidden-accessible" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                    {% for user in users %}
+                                        <option value="{{user.info.user_id}}">{{user.info}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="basicSelect">Choose Overtime Category</label>
+                            <div class="position-relative" data-select2-id="45">
+                                <select name="overtime_overtime_category_id" class="select2 form-select select2-hidden-accessible" id="select2" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                    {% for overtime_category in overtime_categories %}
+                                        <option value="{{overtime_category.info.overtime_category_id}}">{{overtime_category.info.overtime_category_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="basicInput">How many hours?</label>
+                            <input type="text" class="form-control" id="pun_amount" name = "overtime_hours" placeholder="1000">
+
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="user_DOB">Date</label>
+                            <input type="text" id="over_date" name="overtime_date" class="form-control flatpickr-basic flatpickr-input"
+                                placeholder="YYYY-MM-DD" readonly="readonly">
+                        </div>
+
+                        <div class="col-md-2 mt-2">
+                            <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect">Add</button>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label" for="basicInput">How many hours?</label>
-                        <input type="text" class="form-control" id="pun_amount" name = "pun_amount" placeholder="1000">
-                        <input type="hidden" name="request_type" value="create" class="form-control" id="request_type">
+                </form>
+            </div>
+            {% else %}
+                <div class="card-body">
+                    <form id="basic-input" action="" method="post">
+                        {%csrf_token%}
+                        <div class="row">
+                            <input type="hidden" name="overtime_user_id" value="{{user.user_id}}">         
+                            <div class="col-md-3">
+                                <label class="form-label" for="basicSelect">Choose Overtime Category</label>
+                                <div class="position-relative" data-select2-id="45">
+                                    <select name="overtime_overtime_category_id" class="select2 form-select select2-hidden-accessible" id="select2" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                                        {% for overtime_category in overtime_categories %}
+                                            <option value="{{overtime_category.info.overtime_category_id}}">{{overtime_category.info.overtime_category_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="basicInput">How many hours?</label>
+                                <input type="text" class="form-control" id="pun_amount" name = "overtime_hours" placeholder="1000">
 
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label" for="user_DOB">Date</label>
-                        <input type="text" id="over_date" name="over_date" class="form-control flatpickr-basic flatpickr-input"
-                               placeholder="YYYY-MM-DD" readonly="readonly">
-                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="user_DOB">Date</label>
+                                <input type="text" id="over_date" name="overtime_date" class="form-control flatpickr-basic flatpickr-input"
+                                    placeholder="YYYY-MM-DD" readonly="readonly">
+                            </div>
 
+                            <div class="col-md-2 mt-2">
+                                <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect">Add</button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+            {% endif %}
 
-                    <div class="col-md-2 mt-2">
-                        <button style="width: 110px" type="submit" class="btn btn-outline-success round waves-effect">Add</button>
-                    </div>
-                </div>
-                <!-- onclick="document.getElementById('basic-input').submit();" -->
-            </form>
-        </div>
-
-    </div>
+    
 
     <hr>
     <div class="card">
@@ -69,7 +115,6 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>Name</th>
                     <th>Category</th>
                     <th>Amount</th>
@@ -79,25 +124,38 @@
                 </tr>
                 </thead>
                 <tbody>
+                {% for overtime in overtimes %}
+                    {% if user.is_admin or user == overtime.info.overtime_user_id %}
+                        <tr>
+                            <td>{{overtime.info.overtime_user_id}}</td>
+                            <td >{{overtime.info.overtime_overtime_category_id}}</td>
+                            <td>{{overtime.info.overtime_hours}} hours</td>
+                            <td>{{overtime.info.overtime_date}}</td>
+                            <td>
+                            {% if overtime.info.overtime_status %}
+                                {% if user.is_admin %}
+                                    <div class="form-check form-switch form-check-dark">
+                                            <input id="{{overtime.info.overtime_id}}" type="checkbox" class="form-check-input"
+                                            checked onclick="change_status(this.id)">          
+                                    </div>
+                                {% else %}
+                                    <b id="overtime_status_{{overtime.info.overtime_id}}" class="alert-success">Approved</b>
+                                {% endif %}
+                            {% else %}
+                                {% if user.is_admin %}
+                                    <div class="form-check form-switch form-check-dark">
+                                        <input id="{{overtime.info.overtime_id}}" type="checkbox" class="form-check-input"
+                                        onclick="change_status(this.id)">          
+                                    </div>
+                                {% else %}
+                                    <b id="overtime_status_{{overtime.info.overtime_id}}" class="alert-failure">Not Approved</b>
+                                {% endif %}
+                            {% endif %}
+                            </td>
 
-                <tr>
-                    <td>
-                        <span class="fw-bold">1</span>
-                    </td>
-                    <td>Ali Hassan</td>
-                    <td >Collecting Requirements</td>
-                    <td>8 hours</td>
-                    <td>17-3-2022</td>
-                    <td>
-                        <div class="form-check form-switch form-check-dark">
-                                <input id="" type="checkbox" class="form-check-input"
-                                       checked onclick="">
-                                <input id="" type="checkbox" class="form-check-input"
-                                       onclick="">
-                        </div>
-                    </td>
-
-                </tr>
+                        </tr>
+                    {% endif %}                 
+                {% endfor %}
 
                 </tbody>
             </table>
@@ -115,6 +173,36 @@
         $(".form-select").select2();
     })
 
+    function change_status(checkbox_id)
+        {
+            var url = 'change_overtime_status/';
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data : jQuery.param({'overtime_id': checkbox_id,
+                     "csrfmiddlewaretoken": $('[name=csrfmiddlewaretoken]').val()}),
+                    success : function() {
+                        // if (document.getElementById(checkbox_id).checked){
+                            
+                        //     status_id = "overtime_status_" + checkbox_id
+                        //     this_status = document.getElementById(status_id)
+                        //     this_status.className = "alert-success"
+                        //     this_status.innerHTML = "Approved"
+                        // }
+                        // else {
+
+                        //     status_id = "overtime_status_" + checkbox_id
+                        //     this_status = document.getElementById(status_id)
+                        //     this_status.className = "alert-failure"
+                        //     this_status.innerHTML = "Not Approved"
+                        // }
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+jqXHR.status);
+                    } 
+                });
+            
+        }
 
     </script>
 

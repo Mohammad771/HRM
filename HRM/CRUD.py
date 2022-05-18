@@ -6,7 +6,7 @@ from track_performance.models import evaluations
 from track_performance.forms import *
 from finance.forms import *
 from finance.models import punishments, rewards
-from employees_requests.models import loans, vacations
+from employees_requests.models import loans, vacations, overtime, overtime_categories
 from employees_requests.forms import *
 
 # This component manages most of the Create, Read, Update and Delete operations. This component is called from many apps to do the CRUD
@@ -49,6 +49,12 @@ def create_form(post, table):
     elif table == 'vacations':
         return(create_vacation_form(post))
 
+    elif table == 'overtime_categories':
+        return(create_overtime_category_form(post))
+
+    elif table == 'overtimes':
+        return(create_overtime_form(post))
+
     else:
         print("Table Not Found!! Check if you typed its name correctly.") # debugging alert which means that the table was not found
 
@@ -90,6 +96,12 @@ def fetch_all_rows(table, filter=None): # This function is usually called by the
 
     elif table == 'vacations':
         return(vacations.objects.filter(vacation_deleted_at=None))
+
+    elif table == 'overtime_categories':
+        return(overtime_categories.objects.filter(overtime_category_deleted_at=None))
+
+    elif table == 'overtimes':
+        return(overtime.objects.filter(overtime_deleted_at=None))
 
     else:
         print("Table Not Found!! Check if you typed its name correctly.")

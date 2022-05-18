@@ -5,6 +5,7 @@ from HRM.CRUD import *
 from datetime import datetime
 from .models import loans as loans_model
 from .models import vacations as vacations_model
+from .models import overtime as overtime_model
 
 # Create your views here.
 
@@ -92,8 +93,47 @@ def change_vacation_status(request):
     html = "<html><body>Success.</body></html>" 
     return HttpResponse(html)
 
-def overtimeCategories(request):
-    return render(request, 'employees_requests/overtimeCategories.html')
+def overtime_categories(request):
+    context = {}
+
+    if request.method == "POST": 
+        
+        result = Create(request.POST, 'overtime_categories')
+        if result["status"] == True:
+            context["success_message"] = "Overtime Category has been created 👍"
+        else:
+            context["form_errors"] = result['form_errors']
+
+    context["overtime_categories"] = Read('overtime_categories')
+    return render(request, 'employees_requests/overtimeCategories.html', context)
 
 def overtime(request):
-    return render(request, 'employees_requests/overtime.html')
+    context = {}
+
+    if request.method == "POST": 
+        
+        result = Create(request.POST, 'overtimes')
+        if result["status"] == True:
+            context["success_message"] = "Overtime has been created 👍"
+        else:
+            context["form_errors"] = result['form_errors']
+
+
+    context["overtime_categories"] = Read('overtime_categories')
+    context["overtimes"] = Read('overtimes')
+    context["users"] = Read('users')
+    return render(request, 'employees_requests/overtime.html',context)
+
+def change_overtime_status(request):
+
+    overtime_id = request.POST['overtime_id'] 
+    overtime_row = overtime_model.objects.get(pk=overtime_id) 
+    if overtime_row.overtime_status:  
+        overtime_row.overtime_status = False 
+    else: 
+        overtime_row.overtime_status = True 
+
+    overtime_row.overtime_updated_at = timezone.now() 
+    overtime_row.save()
+    html = "<html><body>Success.</body></html>" 
+    return HttpResponse(html)

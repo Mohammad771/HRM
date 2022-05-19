@@ -20,12 +20,34 @@ class vacations(models.Model):
     def clean(self):
         leaving_date = self.vacation_leaving_date
         returning_date = self.vacation_coming_date
+        today = datetime.date.today()
         if not (leaving_date and returning_date):
             return
-        time_difference = returning_date - leaving_date
-        if time_difference.days < 0:
+
+        leaving_returning_time_difference = returning_date - leaving_date
+        leaving_time_difference = leaving_date - today
+        returning_time_difference = returning_date - today
+
+        if leaving_time_difference.days < 0:
+            raise ValidationError(
+                {'vacation_leaving_date': "vacations's leaving date cannot be in the past"})
+        if leaving_time_difference.days > 30:
+            raise ValidationError(
+                {'vacation_leaving_date': "vacations's leaving date should be within 30 days of the current date"})
+
+        if returning_time_difference.days < 0:
+            raise ValidationError(
+                {'vacation_coming_date': "vacations's returning date cannot be in the past"})
+
+        if leaving_returning_time_difference.days < 0:
             raise ValidationError(
                 {'vacation_coming_date': "vacations's returning date cannot be before leaving date"})
+        if leaving_returning_time_difference.days == 0:
+            raise ValidationError(
+                {'vacation_coming_date': "vacations's leaving and returning date cannot be the same"})
+        if leaving_returning_time_difference.days > 30:
+            raise ValidationError(
+                {'vacation_coming_date': "vacations's length cannot be more than 30 days"})
 
     def __str__(self):
         return str(self.vacation_user_id) + "'s vacation " + str(self.vacation_id)

@@ -105,7 +105,7 @@ def manageAttendance(request):
                         allowed_time_formats = ["%H:%M:%S", "%H:%M"]
                         sucess = True
                         if users_count == 0:
-                            context['empty_file'] = "The uploaded file does not contain any records"
+                            context['search_error'] = "The uploaded file does not contain any records"
                             attendance_file.objects.latest('attendance_file_id').delete()
                         for index in range(users_count):
 
@@ -201,7 +201,8 @@ def manageAttendance(request):
             total_attendance_rows_in_period.extend(
                 attendance.objects.filter(attendance_date=day)
             )
-        context['attendance_rows'] = total_attendance_rows_in_period
+        if len(total_attendance_rows_in_period):
+            context['attendance_rows'] = total_attendance_rows_in_period
 
     else:
         if search_result:

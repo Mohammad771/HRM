@@ -78,7 +78,7 @@ def register(request):
         else:
             print(form.errors)
             context['errors'] =  form.errors
-            context['register_form'] = form
+            context['form_errors'] = form
             # return redirect('/register')
             return render(request, 'users/register.html', context)
 

@@ -126,26 +126,33 @@ def create_contract(request):
 
         form_validation_error = False
         form_errors = []
+        returned_data = {}
         for form in creation_forms:
             if not form.is_valid():
                 form_errors.append(form.errors)
                 form_validation_error = True
+
+            returned_data.update(form.cleaned_data)
+
         
         if form_validation_error == True:
             context['form_errors'] = form_errors
+            
 
         else:
             print("validation success")
             for form in creation_forms:
                 form.save()
-
+        
             current_user = users.objects.get(pk=user_idd)
             current_user.user_experience_years = request.POST['user_experience_years']
             current_user.user_job_title_id = job_titles_model.objects.get(pk=request.POST['user_job_title_id'])
             current_user.user_education_degree = request.POST['user_education_degree']
             current_user.save()
 
-   
+        context['returned_data'] = returned_data
+
+
     context["users"] = Read('users')
     context["job_titles"] = Read('job_titles')
     return render(request, 'job_management/create_contract.html', context)

@@ -58,7 +58,7 @@
                                             </button>
                                         </div>                                      
                                     </div>
-                                        {{register_form.errors}}
+                                        {{form_errors.errors}}
                                     <div class="bs-stepper-content px-0 mt-4">
                                         <div id="account-details" class="content" role="tabpanel" aria-labelledby="account-details-trigger">
                                             <div class="content-header mb-2">
@@ -70,24 +70,24 @@
                                                 <div class="row">
                                                     <div class="col-md-3 mb-1">
                                                         <label class="form-label" for="username">Username</label>
-                                                        <input type="text" name="username" id="username" class="form-control" placeholder="" aria-label="john.doe" />
+                                                        <input type="text" value="{{form_errors.cleaned_data.username}}" name="username" id="username" class="form-control" placeholder="" aria-label="john.doe" />
                                                         <!-- {{register_form.username}} -->
                                                     </div>
 
                                                     <div class="col-md-3 mb-1">
                                                         <label class="form-label" for="user_first_name">First Name</label>
-                                                        <input type="text" name="user_first_name" id="user_first_name" class="form-control" placeholder="أبو علي" />
+                                                        <input type="text" value="{{form_errors.cleaned_data.user_first_name}}" name="user_first_name" id="user_first_name" class="form-control" placeholder="أبو علي" />
                                                         <!-- {{register_form.user_first_name}} -->
                                                     </div>
                                                     <div class="col-md-3 mb-1">
                                                         <label class="form-label" for="user_first_name">Second Name</label>
-                                                        <input type="text" name="user_middle_name" id="user_middle_name" class="form-control" placeholder=" بوتين" />
+                                                        <input type="text" value="{{form_errors.cleaned_data.user_middle_name}}" name="user_middle_name" id="user_middle_name" class="form-control" placeholder=" بوتين" />
                                                         <!-- {{register_form.user_first_name}} -->
                                                     </div>
 
                                                     <div class="col-md-3 mb-1">
                                                         <label class="form-label" for="user_last_name">Last Name</label>
-                                                        <input type="text" name="user_last_name" id="user_last_name" class="form-control" placeholder="النووي" aria-label="john.doe" />
+                                                        <input type="text" value="{{form_errors.cleaned_data.user_last_name}}" name="user_last_name" id="user_last_name" class="form-control" placeholder="النووي" aria-label="john.doe" />
                                                         <!-- {{register_form.user_last_name}} -->
 
                                                     </div>
@@ -95,17 +95,17 @@
                                                 <div class="row">
                                                     <div class="col-md-4 mb-1">
                                                         <label class="form-label" for="user_mobile">Phone Number</label>
-                                                        <input type="phone" name="user_mobile" id="user_mobile" class="form-control" placeholder="052 والباقي لبعدين" aria-label="john.doe" />
+                                                        <input type="phone" value="{{form_errors.cleaned_data.user_mobile}}" name="user_mobile" id="user_mobile" class="form-control" placeholder="052 والباقي لبعدين" aria-label="john.doe" />
                                                         <!-- {{register_form.user_mobile}} -->
                                                     </div>
                                                     <div class="col-md-4 mb-1">
                                                         <label class="form-label" for="email">Email</label>
-                                                        <input type="email" name="email" id="email" class="form-control" placeholder="john.doe@email.com" aria-label="john.doe" />
+                                                        <input type="email" value="{{form_errors.cleaned_data.email}}" name="email" id="email" class="form-control" placeholder="john.doe@email.com" aria-label="john.doe" />
                                                         <!-- {{register_form.email}} -->
                                                     </div>
                                                     <div class="col-md-4 mb-1">
                                                         <label class="form-label" for="id_num">ID Number</label>
-                                                        <input type="text" name="user_mobile" id="user_mobile" class="form-control" placeholder="1406567375" aria-label="john.doe" />
+                                                        <input type="text" value="{{form_errors.cleaned_data.user_id_number}}" name="user_id_number" id="user_id_number" class="form-control" placeholder="1406567375" aria-label="john.doe" />
                                                         <!-- {{register_form.email}} -->
                                                     </div>
                                                     <div class="row">
@@ -144,7 +144,7 @@
                                                     </div>
                                                     <div class="col-md-5 mb-1">
                                                         <label class="form-label" for="user_DOB">Date of Birth</label>
-                                                        <input type="text" id="Dob" name="user_DOB" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                                                        <input type="text" id="Dob" value="{{form_errors.cleaned_data.user_DOB}}" name="user_DOB" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
                                                         <!-- {{register_form.user_DOB}} -->
                                                     </div>
 

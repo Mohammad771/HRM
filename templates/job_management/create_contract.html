@@ -29,6 +29,7 @@
                         {{field}}
                     {% endfor %}
                 {% endif %}
+                {{returned_data}}
                 <hr>
             </div>
             <form action="{% url 'job_management:job_management/create_contract' %}" method="post">
@@ -37,9 +38,9 @@
                     <div class="col-md-3">
                         <label class="form-label" for="select2-basic">National ID</label>
                         <div class="position-relative" data-select2-id="45">
-                            <select name="contract_user_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
+                            <select name="contract_user_id" class="select2 form-select" id="selectUser" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                 {% for user in users %}
-                                    {% if user.info == form_errors.cleaned_data.contract_user_id %}
+                                    {% if user.info == returned_data.contract_user_id %}
                                         <option selected value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
                                     {% else %}                                
                                         <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
@@ -63,7 +64,7 @@
                         <div class="position-relative" data-select2-id="45">
                             <select name="user_job_title_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                 {% for job_title in job_titles %}
-                                    {% if job_title.info == form_errors.cleaned_data.user_job_title_id %}
+                                    {% if job_title.info == returned_data.user_job_title_id %}
                                         <option selected value="{{job_title.info.job_title_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
                                     {% else %}                                   
                                         <option value="{{job_title.info.job_title_id}}" data-select2-id="2">{{job_title.info.job_title_name}}</option>
@@ -74,7 +75,7 @@
                     </div>
                     <div class="col-md-3">
                          <label class="form-label" for="email">Experienced Years</label>
-                        <input type="text" name="user_experience_years" id="exp_years" class="form-control" placeholder="7" />
+                        <input type="text" value="{{returned_data.user_experience_years}}" name="user_experience_years" id="exp_years" class="form-control" placeholder="7" />
                     </div>
                 </div>
 
@@ -86,22 +87,22 @@
                 <div class="row">
                     <div class="col-md-3">
                         <label class="form-label" for="hourPrice">Hour Price</label>
-                        <input type="text" name="contract_hour_price" class="form-control" id="hourPrice" placeholder="Ex; 80">
+                        <input type="text" value="{{returned_data.contract_hour_price}}" name="contract_hour_price" class="form-control" id="hourPrice" placeholder="Ex; 80">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="exp_date">Expire Date</label>
-                        <input type="text" id="exp_date" name="contract_expiry_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                        <input type="text" value="{{returned_data.contract_expiry_date}}" id="exp_date" name="contract_expiry_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
                     </div>
                     <div class="col-md-2 mb-1">
                         <label class="form-check-label mb-50" for="customSwitch15">Auto Renewed?</label>
                         <div class="form-check form-switch form-check-success">
-                            <input type="checkbox" name="contract_auto_renewal" class="form-check-input" id="auto_renew" checked="true">
+                            <input type="checkbox" value="{{returned_data.contract_auto_renewal}}" name="contract_auto_renewal" class="form-check-input" id="auto_renew">
 
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label" for="start_date">Starting Date</label>
-                        <input type="text" id="start_date" name="contract_starting_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                        <input type="text" id="start_date" value="{{returned_data.contract_starting_date}}" name="contract_starting_date" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
                     </div>
 
                 </div>
@@ -113,27 +114,27 @@
                 <div class="row">
                     <div class="col-md-2">
                         <label class="form-label" for="annual_bonus">Annual Bonuses </label>
-                        <input type="text" name="annual_bonus_amount" class="form-control" id="annual_bonus" placeholder="(percentage of the basic salary)">
+                        <input type="text" value="{{returned_data.annual_bonus_amount}}" name="annual_bonus_amount" class="form-control" id="annual_bonus" placeholder="(percentage of the basic salary)">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="bank_name">Bank Name</label>
-                        <input type="text" name="bank_account_bank_name" class="form-control" id="bank_name" placeholder="ٌٌRiyad Bank">
+                        <input type="text" value="{{returned_data.bank_account_bank_name}}" name="bank_account_bank_name" class="form-control" id="bank_name" placeholder="ٌٌRiyad Bank">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="holder_name">Card Holder Name</label>
-                        <input type="text" name="bank_account_card_holder_name" class="form-control" id="holder_name" placeholder="">
+                        <input type="text" value="{{returned_data.bank_account_card_holder_name}}" name="bank_account_card_holder_name" class="form-control" id="holder_name" placeholder="">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label" for="IBAN">IBAN Number</label>
-                        <input type="text" name="bank_account_iban_number" class="form-control" id="IBAN" placeholder="SA4420000001234567891234">
+                        <input type="text" value="{{returned_data.bank_account_iban_number}}" name="bank_account_iban_number" class="form-control" id="IBAN" placeholder="SA4420000001234567891234">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label" for="house_allowance">Allowance Name</label>
-                        <input type="text" name="allowance_type" class="form-control" id="house_allowance" placeholder="25">
+                        <input type="text" value="{{returned_data.allowance_type}}" name="allowance_type" class="form-control" id="house_allowance" placeholder="25">
                         <label class="form-label" for="house_allowance">Allowance Amount</label>
-                        <input type="text" name="allowance_amount" class="form-control" id="house_allowance" placeholder="25">
+                        <input type="text" value="{{returned_data.allowance_amount}}" name="allowance_amount" class="form-control" id="house_allowance" placeholder="25">
                     </div>
                     <!-- <div class="col-md-4">
                         <label class="form-label" for="tran_allowance">Transportation Allowance</label>
@@ -149,7 +150,7 @@
                     </div>
                     <div class="col-md-12">
                         <label class="form-label" for="conditions_terms">Contract Constraints</label>
-                        <textarea class="form-control" name="contract_conditions" id="conditions_terms" rows="7" placeholder=""></textarea>
+                        <textarea class="form-control" name="contract_conditions" id="conditions_terms" rows="7" placeholder="">{{returned_data.contract_conditions}}</textarea>
                     </div>
                     <div class="d-flex justify-content-between mt-2">
                         <a href="{% url 'job_management:job_management/contracts_list' %}" class="btn btn-outline-danger btn-prev">

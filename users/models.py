@@ -128,7 +128,7 @@ class users(AbstractBaseUser):
     user_created_at = models.DateTimeField(auto_now=True)
     user_updated_at = models.DateTimeField(null = True, default=None, blank=True)
     user_deleted_at = models.DateTimeField(null = True, default=None, blank=True)
-    # user_middle_name = models.CharField(max_length=24)
+    user_middle_name = models.CharField(max_length=24, null = True, blank=True)
     # user_password_hash      = models.TextField()
     # user_id = models.AutoField(max_length=24, primary_key=True)
     # user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")

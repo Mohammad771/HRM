@@ -7,6 +7,6 @@ class register_form(forms.ModelForm):
 
     class  Meta():
         model = users
-        fields = ('email', 'username',  'is_admin', 'user_last_name', 'user_first_name',
+        fields = ('email', 'username',  'is_admin', 'user_last_name', 'user_first_name', 'user_middle_name', 'user_id_number',
          "user_mobile",'user_nationality_ID', "user_DOB" )
 

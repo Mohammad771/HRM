@@ -26,7 +26,7 @@ class create_bank_account_form(forms.ModelForm):
                 'required': ("Card Holder Name cannot be empty 😥"),
             },
             'bank_account_iban_number': {
-                'required': ("IBAN Number name cannot be empty 😥"),
+                'required': ("IBAN Number cannot be empty 😥"),
             },
         }
 
@@ -36,8 +36,12 @@ class create_allowances_form(forms.ModelForm):
         model = allowances
         fields = ('allowance_type', 'allowance_amount', 'allowance_user_id')
         error_messages = {
-            'department_name': {
-                'required': ("Department name cannot be empty 😥"),
+            'allowance_type': {
+                'required': ("allowance type cannot be empty 😥"),
+            },
+            'allowance_amount': {
+                'required': ("allowance amount cannot be empty 😥"),
+                'invalid': ("allowance amount should be a number"),
             },
         }
 

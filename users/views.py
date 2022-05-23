@@ -8,10 +8,11 @@ from .forms import register_form
 from .models import users as users_model
 from .models import departments
 from .models import job_titles
+from django.core.exceptions import ValidationError
+
 
 
 def user_login(request):
-    print(request.GET)
     if request.user.is_authenticated:
         return redirect('/departments')
 
@@ -21,12 +22,10 @@ def user_login(request):
 
     if request.method == "POST":
         requried_page = request.GET.get('next', None)
-        print(request.GET)
         email = request.POST.get('login_email')
         password = request.POST.get('login_password')
 
         user = authenticate(email=email, password=password)
-        print(user)
         if user:
             if user.is_active:
                 login(request, user)
@@ -66,11 +65,11 @@ def register(request):
 
     if request.method == "POST":
         form = register_form(request.POST)
-        print(request.POST)
         if form.is_valid():
             form.save()
             email = form.cleaned_data.get('email')
             password1 = form.cleaned_data.get('password1')
+
             user = authenticate(email=email, password=password1)
             login(request, user)
             return redirect('/departments')

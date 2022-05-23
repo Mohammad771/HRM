@@ -159,13 +159,48 @@ class users(AbstractBaseUser):
 
     def clean(self):
         birthdate = self.user_DOB
-        if not birthdate:
-            return
-        today = datetime.date.today()
-        age = today - birthdate
-        if age.days < 6570:
-            raise ValidationError(
-                {'user_DOB': "cannot register users below the age of 18"})
+        username = self.username
+        user_first_name = self.user_first_name
+        user_last_name = self.user_last_name
+        user_middle_name = self.user_middle_name
+        user_mobile = self.user_mobile
+        user_id_number = self.user_id_number
+        if birthdate:
+            today = datetime.date.today()
+            age = today - birthdate
+            if age.days < 6570:
+                raise ValidationError(
+                    {'user_DOB': "cannot register users below the age of 18"})
+        if username:
+            if len(username) < 3:
+                raise ValidationError(
+                    {'username': "username cannot be less than 3 letters"})
+        if user_first_name:
+            if len(user_first_name) < 3:
+                raise ValidationError(
+                    {'user_first_name': "First name cannot be less than 3 letters"})
+        if user_last_name:
+            if len(user_last_name) < 3:
+                raise ValidationError(
+                    {'user_last_name': "Last name cannot be less than 3 letters"})
+        if user_mobile:
+            try:
+                float(user_mobile)
+            except ValueError:
+                raise ValidationError(
+                    {'user_mobile': "Phone number should only contain numbers"})
+        if user_id_number:
+            print("ID:"+ str(user_id_number))
+            try:
+                float(user_id_number)
+            except ValueError:
+                raise ValidationError(
+                    {'user_id_number': "ID should only contain numbers"})
+            if len(user_id_number) != 10:
+                raise ValidationError(
+                    {'user_id_number': "ID should be 10 digits"}) 
+
+
 
 
 class user_types(models.Model):

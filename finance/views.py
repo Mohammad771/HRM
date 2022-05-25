@@ -33,3 +33,9 @@ def rewards(request):
     context['viewReward'] = Read("rewards")
     context["users"] = Read("users")
     return render(request, 'finance/rewards.html', context)
+
+def create_payroll(request):
+    return render(request, 'finance/create_payroll.html')
+
+def view_payroll(request):
+    return render(request, 'finance/view_payroll.html')

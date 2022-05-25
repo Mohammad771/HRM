@@ -168,6 +168,8 @@ def contracts_list(request):
     context["contracts"] = Read('contracts')
     return render(request, 'job_management/contracts_list.html', context)
 
+
+
                     
 
         

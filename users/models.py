@@ -71,7 +71,7 @@ class addresses(models.Model):
 
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, username, password=None, superuser=False):
+    def create_user(self, email, username, password, superuser=False):
         if not email:
             raise ValueError('Users must have an email address')
         if not username:

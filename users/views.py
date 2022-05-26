@@ -67,10 +67,9 @@ def register(request):
         form = register_form(request.POST)
         if form.is_valid():
             form.save()
-            email = form.cleaned_data.get('email')
-            password1 = form.cleaned_data.get('password1')
-
-            user = authenticate(email=email, password=password1)
+            email = request.POST['email']
+            password = request.POST['password1']
+            user = authenticate(email=email, password=password)
             login(request, user)
             return redirect('/departments')
 

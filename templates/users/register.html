@@ -59,6 +59,7 @@
                                         </div>                                      
                                     </div>
                                         {{form_errors.errors}}
+                                        {{password_errors}}
                                     <div class="bs-stepper-content px-0 mt-4">
                                         <div id="account-details" class="content" role="tabpanel" aria-labelledby="account-details-trigger">
                                             <div class="content-header mb-2">
@@ -111,7 +112,7 @@
                                                     <div class="row">
 
                                                 <div class="col-md-6 mb-1">
-                                                        <label class="form-label" for="password1">Password</label>
+                                                        <label class="form-label" for="password">Password</label>
                                                         <div class="input-group input-group-merge form-password-toggle">
                                                             <input type="password" name="password1" id="password" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
                                                             <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>

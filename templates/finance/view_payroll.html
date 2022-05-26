@@ -1,0 +1,70 @@
+{% extends 'common\baseView.html' %}
+{% load staticfiles %}
+
+{% block pageCSS %}
+    <!-- BEGIN: Page CSS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+
+    <!-- END: Custom CSS-->
+{% endblock %}
+
+{% block viewName %}
+    <h2 class="content-header-title float-start mb-0">View Payrolls Records</h2>
+{% endblock %}
+
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title"></h4>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Job Titles</th>
+                    <th>Date</th>
+                    <th>Net Salary</th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <td>
+                        <span class="fw-bold">1</span>
+                    </td>
+                    <td>Akram Afif</td>
+                    <td >Marketing Manager</td>
+                    <td>Aguste-2022</td>
+                    <td>6200</td>
+
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- END: Page JS-->
+{% endblock %}
+
+{% block pageCJs %}
+    <script>
+
+    $(function (){
+        $(".form-select").select2();
+    })
+
+
+    </script>
+
+
+{% endblock %}

@@ -125,6 +125,7 @@ class users(AbstractBaseUser):
     user_experience_years = models.IntegerField(default=None, null=True, blank=True)
     user_education_degree = models.CharField(max_length=24, default=None, null=True, blank=True)
     user_job_title_id = models.ForeignKey(job_titles, on_delete=models.CASCADE, related_name="+", default=None, null=True, blank=True)
+    user_salary = models.IntegerField(null = True, default=None, blank=True)
     user_created_at = models.DateTimeField(auto_now=True)
     user_updated_at = models.DateTimeField(null = True, default=None, blank=True)
     user_deleted_at = models.DateTimeField(null = True, default=None, blank=True)

@@ -48,6 +48,8 @@
 
     <hr>
     {% if user.is_admin %}
+        {% if selected_user %}
+
     <div class="card-header">
         <h4 class="card-title">Payroll Details for {{selected_user}}</h4>
     </div>
@@ -72,8 +74,10 @@
                     <div class="row mt-2">
                         <div class="progress progress-bar-success">
                             <div class="progress-bar" role="progressbar" aria-valuenow="{{attendance_ratio}}" aria-valuemin="0"
-                                 aria-valuemax="100" style="width: {% widthratio attendance_ratio 1 100 %}%">
-                                 {% widthratio attendance_ratio 1 100 %}%
+                                 aria-valuemax="100" id="progress_bar">
+                                 {% if attendance_ratio %}
+                                    {% widthratio attendance_ratio 1 100 %}%
+                                 {% endif %}
                             </div>
                         </div>
                     </div>
@@ -136,25 +140,20 @@
                     <h4 class="card-title">Rewards & Punishments:
                     </h4>
                 </div>
-
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">Reward</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +500 SAR</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Punishment</div>
-                        <div class="col-md-6"><span class="badge bg-danger">-300 SAR</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Reward</div>
-                        <div class="col-md-6"><span class="badge bg-success">+1500 SAR</span></div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">Total:</div>
-                        <div class="col-md-6">1700 SAR</div>
-                    </div>
+
+                    {% for reward in user_rewards %}
+                        <div class="row">
+                            <div class="col-md-6">Reward</div>
+                            <div class="col-md-6"> <span class="badge bg-success"> +{{reward.reward_amount}} SAR</span></div>
+                        </div>
+                    {% endfor %}
+                    {% for punishment in user_punishments %}
+                        <div class="row">
+                            <div class="col-md-6">Punishment</div>
+                            <div class="col-md-6"><span class="badge bg-danger"> -{{punishment.punishment_amount}} SAR</span></div>
+                        </div>
+                    {% endfor %}
 
                 </div>
 
@@ -171,26 +170,53 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">Regular Work</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +4000 SAR</span></div>
+                        {% if selected_user.user_salary %}
+                        <div class="col-md-6"> <span class="badge bg-success"> +{{selected_user.user_salary}} SAR</span></div>
+                        {% else %}
+                        <div class="col-md-6">User's Salary has not been set</div>
+                        {% endif %}
                     </div>
                     <div class="row">
                         <div class="col-md-6">Overtime:</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +1500 SAR</span></div>
+                        <div class="col-md-6"> <span class="badge bg-success"> +{% widthratio total_overtime_hours 1 30 %} SAR</span></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">Regular Work</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +1700 SAR</span></div>
+                        <div class="col-md-6">Rewards & Punishments</div>
+                        {% if total_rewards_and_punishments %}
+                            {% if total_rewards_and_punishments > 0 %}
+                                <div class="col-md-6"> <span class="badge bg-success"> +{{total_rewards_and_punishments}} SAR</span></div>
+                            {% else %}
+                                <div class="col-md-6"><span class="badge bg-danger"> {{total_rewards_and_punishments}} SAR</span></div>
+                            {% endif %}
+                        {% else %}
+                            <div class="col-md-6"> <span class="badge bg-success"> +0 SAR</span></div>
+                        {% endif %}
+
+
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-md-6">Total:</div>
-                        <div class="col-md-6">6200 SAR</div>
+                        <div class="col-md-6">{{total_month_salary}} SAR</div>
                     </div>
 
                 </div>
 
             </div>
-        </div>
+        </div> 
+    </div>
+    <button class="btn btn-success btn-next waves-effect waves-float waves-light float-lg-end mb-2">
+        <span class="align-middle d-sm-inline-block d-none">Sign Off</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="feather feather-chevron-right align-middle ms-sm-25 ms-0">
+            <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+    </button>
+    {% else %}
+    <br><br>
+        <center><h2>Please Select a user to view his payroll information</h2></center>
+        {% endif %}
     {% else %}
     <!-- <div class="card-header">
         <h4 class="card-title">Payroll Record for Akram Afif</h4>
@@ -334,18 +360,6 @@
 
 
 
-    </div>
-    <button class="btn btn-success btn-next waves-effect waves-float waves-light float-lg-end mb-2">
-        <span class="align-middle d-sm-inline-block d-none">Sign Off</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             class="feather feather-chevron-right align-middle ms-sm-25 ms-0">
-            <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-    </button>
-
-
-
     <!-- END: Page JS-->
 {% endblock %}
 
@@ -356,7 +370,15 @@
         $(".form-select").select2();
     })
 
+    window.onload = function() {
+    getWidth();
+    };
 
+    function getWidth(){
+        
+        width = $("#progress_bar").text().trim();
+        $("#progress_bar").css("width", width);
+    }
     </script>
 
 

@@ -57,7 +57,8 @@ def manageAttendance(request):
         else:
             all_attendance_files = attendance_file.objects.all()
             uploaded_file_date = request.POST['attendance_file_date']
-            attendance_rows_beginning_date, attendance_rows_ending_date = request.POST['attendance_file_date']
+            attendance_rows_beginning_date = request.POST['attendance_file_date']
+            attendance_rows_ending_date = request.POST['attendance_file_date']
             for attendance_file_row in all_attendance_files:
                 
                 if str(attendance_file_row.attendance_file_date) == str(uploaded_file_date):

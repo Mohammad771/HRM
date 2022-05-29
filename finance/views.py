@@ -75,7 +75,32 @@ def create_payroll(request):
         context['user_overtimes'] = user_overtimes
         context['total_overtime_hours'] = total_overtime_hours
 
+        user_rewards = rewards_model.objects.filter(reward_user_id=selected_user).filter(
+            reward_created_at__range=(beginning_of_month, end_of_month))
 
+        user_punishments = punishments_model.objects.filter(punishment_user_id=selected_user).filter(
+            punishment_created_at__range=(beginning_of_month, end_of_month))
+
+        total_user_rewards = 0
+        total_user_punishmets = 0
+
+        for reward in user_rewards:
+            total_user_rewards = reward.reward_amount
+        for punishment in user_punishments:
+            total_user_punishmets = punishment.punishment_amount
+
+        total_rewards_and_punishments = total_user_rewards - total_user_punishmets
+
+        context['total_rewards_and_punishments'] = total_rewards_and_punishments
+        context['user_rewards'] = user_rewards
+        context['user_punishments'] = user_punishments
+
+        if selected_user.user_salary == None:
+            total_month_salary = total_overtime_hours*30 + total_rewards_and_punishments
+        else:
+            total_month_salary = selected_user.user_salary + total_overtime_hours*30 + total_rewards_and_punishments
+
+        context['total_month_salary'] = total_month_salary
         context['selected_user'] = selected_user
 
     context["users"] = Read("users")

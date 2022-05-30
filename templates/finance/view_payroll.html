@@ -26,7 +26,6 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>Name</th>
                     <th>Job Titles</th>
                     <th>Date</th>
@@ -36,16 +35,15 @@
                 </thead>
                 <tbody>
 
+                {% for payroll in payrolls %}
                 <tr>
-                    <td>
-                        <span class="fw-bold">1</span>
-                    </td>
-                    <td>Akram Afif</td>
-                    <td >Marketing Manager</td>
-                    <td>Aguste-2022</td>
-                    <td>6200</td>
+                    <td>{{payroll.info.payroll_user_id}}</td>
+                    <td>{{payroll.info.payroll_user_id.user_job_title_id}}</td>
+                    <td>{{payroll.info.payroll_sign_off_date}}</td>
+                    <td>{{payroll.info.payroll_net_salary}}</td>
 
                 </tr>
+                {% endfor %}
 
                 </tbody>
             </table>

@@ -8,13 +8,17 @@ from django.db import models
 class payrolls(models.Model):
     payroll_id = models.AutoField(max_length=24, primary_key=True)
     payroll_user_id = models.ForeignKey('users.users', on_delete=models.CASCADE, related_name="+")
-    payroll_contract_id = models.ForeignKey('job_management.contracts', on_delete=models.CASCADE, related_name="+")
+    # payroll_contract_id = models.ForeignKey('job_management.contracts', on_delete=models.CASCADE, related_name="+")
     payroll_net_salary = models.IntegerField()
-    payroll_sign_off = models.BooleanField(default=False)
-    payroll_sign_off_date = models.DateField()
+    payroll_signed_off = models.BooleanField(default=False)
+    payroll_sign_off_date = models.DateField(null=True, default=None, blank=True)
+    payroll_confirmation = models.CharField(max_length=60)
     payroll_created_at = models.DateTimeField(default=timezone.now)
     payroll_updated_at = models.DateTimeField(null=True, default=None, blank=True)
     payroll_deleted_at = models.DateTimeField(null=True, default=None, blank=True)
+
+    def __str__(self):
+        return "Payroll for user: " + str(self.payroll_user_id) + ", Month Number: " + str(self.payroll_created_at.month)
 
 class bank_account(models.Model):
     bank_account_id = models.AutoField(max_length=24, primary_key=True)

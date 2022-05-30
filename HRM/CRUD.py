@@ -5,7 +5,7 @@ from job_management.models import departments, job_titles, contracts
 from track_performance.models import evaluations
 from track_performance.forms import *
 from finance.forms import *
-from finance.models import punishments, rewards
+from finance.models import punishments, rewards, payrolls
 from employees_requests.models import loans, vacations, overtime, overtime_categories
 from employees_requests.forms import *
 
@@ -102,6 +102,9 @@ def fetch_all_rows(table, filter=None): # This function is usually called by the
 
     elif table == 'overtimes':
         return(overtime.objects.filter(overtime_deleted_at=None))
+
+    elif table == 'payrolls':
+        return(payrolls.objects.filter(payroll_signed_off=True))
 
     else:
         print("Table Not Found!! Check if you typed its name correctly.")

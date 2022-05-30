@@ -30,7 +30,11 @@
                         <div class="position-relative" data-select2-id="45">
                             <select name="user_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                 {% for user in users %}
-                                    <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info}}</option>
+                                    {% if user.info == selected_user %}
+                                        <option selected value="{{user.info.user_id}}" data-select2-id="2">{{user.info}}</option>
+                                    {% else %}
+                                        <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info}}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
@@ -47,6 +51,9 @@
     </div>
 
     <hr>
+    {% if error %}
+        <h1 style="color: red;">{{error}}</h1>
+    {% endif %}
     {% if user.is_admin %}
         {% if selected_user %}
 
@@ -141,19 +148,27 @@
                     </h4>
                 </div>
                 <div class="card-body">
+                    {%  if user_rewards %}
+                        {% for reward in user_rewards %}
+                            <div class="row">
+                                <div class="col-md-6">Reward</div>
+                                <div class="col-md-6"> <span class="badge bg-success"> +{{reward.reward_amount}} SAR</span></div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-md-6">No Rewards</div>
+                    {% endif %}
 
-                    {% for reward in user_rewards %}
-                        <div class="row">
-                            <div class="col-md-6">Reward</div>
-                            <div class="col-md-6"> <span class="badge bg-success"> +{{reward.reward_amount}} SAR</span></div>
-                        </div>
-                    {% endfor %}
-                    {% for punishment in user_punishments %}
-                        <div class="row">
-                            <div class="col-md-6">Punishment</div>
-                            <div class="col-md-6"><span class="badge bg-danger"> -{{punishment.punishment_amount}} SAR</span></div>
-                        </div>
-                    {% endfor %}
+                    {%  if user_punishments %}
+                        {% for punishment in user_punishments %}
+                            <div class="row">
+                                <div class="col-md-6">Punishment</div>
+                                <div class="col-md-6"><span class="badge bg-danger"> -{{punishment.punishment_amount}} SAR</span></div>
+                            </div>
+                        {% endfor %}
+                        {% else %}
+                            <div class="col-md-6">No Punishments</div>
+                    {% endif %}
 
                 </div>
 
@@ -171,7 +186,7 @@
                     <div class="row">
                         <div class="col-md-6">Regular Work</div>
                         {% if selected_user.user_salary %}
-                        <div class="col-md-6"> <span class="badge bg-success"> +{{selected_user.user_salary}} SAR</span></div>
+                        <div class="col-md-6"> <span class="badge bg-success"> +{{total_month_salary}} SAR</span></div>
                         {% else %}
                         <div class="col-md-6">User's Salary has not been set</div>
                         {% endif %}
@@ -205,6 +220,13 @@
             </div>
         </div> 
     </div>
+    {% if already_signed_off %}
+        <h4 style="color: green; float: right;">{{already_signed_off}}</h4>
+    {% else %}
+    <form action="" method="post">
+    {%csrf_token%}
+    <input type="hidden" name="payroll_confirmation" value="{{payroll_confirmation}}">
+    <input type="hidden" name="sign_off" value="sign_off">
     <button class="btn btn-success btn-next waves-effect waves-float waves-light float-lg-end mb-2">
         <span class="align-middle d-sm-inline-block d-none">Sign Off</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -213,6 +235,8 @@
             <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
     </button>
+    </form>
+    {% endif %}
     {% else %}
     <br><br>
         <center><h2>Please Select a user to view his payroll information</h2></center>

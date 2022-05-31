@@ -17,7 +17,9 @@
 
 
 {% block content %}
-
+{% if not_admin %}
+    <input type="hidden" id="error" value="{{not_admin}}">
+{% else %}
     <div class="card">
         <div class="card-header">
             <h4 class="card-title"></h4>
@@ -52,11 +54,25 @@
             </table>
         </div>
     </div>
-
+{% endif %}
     <!-- END: Page JS-->
 {% endblock %}
 
 {% block pageCJs %}
 
+<script>
+        window.onload = function() {
+            if ($('#error').length) {
+            Swal.fire({
+                title: 'Not Authorized',
+                text: $('#error').val(),
+                icon: 'error',
+                confirmButtonText: 'Close'
+                }).then((result) => {
+                    window.location.replace("/");
+                })
+            }
+        }
+</script>
 
 {% endblock %}

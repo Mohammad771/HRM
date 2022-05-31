@@ -17,6 +17,9 @@
 
 
 {% block content %}
+{% if not_admin %}
+    <input type="hidden" id="error" value="{{not_admin}}">
+{% else %}
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">ِAdd New Job Titles</h4>
@@ -169,7 +172,7 @@
         </div>
 
     </div>
-
+    {% endif %}
     <!-- END: Page JS-->
 {% endblock %}
 
@@ -179,6 +182,18 @@
             $('#inactive').hide();
         })
 
+        window.onload = function() {
+            if ($('#error').length) {
+            Swal.fire({
+                title: 'Not Authorized',
+                text: $('#error').val(),
+                icon: 'error',
+                confirmButtonText: 'Close'
+                }).then((result) => {
+                    window.location.replace("/");
+                })
+            }
+        }
 
         function change_status(checkbox_id)
         {

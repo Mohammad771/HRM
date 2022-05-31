@@ -95,8 +95,11 @@ def dashboard(request):
 @login_required 
 def viewUsers(request):
     context = {}
-    viewUsers = users_model.objects.all()
-    #department = departments.objects.all()
-    #jobTitles = job_titles.objects.all()
-    context['viewUser'] = viewUsers
+    if request.user.is_admin:
+        viewUsers = users_model.objects.all()
+        #department = departments.objects.all()
+        #jobTitles = job_titles.objects.all()
+        context['viewUser'] = viewUsers
+    else:
+        context["not_admin"] = "Sorry, you are not authorized to view this page"
     return render(request, 'users/viewUsers.html', context)

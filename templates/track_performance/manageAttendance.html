@@ -14,6 +14,9 @@
 
 
 {% block content %}
+{% if not_admin %}
+    <input type="hidden" id="error" value="{{not_admin}}">
+{% else %}
     <div class="card">
         <div class="card-header border-bottom">
             <div class="col-md-8">
@@ -149,7 +152,7 @@
                 </div>
             </div>
         </div>
-
+{% endif %}
     <!-- END: Page JS-->
 {% endblock %}
 
@@ -167,88 +170,25 @@
 
 
 <script>
-$(document).ready( function () {
-    $('#main_table').DataTable();
-    console.log("success")
-} );
+        $(document).ready( function () {
+            $('#main_table').DataTable();
+            console.log("success")
+        } );
 
-</script>
-    <!-- <script>
-        $(function (){
-            // Advanced Search
-            // --------------------------------------------------------------------
-               dt_adv_filter_table = $('.dt-advanced-search');
-
-            // Advanced Filter table
-            if (dt_adv_filter_table.length) {
-                var dt_adv_filter = dt_adv_filter_table.DataTable({
-                    ajax: datapath,
-                    columns: [
-                        { data: 'attendance_id' },//here you write the column name of the DB that match the first column in DataTable.
-                        { data: '' },
-                        { data: '' },
-                        { data: '' },
-                        { data: '' },
-                        { data: '' }
-
-                    ],
-
-                    columnDefs: [
-                        {
-                            className: 'control',
-                            orderable: false,
-                            targets: 0
-                        }
-                    ],
-                    dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-                    orderCellsTop: true,
-                    responsive: {
-                        details: {
-                            display: $.fn.dataTable.Responsive.display.modal({
-                                header: function (row) {
-                                    var data = row.data();
-                                    return 'Details of ' + data['full_name'];
-                                }
-                            }),
-                            type: 'column',
-                            renderer: function (api, rowIdx, columns) {
-                                var data = $.map(columns, function (col, i) {
-                                    return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
-                                        ? '<tr data-dt-row="' +
-                                        col.rowIndex +
-                                        '" data-dt-column="' +
-                                        col.columnIndex +
-                                        '">' +
-                                        '<td>' +
-                                        col.title +
-                                        ':' +
-                                        '</td> ' +
-                                        '<td>' +
-                                        col.data +
-                                        '</td>' +
-                                        '</tr>'
-                                        : '';
-                                }).join('');
-
-                                return data ? $('<table class="table"/><tbody />').append(data) : false;
-                            }
-                        }
-                    },
-                    language: {
-                        paginate: {
-                            // remove previous & next text from pagination
-                            previous: '&nbsp;',
-                            next: '&nbsp;'
-                        }
-                    }
-                });
+        window.onload = function() {
+            if ($('#error').length) {
+            Swal.fire({
+                title: 'Not Authorized',
+                text: $('#error').val(),
+                icon: 'error',
+                confirmButtonText: 'Close'
+                }).then((result) => {
+                    window.location.replace("/");
+                })
             }
+        }
 
-            // on key up from input field
-            $('input.dt-input').on('keyup', function () {
-                filterColumn($(this).attr('data-column'), $(this).val());
-            });
-        })
-    </script> -->
+
+</script> 
 
 {% endblock %}

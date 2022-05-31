@@ -15,34 +15,37 @@ from finance.forms import *
 @login_required  # require login to access this function
 def departments_handler(request): 
     context = {} # Declaring the variable which will be sent to the html file
+    if True: #request.user.is_admin:
+        if request.method == "POST": # if the received request is "POST", it means that the user wants to add or update a department
 
-    if request.method == "POST": # if the received request is "POST", it means that the user wants to add or update a department
+            if request.POST['request_type'] == "update": 
+                department_id = request.POST['department_id'] 
+                result = Update(request.POST, "departments", department_id) 
 
-        if request.POST['request_type'] == "update": 
-            department_id = request.POST['department_id'] 
-            result = Update(request.POST, "departments", department_id) 
+                if result['status'] == False: 
+                    context["form_errors"] = result['form_errors']
+                
+            else:
+                result = Create(request.POST, 'departments') # The "Create" functinon takes the post array (which contains a create department
+            #  form which was filled by the user) and the table name and adds a new row to the DB, this function returns an array
+            #  that contains the status of the operation and the form validation errors if any
 
-            if result['status'] == False: 
-                context["form_errors"] = result['form_errors']
-            
-        else:
-            result = Create(request.POST, 'departments') # The "Create" functinon takes the post array (which contains a create department
-        #  form which was filled by the user) and the table name and adds a new row to the DB, this function returns an array
-        #  that contains the status of the operation and the form validation errors if any
+            if result["status"] == True: # checking if the create operation was successful
+                context["success_message"] = "Operation completed successfuly 👍" # inserting a success message in the context variable
+                
+            else:
+                context["form_errors"] = result['form_errors'] # if the create operation failed, the errors are taken from the the array
+                # that was returned from the "Create" function and put inside the context dictionary
+                print(context)
 
-        if result["status"] == True: # checking if the create operation was successful
-            context["success_message"] = "Operation completed successfuly 👍" # inserting a success message in the context variable
-             
-        else:
-            context["form_errors"] = result['form_errors'] # if the create operation failed, the errors are taken from the the array
-            # that was returned from the "Create" function and put inside the context dictionary
-            print(context)
+        context['departments'] = Read('departments')  # creating a new element (departments) in the context dictionary that will contain
+        #  all departments records from the database, the function "Read" takes the table name as input and returns all database records  
+        #  for that table, this function is defined in HRM/CRUD.py file
+    # else:
+    #     context["not_admin"] = "Sorry, you are not authorized to view this page"
 
-    context['departments'] = Read('departments')  # creating a new element (departments) in the context dictionary that will contain
-    #  all departments records from the database, the function "Read" takes the table name as input and returns all database records  
-    #  for that table, this function is defined in HRM/CRUD.py file 
     return render(request, 'job_management/departments.html', context) # rendering the departments.html file and passing the context variable 
-         # which contains all the departments rows and any other success or error messages 
+            # which contains all the departments rows and any other success or error messages 
 
 
 # This is the function which is responsible for all crud operations for the job_titles table, please refer to the above departments_handler
@@ -51,25 +54,30 @@ def departments_handler(request):
 def job_titles_handler(request):
     context = {} 
 
-    if request.method == "POST": 
+    if request.user.is_admin:
+        if request.method == "POST": 
 
-        if request.POST['request_type'] == "update": 
-            job_title_id = request.POST['job_title_id'] 
-            result = Update(request.POST, "job_titles", job_title_id) 
+            if request.POST['request_type'] == "update": 
+                job_title_id = request.POST['job_title_id'] 
+                result = Update(request.POST, "job_titles", job_title_id) 
 
-            if result['status'] == False: 
-                context["form_errors"] = result['form_errors'] 
+                if result['status'] == False: 
+                    context["form_errors"] = result['form_errors'] 
 
-        else:
-            result = Create(request.POST, 'job_titles')
-            if result["status"] == True:
-                context["success_message"] = "Job Title has been added 👍"
             else:
-                context["form_errors"] = result['form_errors']
-  
-    context['departments'] = Read('departments', 'active_only') # Here, we are sending the departments rows because we need to list the
-    # departments in the job title creation form so the user can select the department which the job title will be under
-    context["job_titles"] = Read('job_titles')
+                result = Create(request.POST, 'job_titles')
+                if result["status"] == True:
+                    context["success_message"] = "Job Title has been added 👍"
+                else:
+                    context["form_errors"] = result['form_errors']
+    
+        context['departments'] = Read('departments', 'active_only') # Here, we are sending the departments rows because we need to list the
+        # departments in the job title creation form so the user can select the department which the job title will be under
+        context["job_titles"] = Read('job_titles')
+
+    else:
+        context["not_admin"] = "Sorry, you are not authorized to view this page"
+
     return render(request, 'job_management/job_titles.html', context)
 
 
@@ -113,48 +121,52 @@ def change_department_status(request):
 @login_required
 def create_contract(request):
     context = {}
-    if request.method == "POST":
+    if request.user.is_admin:
+        if request.method == "POST":
 
-        new_post = request.POST.copy()
-        user_idd =  request.POST['contract_user_id']
-        new_post['annual_bonus_user_id'] = user_idd
-        new_post['bank_account_user_id'] = user_idd
-        new_post['allowance_user_id'] = user_idd
+            new_post = request.POST.copy()
+            user_idd =  request.POST['contract_user_id']
+            new_post['annual_bonus_user_id'] = user_idd
+            new_post['bank_account_user_id'] = user_idd
+            new_post['allowance_user_id'] = user_idd
 
-        creation_forms = [create_contract_form(new_post), create_annual_bonuses_form(new_post), create_bank_account_form(new_post), 
-        create_allowances_form(new_post)]
+            creation_forms = [create_contract_form(new_post), create_annual_bonuses_form(new_post), create_bank_account_form(new_post), 
+            create_allowances_form(new_post)]
 
-        form_validation_error = False
-        form_errors = []
-        returned_data = {}
-        for form in creation_forms:
-            if not form.is_valid():
-                form_errors.append(form.errors)
-                form_validation_error = True
-
-            returned_data.update(form.cleaned_data)
-
-        
-        if form_validation_error == True:
-            context['form_errors'] = form_errors
-            
-
-        else:
-            print("validation success")
+            form_validation_error = False
+            form_errors = []
+            returned_data = {}
             for form in creation_forms:
-                form.save()
-        
-            current_user = users.objects.get(pk=user_idd)
-            current_user.user_experience_years = request.POST['user_experience_years']
-            current_user.user_job_title_id = job_titles_model.objects.get(pk=request.POST['user_job_title_id'])
-            current_user.user_education_degree = request.POST['user_education_degree']
-            current_user.save()
+                if not form.is_valid():
+                    form_errors.append(form.errors)
+                    form_validation_error = True
 
-        context['returned_data'] = returned_data
+                returned_data.update(form.cleaned_data)
+
+            
+            if form_validation_error == True:
+                context['form_errors'] = form_errors
+                
+
+            else:
+                print("validation success")
+                for form in creation_forms:
+                    form.save()
+            
+                current_user = users.objects.get(pk=user_idd)
+                current_user.user_experience_years = request.POST['user_experience_years']
+                current_user.user_job_title_id = job_titles_model.objects.get(pk=request.POST['user_job_title_id'])
+                current_user.user_education_degree = request.POST['user_education_degree']
+                current_user.save()
+
+            context['returned_data'] = returned_data
 
 
-    context["users"] = Read('users')
-    context["job_titles"] = Read('job_titles')
+        context["users"] = Read('users')
+        context["job_titles"] = Read('job_titles')
+    else:
+        context["not_admin"] = "Sorry, you are not authorized to view this page"
+
     return render(request, 'job_management/create_contract.html', context)
 
 @login_required
@@ -165,7 +177,10 @@ def viewContract(request):
 @login_required
 def contracts_list(request):
     context = {}
-    context["contracts"] = Read('contracts')
+    if request.user.is_admin:
+        context["contracts"] = Read('contracts')
+    else:
+        context["not_admin"] = "Sorry, you are not authorized to view this page"
     return render(request, 'job_management/contracts_list.html', context)
 
 

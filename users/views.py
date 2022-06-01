@@ -88,7 +88,7 @@ def register(request):
         
         return render(request, 'users/register.html', context)
     
-@login_required 
+#@login_required
 def dashboard(request):
     return render(request, 'users/dashboard.html')
 

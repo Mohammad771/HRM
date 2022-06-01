@@ -1,12 +1,377 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-</head>
-<body>
-<h2>Hello This is Dashboard</h2>
-<a href=" {% url 'users:users/logout' %} "> Logout </a>
+{% extends 'common\baseView.html' %}
+{% load staticfiles %}
 
-</body>
-</html>
+{% block pageCSS %}
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static "css/Dash/chart-apex.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/Dash/apexcharts.css" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+
+    <!-- END: Custom CSS-->
+{% endblock %}
+
+{% block viewName %}
+    <h2 class="content-header-title float-start mb-0">Dashboard</h2>
+{% endblock %}
+
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">ِ</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-5 col-md-7 col-12">
+                    <div class="card card-profile">
+                        <div class="card-body mt-1">
+                            <div class="profile-image-wrapper">
+                                <div class="profile-image">
+                                    <div class="avatar">
+                                        <img src="{% static "images/malek.jpg" %}"
+                                             alt="Profile Picture">
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Mohammed Malek</h3>
+                            <h6 class="text-muted">Database Administrator</h6>
+                            <span class="badge badge-light-primary profile-badge">7 Years Experience</span>
+                            <hr class="mb-2">
+                                <h4 class="fw-bolder d-flex justify-content-between align-items-start mb-1"><b>personal Info:</b></h4>
+                                <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       ID Number:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       2193427864
+                                   </div>
+                                </div>
+                            <div class="row">
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">
+                                       Education Degee:
+                                   </div>
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                       Master
+                                   </div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       Nationality:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       Japanese
+                                   </div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">
+                                       Date of Birth:
+                                   </div>
+                                    <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       13-07-1999
+                                   </div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       Phon:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       0511111111
+                                   </div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       Email:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       M.malek@AbuSaada.com
+                                   </div>
+                            </div>
+                            <h4 class="fw-bolder mt-1 d-flex justify-content-between align-items-start mb-1"><b>Contract Info:</b></h4>
+                            <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       Hour Price:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       80 SAR
+                                   </div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       Expire Date:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       23-04-2023
+                                   </div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       Staring Date:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       23-04-2021
+                                   </div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                       Auto Renew:
+                                   </div>
+                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
+                                       <i class="fa-solid fa-check alert-success"></i>
+                                   </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-lg-7 col-md-5 col-12">
+                    <div class="card-header align-items-start">
+                        <div>
+                            <h4 class="card-title mb-25">Evaluations</h4>
+                            <p class="card-text mb-0">Last 6 months</p>
+                        </div>
+                        <i data-feather="settings" class="font-medium-3 text-muted cursor-pointer"></i>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div id="sales-line-chart"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="card-title">Loan</h4>
+                            <i data-feather="help-circle" class="font-medium-3 text-muted cursor-pointer"></i>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="goal-overview-chart"></div>
+                            <div class="row border-top text-center mx-0">
+                                <div class="col-6 border-end py-1">
+                                    <p class="card-text text-muted mb-0">Completed</p>
+                                    <h3 class="fw-bolder mb-0">786,617</h3>
+                                </div>
+                                <div class="col-6 py-1">
+                                    <p class="card-text text-muted mb-0">In Progress</p>
+                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-6 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Finance:
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-12">
+                                    <h6 class="">Rewards:
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-5">200</div>
+                                        <div class="col-md-5"> 8-05-2021</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-5">200</div>
+                                        <div class="col-md-5"> 8-05-2021</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-5">200</div>
+                                        <div class="col-md-5"> 8-05-2021</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-12">
+                                    <h6 class="">Punishments:
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-5">200</div>
+                                        <div class="col-md-5"> 8-05-2021</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-5">200</div>
+                                        <div class="col-md-5"> 8-05-2021</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-5">200</div>
+                                        <div class="col-md-5"> 8-05-2021</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-12 mt-2">
+                                    <h6 class="">Overtime:
+                                    </h6>
+                                    <div class="row">
+                                <div class="col-md-2">1-</div>
+                                <div class="col-md-3">Testing</div>
+
+                                <div class="col-md-3"> 8 Hours</div>
+
+                                <div class="col-md-4">14-02-2022</div>
+
+                            </div>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-3">Testing</div>
+
+                                        <div class="col-md-3"> 8 Hours</div>
+
+                                        <div class="col-md-4">14-02-2022</div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">1-</div>
+                                        <div class="col-md-3">Testing</div>
+
+                                        <div class="col-md-3"> 8 Hours</div>
+
+                                        <div class="col-md-4">14-02-2022</div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- END:
+Page JS-->
+{% endblock %}
+
+{% block pageCJs %}
+    <script src="{% static "js/Dash/card-analytics.js" %}"></script>
+    <script src="{% static "js/Dash/apexcharts.min.js" %}"></script>
+
+    <script>
+        $(window).on('load', function () {
+            'use strict';
+            var salesLineChartOptions;
+            var salesLineChart;
+            var $salesLineChart = document.querySelector('#sales-line-chart');
+
+            // Sales Line Chart
+            // -----------------------------
+            salesLineChartOptions = {
+                chart: {
+                    height: 240,
+                    toolbar: {show: false},
+                    zoom: {enabled: false},
+                    type: 'line',
+                    dropShadow: {
+                        enabled: true,
+                        top: 18,
+                        left: 2,
+                        blur: 5,
+                        opacity: 0.2
+                    },
+                    offsetX: -10
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 4
+                },
+                grid: {
+                    borderColor: $strokeColor,
+                    padding: {
+                        top: -20,
+                        bottom: 5,
+                        left: 20
+                    }
+                },
+                legend: {
+                    show: false
+                },
+                colors: [$salesStrokeColor2],
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'dark',
+                        inverseColors: false,
+                        gradientToColors: [window.colors.solid.primary],
+                        shadeIntensity: 1,
+                        type: 'horizontal',
+                        opacityFrom: 1,
+                        opacityTo: 1,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                markers: {
+                    size: 0,
+                    hover: {
+                        size: 5
+                    }
+                },
+                xaxis: {
+                    labels: {
+                        offsetY: 5,
+                        style: {
+                            colors: $textMutedColor,
+                            fontSize: '0.857rem'
+                        }
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    axisBorder: {
+                        show: false
+                    },
+                    tickPlacement: 'on'
+                },
+                yaxis: {
+                    tickAmount: 5,
+                    labels: {
+                        style: {
+                            colors: $textMutedColor,
+                            fontSize: '0.857rem'
+                        },
+                        formatter: function (val) {
+                            return val > 999 ? (val / 1000).toFixed(1) + 'k' : val;
+                        }
+                    }
+                },
+                tooltip: {
+                    x: {show: false}
+                },
+                series: [
+                    {
+                        name: 'Sales',
+                        data: [140, 180, 150, 205, 160, 295, 125, 255, 205, 305, 240, 295]
+                    }
+                ]
+            };
+            salesLineChart = new ApexCharts($salesLineChart, salesLineChartOptions);
+            salesLineChart.render();
+        });
+
+    </script>
+
+
+    <script>
+
+    $(function (){
+        $(".form-select").select2();
+    })
+
+
+    </script>
+
+
+{% endblock %}

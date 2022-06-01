@@ -17,11 +17,13 @@
 
 
 {% block content %}
+{% if not user.is_admin %}
+    <input type="hidden" id="error" value="Sorry, You are not authorized to view this page.">
+{% else %}
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">ِAdd New Overtime Category</h4>
         </div>
-        {% if user.is_admin %}
             {% if form_errors %}
                 {% for field in form_errors %}
                     {{field.errors}}
@@ -44,9 +46,6 @@
                     <!-- onclick="document.getElementById('basic-input').submit();" -->
                 </form>
             </div>
-        {% else %}
-            <center><h2 style="color: #FEAA5A; font-weight: bold;" class="card-title">Sorry, you are not authorized to create new overtime categories.</h2></center>
-        {% endif %}
         </div>
 
     <hr>
@@ -87,6 +86,8 @@
     </div>
 
     <!-- END: Page JS-->
+    {% endif %}
+
 {% endblock %}
 
 {% block pageCJs %}
@@ -95,7 +96,18 @@
     $(function (){
         $(".form-select").select2();
     })
-
+    window.onload = function() {
+            if ($('#error').length) {
+            Swal.fire({
+                title: 'Not Authorized',
+                text: $('#error').val(),
+                icon: 'error',
+                confirmButtonText: 'Close'
+                }).then((result) => {
+                    window.location.replace("/");
+                })
+            }
+        }
 
     </script>
 

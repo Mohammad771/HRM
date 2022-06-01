@@ -5,6 +5,13 @@
     <!-- BEGIN: Page CSS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- END: Page CSS-->
+    {% if user.is_admin %}
+        <title>Manage Payrolls</title>
+    {% else %}
+        <title>My Payroll</title>
+    {% endif %}
+
+
 
     <!-- BEGIN: Custom CSS-->
 
@@ -12,11 +19,16 @@
 {% endblock %}
 
 {% block viewName %}
-    <h2 class="content-header-title float-start mb-0">Create Payroll</h2>
+    {% if user.is_admin %}
+        <h2 class="content-header-title float-start mb-0">Manage Payrolls</h2>
+    {% else %}
+        <h2 class="content-header-title float-start mb-0">My Month's Payroll</h2>
+    {% endif %}
 {% endblock %}
 
 
 {% block content %}
+{% if user.is_admin %}
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">ِAdd New Payroll</h4>
@@ -51,14 +63,22 @@
     </div>
 
     <hr>
+    {% endif%}
+
     {% if error %}
         <h1 style="color: red;">{{error}}</h1>
     {% endif %}
-    {% if user.is_admin %}
-        {% if selected_user %}
 
-    <div class="card-header">
+    {% if selected_user %}
+        <div class="card-header">
         <h4 class="card-title">Payroll Details for {{selected_user}}</h4>
+        {% if already_signed_off %}
+            <h5 style="color: green;" class="card-title">Payroll Status: Signed Off</h5>
+        {% else %}
+            <h5 class="card-title">Payroll Status: Not Signed Off</h5>
+        {% endif %}
+        
+
     </div>
     <div class="row match-height">
         <div class="col-md-6 col-lg-6">
@@ -186,7 +206,7 @@
                     <div class="row">
                         <div class="col-md-6">Regular Work</div>
                         {% if selected_user.user_salary %}
-                        <div class="col-md-6"> <span class="badge bg-success"> +{{total_month_salary}} SAR</span></div>
+                        <div class="col-md-6"> <span class="badge bg-success"> +{% widthratio attendance_ratio 1 selected_user.user_salary %} SAR</span></div>
                         {% else %}
                         <div class="col-md-6">User's Salary has not been set</div>
                         {% endif %}
@@ -220,168 +240,26 @@
             </div>
         </div> 
     </div>
-    {% if already_signed_off %}
-        <h4 style="color: green; float: right;">{{already_signed_off}}</h4>
-    {% else %}
-    <form action="" method="post">
-    {%csrf_token%}
-    <input type="hidden" name="payroll_confirmation" value="{{payroll_confirmation}}">
-    <input type="hidden" name="sign_off" value="sign_off">
-    <button class="btn btn-success btn-next waves-effect waves-float waves-light float-lg-end mb-2">
-        <span class="align-middle d-sm-inline-block d-none">Sign Off</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             class="feather feather-chevron-right align-middle ms-sm-25 ms-0">
-            <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-    </button>
-    </form>
-    {% endif %}
-    {% else %}
-    <br><br>
-        <center><h2>Please Select a user to view his payroll information</h2></center>
+    {% if user.is_admin %}
+        {% if already_signed_off %}
+            <h4 style="color: green; float: right;">{{already_signed_off}}</h4>
+        {% else %}
+        <form action="" method="post">
+        {%csrf_token%}
+        <input type="hidden" name="payroll_confirmation" value="{{payroll_confirmation}}">
+        <input type="hidden" name="sign_off" value="sign_off">
+        <button class="btn btn-success btn-next waves-effect waves-float waves-light float-lg-end mb-2">
+            <span class="align-middle d-sm-inline-block d-none">Sign Off</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-right align-middle ms-sm-25 ms-0">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+        </form>
         {% endif %}
-    {% else %}
-    <!-- <div class="card-header">
-        <h4 class="card-title">Payroll Record for Akram Afif</h4>
-    </div>
-    <div class="row match-height">
-        <div class="col-md-6 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Attendance:
-                    </h4>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">deserve</div>
-                        <div class="col-md-6">4000 SAR</div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="progress progress-bar-success">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="45"
-                                 aria-valuemax="100" style="width: 45%">
-                                45%
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">Worked:</div>
-                        <div class="col-md-6">120h</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Absence:</div>
-                        <div class="col-md-6">24h</div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">ِOvertime:
-                    </h4>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">Testing</div>
-                        <div class="col-md-4">11-5-2021</div>
-                        <div class="col-md-4">8 h</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">Testing</div>
-                        <div class="col-md-4">11-5-2021</div>
-                        <div class="col-md-4">8 h</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">Testing</div>
-                        <div class="col-md-4">11-5-2021</div>
-                        <div class="col-md-4">8 h</div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">Total hours:</div>
-                        <div class="col-md-6">24 h</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Total money:</div>
-                        <div class="col-md-6">1500 SAR</div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Rewards & Punishments:
-                    </h4>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">Reward</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +500 SAR</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Punishment</div>
-                        <div class="col-md-6"><span class="badge bg-danger">-300 SAR</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Reward</div>
-                        <div class="col-md-6"><span class="badge bg-success">+1500 SAR</span></div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">Total:</div>
-                        <div class="col-md-6">1700 SAR</div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-    <div class="col-md-6 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Net Salary:
-                    </h4>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">Regular Work</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +4000 SAR</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Overtime:</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +1500 SAR</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">Regular Work</div>
-                        <div class="col-md-6"> <span class="badge bg-success"> +1700 SAR</span></div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">Total:</div>
-                        <div class="col-md-6">6200 SAR</div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div> -->
     {% endif %}
-
+{% endif %}
 
 
     <!-- END: Page JS-->

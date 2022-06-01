@@ -5,6 +5,7 @@
     <!-- BEGIN: Page CSS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- END: Page CSS-->
+    <title>View Payrolls</title>
 
     <!-- BEGIN: Custom CSS-->
 
@@ -12,7 +13,11 @@
 {% endblock %}
 
 {% block viewName %}
-    <h2 class="content-header-title float-start mb-0">View Payrolls Records</h2>
+    {% if user.is_admin %}
+        <h2 class="content-header-title float-start mb-0">View Payrolls</h2>
+    {% else %}
+        <h2 class="content-header-title float-start mb-0">My Payrolls</h2>
+{% endif %}
 {% endblock %}
 
 
@@ -36,6 +41,7 @@
                 <tbody>
 
                 {% for payroll in payrolls %}
+                    {% if payroll.info.payroll_user_id == user or user.is_admin %}
                 <tr>
                     <td>{{payroll.info.payroll_user_id}}</td>
                     <td>{{payroll.info.payroll_user_id.user_job_title_id}}</td>
@@ -43,6 +49,7 @@
                     <td>{{payroll.info.payroll_net_salary}}</td>
 
                 </tr>
+                    {% endif %}
                 {% endfor %}
 
                 </tbody>

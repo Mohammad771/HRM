@@ -86,9 +86,13 @@ def fetch_all_rows(table, filter=None): # This function is usually called by the
         return(users.objects.filter(user_deleted_at=None))
 
     elif table == 'rewards':
+        if filter:
+            return(rewards.objects.filter(reward_deleted_at=None, reward_user_id=filter))
         return(rewards.objects.filter(reward_deleted_at=None))
 
     elif table == 'punishments':
+        if filter:
+            return(punishments.objects.filter(punishment_deleted_at=None, punishment_user_id=filter))
         return(punishments.objects.filter(punishment_deleted_at=None))
 
     elif table == 'contracts':

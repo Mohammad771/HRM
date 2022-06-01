@@ -5,6 +5,7 @@
     <!-- BEGIN: Page CSS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- END: Page CSS-->
+    <title>Rewards</title>
 
     <!-- BEGIN: Custom CSS-->
 
@@ -12,11 +13,16 @@
 {% endblock %}
 
 {% block viewName %}
-    <h2 class="content-header-title float-start mb-0">Manage Rewards</h2>
+    {% if user.is_admin %}
+        <h2 class="content-header-title float-start mb-0">Manage Rewards</h2>
+    {% else %}
+        <h2 class="content-header-title float-start mb-0">My Rewards</h2>
+    {% endif %}
 {% endblock %}
 
 
 {% block content %}
+{% if user.is_admin %}
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">ِAdd New Rewards</h4>
@@ -30,7 +36,7 @@
                         <div class="position-relative" data-select2-id="45">
                             <select name="reward_user_id" class="select2 form-select select2-hidden-accessible" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                 {% for user in users %}
-                                    <option value="{{user.info.user_id}}" data-select2-id="2">{{ user.info.user_nationality_ID }}</option>
+                                    <option value="{{user.info.user_id}}" data-select2-id="2">{{ user.info }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -52,8 +58,9 @@
         </div>
 
     </div>
-
+{% endif %}
     <hr>
+
     <div class="card">
         <div class="card-header">
             <h4 class="card-title"></h4>
@@ -68,7 +75,9 @@
                     <th>Job Titles</th>
                     <th>Amount</th>
                     <th>Date</th>
-                    <th>Delete</th>
+                    {% if user.is_admin %}
+                        <th>Delete</th>
+                    {% endif %}
 
                 </tr>
                 </thead>
@@ -84,7 +93,9 @@
                             <td>{{ reward.info.reward_user_id.user_job_title_id }}</td>
                             <td>{{ reward.info.reward_amount }}</td>
                             <td>{{ reward.info.reward_created_at}}</td>
-                            <td><i class="fa-solid fa-trash-can"></i></td>
+                            {%  if user.is_admin %}
+                                <td><i class="fa-solid fa-trash-can"></i></td>
+                            {% endif %}
                         </tr>
                     {%endfor%}
                 {% endif %}

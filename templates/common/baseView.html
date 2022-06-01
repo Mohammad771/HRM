@@ -2,6 +2,7 @@
 {% load staticfiles %}
 <html class="loading bordered-layout" lang="en" data-layout="bordered-layout" data-textdirection="ltr">
 <head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -265,6 +266,8 @@
                     </li>
                     <li><a class="d-flex align-items-center" href="{% url 'finance:finance/rewards' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Manage Rewards</span></a>
                     </li>
+                    <li><a class="d-flex align-items-center" href="{% url 'finance:finance/create_payroll' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">My Month's Payrolls</span></a>
+                    </li>
                     <li><a class="d-flex align-items-center" href="{% url 'finance:finance/view_payroll' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">View Payrolls</span></a>
                     </li>
 
@@ -276,8 +279,6 @@
                     <li><a class="d-flex align-items-center" href="{% url 'employees_requests:employees_requests/loans' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Loans</span></a>
                     </li>
                     <li><a class="d-flex align-items-center" href="{% url 'employees_requests:employees_requests/vacations' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Vacations</span></a>
-                    </li>
-                    <li><a class="d-flex align-items-center" href="{% url 'employees_requests:employees_requests/overtime_categories' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Overtime Categories</span></a>
                     </li>
                     <li><a class="d-flex align-items-center" href="{% url 'employees_requests:employees_requests/overtime' %}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Overtime</span></a>
                     </li>

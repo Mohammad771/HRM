@@ -13,8 +13,11 @@
 {% endblock %}
 
 {% block viewName %}
-    <h2 class="content-header-title float-start mb-0">Employees Evaluations</h2>
-{% endblock %}
+{% if user.is_admin %}
+<h2 class="content-header-title float-start mb-0">Evaluations</h2>
+{% else %}
+<h2 class="content-header-title float-start mb-0">My Evaluations</h2>
+{% endif %}{% endblock %}
 
 
 {% block content %}
@@ -37,6 +40,7 @@
                 
                 {% if evaluations %}
                     {% for evaluation in evaluations %}
+                        {% if evaluation.info.evaluation_user_id == user or user.is_admin %}
 
                         <tr>
                             <td>
@@ -50,6 +54,7 @@
 
                         </tr>
 
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
 

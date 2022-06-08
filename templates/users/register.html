@@ -7,7 +7,7 @@
 
 {% block pageCSS %}
     <link rel="stylesheet" type="text/css" href="{% static "css/users/bs-stepper.min.css" %}">
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{% static "css/users/form-wizard.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/users/authentication.css" %}">
@@ -20,7 +20,7 @@
 
 
 {% block content %}
-
+{% if user.is_admin %}
     <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
         <!-- BEGIN: Content-->
         <div class="app-content content ">
@@ -177,7 +177,9 @@
             </div>
         </div>
         <!-- END: Content-->
-
+{% else %}
+<input type="hidden" id="error" value="Sorry, you are not authorized to view this page">
+{% endif %}
 
 
 {% endblock %}
@@ -206,6 +208,21 @@
             }
         })
     }
+    </script>
+
+    <script>
+            window.onload = function() {
+            if ($('#error').length) {
+            Swal.fire({
+                title: 'Not Authorized',
+                text: $('#error').val(),
+                icon: 'error',
+                confirmButtonText: 'Close'
+                }).then((result) => {
+                    window.location.replace("/");
+                })
+            }
+        }
     </script>
 </body>
 <!-- END: Body-->

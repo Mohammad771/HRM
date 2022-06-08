@@ -128,7 +128,7 @@ def dashboard(request):
     for evaluation in evaluations_within_6_months:
         # months_array.append(evaluation.evaluation_created_at.date())
         eval_date = evaluation.evaluation_created_at
-        months_array.append(date.today().strftime('%b,%d'))
+        months_array.append(date.today().strftime('%b %d'))
         values_array.append(evaluation.evaluation_overall_rate)
 
     if len(months_array):

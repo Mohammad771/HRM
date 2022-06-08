@@ -94,7 +94,7 @@
                             <td>{{ reward.info.reward_amount }}</td>
                             <td>{{ reward.info.reward_created_at}}</td>
                             {%  if user.is_admin %}
-                                <td><i class="fa-solid fa-trash-can"></i></td>
+                                <td><i data-bs-toggle="modal" data-bs-target="#warning" class="fa-solid fa-trash-can"></i></td>
                             {% endif %}
                         </tr>
                     {%endfor%}
@@ -105,6 +105,32 @@
 
     </div>
 
+    <div class="d-inline-block">
+        <!-- Button trigger modal
+        <button type="button" class="btn btn-outline-warning waves-effect" data-bs-toggle="modal" data-bs-target="#warning">
+          Warning
+        </button>
+         Modal -->
+        <div class="modal fade text-start modal-warning" id="warning" tabindex="-1" aria-labelledby="myModalLabel140"
+             aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel140">Warning</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Sure about Deleting?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning waves-effect waves-float waves-light"
+                                data-bs-dismiss="modal">Sure
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- END: Page JS-->
 {% endblock %}
 

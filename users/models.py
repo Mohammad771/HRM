@@ -121,7 +121,7 @@ class users(AbstractBaseUser):
     user_mobile = models.CharField(max_length=13, unique=True)
     user_id_number = models.CharField(max_length=10, default=str(1)) # this needs to be changed to unique=True, i am not doing it now because it requires database deletion
     user_DOB = models.DateField()
-    user_nationality_ID = models.IntegerField()
+    user_nationality_ID = models.CharField(max_length=13)
     user_experience_years = models.IntegerField(default=None, null=True, blank=True)
     user_education_degree = models.CharField(max_length=24, default=None, null=True, blank=True)
     user_job_title_id = models.ForeignKey(job_titles, on_delete=models.CASCADE, related_name="+", default=None, null=True, blank=True)

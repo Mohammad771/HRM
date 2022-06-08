@@ -32,97 +32,101 @@
                             <div class="profile-image-wrapper">
                                 <div class="profile-image">
                                     <div class="avatar">
-                                        <img src="{% static "images/malek.jpg" %}"
+                                        <img src="{% static 'images/malek.jpg' %}"
                                              alt="Profile Picture">
                                     </div>
                                 </div>
                             </div>
-                            <h3>Mohammed Malek</h3>
-                            <h6 class="text-muted">Database Administrator</h6>
-                            <span class="badge badge-light-primary profile-badge">7 Years Experience</span>
+                            <h3>{{user}}</h3>
+                            <h6 class="text-muted">{{user.job_title_id}}</h6>
+                            <!-- <span class="badge badge-light-primary profile-badge">{{user.user_experience_years}}</span> -->
                             <hr class="mb-2">
-                                <h4 class="fw-bolder d-flex justify-content-between align-items-start mb-1"><b>personal Info:</b></h4>
+                                <h4 class="fw-bolder d-flex justify-content-between align-items-start mb-1"><b>Personal Info:</b></h4>
                                 <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
-                                       ID Number:
-                                   </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       2193427864
-                                   </div>
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">ID Number:</div>
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">{{user.user_id_number}}</div>
                                 </div>
                             <div class="row">
-                                   <div class="col-md-5 d-flex justify-content-between align-items-start">
-                                       Education Degee:
-                                   </div>
-                                    <div class="col-md-6 d-flex justify-content-between align-items-end">
-                                       Master
-                                   </div>
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">Education Degee:</div>
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">{{user.user_education_degree}}</div>
                             </div>
                             <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">
                                        Nationality:
                                    </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       Japanese
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                       
                                    </div>
                             </div>
                             <div class="row">
                                    <div class="col-md-5 d-flex justify-content-between align-items-start">
                                        Date of Birth:
                                    </div>
-                                    <div class="col-md-4 d-flex justify-content-between align-items-start">
-                                       13-07-1999
+                                    <div class="col-md-6 d-flex justify-content-between align-items-start">
+                                        {{user.user_DOB}}
                                    </div>
                             </div>
                             <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
-                                       Phon:
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">
+                                       Phone:
                                    </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       0511111111
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                        {{user.user_mobile}}
                                    </div>
                             </div>
                             <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">
                                        Email:
                                    </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       M.malek@AbuSaada.com
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                        {{user.email}}
                                    </div>
                             </div>
                             <h4 class="fw-bolder mt-1 d-flex justify-content-between align-items-start mb-1"><b>Contract Info:</b></h4>
                             <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">
                                        Hour Price:
                                    </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       80 SAR
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                        {% if user.user_job_title_id %}
+                                            {{user.user_job_title_id.job_title_hour_price}}
+                                        {% else %}
+                                            This employee is not added under a job title yet
+                                        {% endif %}
                                    </div>
                             </div>
-                            <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
-                                       Expire Date:
-                                   </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       23-04-2023
-                                   </div>
-                            </div>
-                            <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
-                                       Staring Date:
-                                   </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       23-04-2021
-                                   </div>
-                            </div>
-                            <div class="row">
-                                   <div class="col-md-4 d-flex justify-content-between align-items-start">
-                                       Auto Renew:
-                                   </div>
-                                    <div class="col-md-8 d-flex justify-content-between align-items-end">
-                                       <i class="fa-solid fa-check alert-success"></i>
-                                   </div>
-                            </div>
+                            {% if user_contract %}
+                                <div class="row">
+                                    <div class="col-md-5 d-flex justify-content-between align-items-start">
+                                        Expire Date:
+                                    </div>
+                                        <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                        {{user_contract.contract_expiry_date}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 d-flex justify-content-between align-items-start">
+                                        Staring Date:
+                                    </div>
+                                        <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                        {{user_contract.contract_starting_date}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 d-flex justify-content-between align-items-start">
+                                        Auto Renew:
+                                    </div>
+                                        <div class="col-md-6 d-flex justify-content-between align-items-end">
+                                        {% if user_contract.contract_auto_renewal %}
+                                            <i class="fa-solid fa-check alert-success"></i>
+                                        {% else %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                This employee does not have a contract yet
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>
@@ -132,7 +136,6 @@
                             <h4 class="card-title mb-25">Evaluations</h4>
                             <p class="card-text mb-0">Last 6 months</p>
                         </div>
-                        <i data-feather="settings" class="font-medium-3 text-muted cursor-pointer"></i>
                     </div>
                     <div class="card-body pb-0">
                         <div id="sales-line-chart"></div>
@@ -250,22 +253,35 @@
 
     </div>
 
-
+<input type="hidden" id="values" value="{{values_array|safe}}">
+<input type="hidden" id="dates" value="{{months_array|safe}}">
 
     <!-- END:
 Page JS-->
 {% endblock %}
 
 {% block pageCJs %}
-    <script src="{% static "js/Dash/card-analytics.js" %}"></script>
-    <script src="{% static "js/Dash/apexcharts.min.js" %}"></script>
+    <!-- <script src="{% static 'js/Dash/card-analytics.js' %}"></script> -->
+    <script src="{% static 'js/Dash/apexcharts.min.js' %}"></script> 
 
     <script>
         $(window).on('load', function () {
             'use strict';
             var salesLineChartOptions;
             var salesLineChart;
+            var $strokeColor = '#ebe9f1';
+            var $salesStrokeColor2 = '#df87f2';
+            var $textMutedColor = '#b9b9c3';
             var $salesLineChart = document.querySelector('#sales-line-chart');
+            // var values_array = document.getElementById("values").value   //$("#values");
+            // var months_array = document.getElementById("dates").value //$("#values");
+            // var months_array = $("#dates").val();
+            // var values_array = $("#values").val();
+            var values_array = JSON.parse("{{values_array|safe}}");
+            console.log(values_array)
+            var months_array = {{months_array|safe}};
+            console.log(months_array)
+
 
             // Sales Line Chart
             // -----------------------------
@@ -330,7 +346,7 @@ Page JS-->
                     axisTicks: {
                         show: false
                     },
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    categories: months_array,
                     axisBorder: {
                         show: false
                     },
@@ -353,8 +369,8 @@ Page JS-->
                 },
                 series: [
                     {
-                        name: 'Sales',
-                        data: [140, 180, 150, 205, 160, 295, 125, 255, 205, 305, 240, 295]
+                        name: 'Performance',
+                        data: values_array
                     }
                 ]
             };

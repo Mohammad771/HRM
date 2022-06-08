@@ -248,7 +248,7 @@ def Update(post, table, primary_key): # The Update function, this function is ca
         return(result) # returning the result dictionary to the calling function
     
 
-def Delete(): # The Update function, this function is called from the file "views.py" from several apps, it receives 
+def Delete(table, primary_key): # The Update function, this function is called from the file "views.py" from several apps, it receives 
     # the table name and a primary key and performs a soft delete on that row, soft deletion does not delete the row, it only changes the 
     # deleted_at field for that row, and when we retreive the rows from that table, we ignore all rows that have deleted_at != Null
     

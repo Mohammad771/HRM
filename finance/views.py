@@ -78,6 +78,7 @@ def create_payroll(request):
 
     current_date = datetime.datetime.today()
     current_month = current_date.month
+    current_day = current_date.day
     next_month = current_month + 1
     beginning_of_month = str(current_date.year) + "-" + str(current_month) + "-01"
     end_of_month = str(current_date.year) + "-" + str(next_month) + "-01"
@@ -92,7 +93,7 @@ def create_payroll(request):
 
     total_attendance_hours = round(total_attendance_hours, 2)
     context['total_attendance_hours'] = total_attendance_hours
-    context['total_absence_hours'] = 240 - total_attendance_hours
+    context['total_absence_hours'] = (current_day * 8) - total_attendance_hours
     attendance_ratio = round((total_attendance_hours / 240), 2)
     context['attendance_ratio'] = attendance_ratio
 

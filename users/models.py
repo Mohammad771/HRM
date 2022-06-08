@@ -126,19 +126,10 @@ class users(AbstractBaseUser):
     user_education_degree = models.CharField(max_length=24, default=None, null=True, blank=True)
     user_job_title_id = models.ForeignKey(job_titles, on_delete=models.CASCADE, related_name="+", default=None, null=True, blank=True)
     user_salary = models.IntegerField(null = True, default=None, blank=True)
-    user_created_at = models.DateTimeField(auto_now=True)
+    user_created_at = models.DateTimeField(default=timezone.now)
     user_updated_at = models.DateTimeField(null = True, default=None, blank=True)
     user_deleted_at = models.DateTimeField(null = True, default=None, blank=True)
     user_middle_name = models.CharField(max_length=24, null = True, blank=True)
-    # user_password_hash      = models.TextField()
-    # user_id = models.AutoField(max_length=24, primary_key=True)
-    # user_attachment_id = models.ForeignKey(attachments, default=None, on_delete=models.CASCADE, related_name="+")
-    # user_address_id = models.ForeignKey(addresses, default=None, on_delete=models.CASCADE, related_name="+")
-    # user_type_id = models.ForeignKey('user_types', default=None, on_delete=models.CASCADE, related_name="+")
-    # user_employee_department = models.ForeignKey(departments, on_delete=models.CASCADE, related_name="+")
-    # user_activation_hash = models.TextField()
-    # user_is_active = models.BooleanField()
-    # user_status = models.BooleanField()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -166,6 +157,7 @@ class users(AbstractBaseUser):
         user_middle_name = self.user_middle_name
         user_mobile = self.user_mobile
         user_id_number = self.user_id_number
+        user_experience_years = self.user_experience_years
         if birthdate:
             today = datetime.date.today()
             age = today - birthdate
@@ -191,7 +183,6 @@ class users(AbstractBaseUser):
                 raise ValidationError(
                     {'user_mobile': "Phone number should only contain numbers"})
         if user_id_number:
-            print("ID:"+ str(user_id_number))
             try:
                 float(user_id_number)
             except ValueError:
@@ -199,7 +190,16 @@ class users(AbstractBaseUser):
                     {'user_id_number': "ID should only contain numbers"})
             if len(user_id_number) != 10:
                 raise ValidationError(
-                    {'user_id_number': "ID should be 10 digits"}) 
+                    {'user_id_number': "ID should be 10 digits"})
+
+            # if user_experience_years != None:
+            #     if user_experience_years < 0:
+            #         raise ValidationError(
+            #             {'user_experience_years': "User's Experience years cannot be less than 0"})
+            #     elif user_experience_years > 40:
+            #         raise ValidationError(
+            #             {'user_experience_years': "User's Experience years cannot be more than 40"})
+
 
 
 

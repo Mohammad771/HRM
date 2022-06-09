@@ -94,7 +94,7 @@
                             <td>{{ reward.info.reward_amount }}</td>
                             <td>{{ reward.info.reward_created_at}}</td>
                             {%  if user.is_admin %}
-                                <td><i data-bs-toggle="modal" data-bs-target="#warning" class="fa-solid fa-trash-can"></i></td>
+                                <td><i id="{{reward.info.reward_id}}" onclick="delete_reward(this.id)" data-bs-toggle="modal" data-bs-target="#warning" class="fa-solid fa-trash-can"></i></td>
                             {% endif %}
                         </tr>
                     {%endfor%}
@@ -123,9 +123,14 @@
                         Sure about Deleting?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-warning waves-effect waves-float waves-light"
+                        <form action="" method="post">
+                        {%csrf_token%}
+                        <input id="reward_id" type="hidden" name="reward_id" value="">
+                        <input type="hidden" name="request_type" value="delete">
+                        <button class="btn btn-warning waves-effect waves-float waves-light"
                                 data-bs-dismiss="modal">Sure
                         </button>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -141,6 +146,10 @@
         $(".form-select").select2();
     })
 
+    function delete_reward(row_id)
+    {
+        $("#reward_id").val(row_id)
+    }
 
     </script>
 

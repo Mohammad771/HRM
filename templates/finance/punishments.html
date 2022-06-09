@@ -95,7 +95,7 @@
                             <td>{{ punishment.info.punishment_amount }}</td>
                             <td>{{ punishment.info.punishment_created_at}}</td>
                             {%  if user.is_admin %}
-                                <td><i data-bs-toggle="modal" data-bs-target="#warning" class="fa-solid fa-trash-can"></i></td>
+                                <td><i id="{{punishment.info.punishment_id}}" onclick="delete_punishment(this.id)" data-bs-toggle="modal" data-bs-target="#warning" class="fa-solid fa-trash-can"></i></td>
                             {% endif %}                        </tr>
                     {%endfor%}
                 {% endif %}
@@ -124,9 +124,14 @@
                        Sure about Deleting?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-warning waves-effect waves-float waves-light"
+                        <form action="" method="post">
+                        {%csrf_token%}
+                        <input id="punishment_id" type="hidden" name="punishment_id" value="">
+                        <input type="hidden" name="request_type" value="delete">
+                        <button class="btn btn-warning waves-effect waves-float waves-light"
                                 data-bs-dismiss="modal">Sure
                         </button>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -142,7 +147,11 @@
     $(function (){
         $(".form-select").select2();
     })
-
+    
+    function delete_punishment(row_id)
+    {
+        $("#punishment_id").val(row_id)
+    }
 
     </script>
 

@@ -16,12 +16,18 @@ def punishments(request):
     context = {}
     if request.user.is_admin:
         if request.method == "POST":
-            print(request.POST)
-            result = Create(request.POST, 'punishments')
-            if result["status"] == True:
-                context["success_message"] = "Alhamdulillah"
+            if request.POST["request_type"] == "delete":
+                result = Delete("punishments", request.POST["punishment_id"])
+                if result['status']:
+                    print("Deletion Successful")
+                else:
+                    print(result['error'])
             else:
-                context["form_errors"] = result['form_errors']
+                result = Create(request.POST, 'punishments')
+                if result["status"] == True:
+                    context["success_message"] = "Alhamdulillah"
+                else:
+                    context["form_errors"] = result['form_errors']
 
         context['viewPunishment'] = Read("punishments")
         context["users"] = Read("users")
@@ -33,11 +39,19 @@ def rewards(request):
     context = {}
     if request.user.is_admin:
         if request.method == "POST":
-            result = Create(request.POST, 'rewards')
-            if result["status"] == True:
-                context["success_message"] = "Reward has been added 👍"
+            if request.POST["request_type"] == "delete":
+                result = Delete("rewards", request.POST["reward_id"])
+                if result['status']:
+                    print("Deletion Successful")
+                else:
+                    print(result['error'])
             else:
-                context["form_errors"] = result['form_errors']
+                
+                result = Create(request.POST, 'rewards')
+                if result["status"] == True:
+                    context["success_message"] = "Reward has been added 👍"
+                else:
+                    context["form_errors"] = result['form_errors']
 
         context['viewReward'] = Read("rewards")
         context["users"] = Read("users")

@@ -96,13 +96,21 @@ def change_vacation_status(request):
 def overtime_categories(request):
     context = {}
 
-    if request.method == "POST": 
-        
-        result = Create(request.POST, 'overtime_categories')
-        if result["status"] == True:
-            context["success_message"] = "Overtime Category has been created 👍"
+    if request.method == "POST":
+
+        if request.POST["request_type"] == "delete":
+            result = Delete("overtime_categories", request.POST["overtime_category_id"])
+            if result['status']:
+                print("Deletion Successful")
+            else:
+                print(result['error'])
+
         else:
-            context["form_errors"] = result['form_errors']
+            result = Create(request.POST, 'overtime_categories')
+            if result["status"] == True:
+                context["success_message"] = "Overtime Category has been created 👍"
+            else:
+                context["form_errors"] = result['form_errors']
 
     context["overtime_categories"] = Read('overtime_categories')
     return render(request, 'employees_requests/overtimeCategories.html', context)

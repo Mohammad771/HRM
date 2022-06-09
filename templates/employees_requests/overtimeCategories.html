@@ -37,7 +37,7 @@
                         <div class="col-md-5">
                             <label class="form-label" for="basicInput">Category Name</label>
                             <input type="text" class="form-control" id="cat_name" name = "overtime_category_name" placeholder="Code Review">
-
+                            <input type="hidden" name="request_type" value="add">
                         </div>
 
                         <div class="col-md-2 mt-2">
@@ -74,7 +74,7 @@
                             <span class="fw-bold">{{overtime_category.number}}</span>
                         </td>
                         <td>{{overtime_category.info.overtime_category_name}}</td>
-                        <td><i data-bs-toggle="modal" data-bs-target="#warning" class="fa-solid fa-trash-can"></i></td>
+                        <td><i id="{{overtime_category.info.overtime_category_id}}" onclick="delete_overtime_category(this.id)" data-bs-toggle="modal" data-bs-target="#warning" class="fa-solid fa-trash-can"></i></td>
 
                     
 
@@ -88,12 +88,6 @@
 
     <!-- END: Page JS-->
     {% endif %}
-    <div class="d-inline-block">
-        <!-- Button trigger modal
-        <button type="button" class="btn btn-outline-warning waves-effect" data-bs-toggle="modal" data-bs-target="#warning">
-          Warning
-        </button>
-         Modal -->
         <div class="modal fade text-start modal-warning" id="warning" tabindex="-1" aria-labelledby="myModalLabel140"
              aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-dialog-centered">
@@ -106,14 +100,19 @@
                         Sure about Deleting?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-warning waves-effect waves-float waves-light"
+                    <form action="" method="post">
+                        {%csrf_token%}
+                        <input id="overtime_category_id" type="hidden" name="overtime_category_id" value="">
+                        <input type="hidden" name="request_type" value="delete">
+                        <button class="btn btn-warning waves-effect waves-float waves-light"
                                 data-bs-dismiss="modal">Sure
                         </button>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
 
 {% endblock %}
 
@@ -135,6 +134,11 @@
                 })
             }
         }
+
+    function delete_overtime_category(row_id)
+    {
+        $("#overtime_category_id").val(row_id)
+    }
 
     </script>
 

@@ -251,6 +251,38 @@ def Update(post, table, primary_key): # The Update function, this function is ca
 def Delete(table, primary_key): # The Update function, this function is called from the file "views.py" from several apps, it receives 
     # the table name and a primary key and performs a soft delete on that row, soft deletion does not delete the row, it only changes the 
     # deleted_at field for that row, and when we retreive the rows from that table, we ignore all rows that have deleted_at != Null
+    result = {}
     
-    pass
+    if table == "overtime_categories":
+        row = overtime_categories.objects.get(pk=primary_key)
+        try:
+            row.overtime_category_deleted_at = timezone.now()
+            row.save()
+            result["status"] = True
+        except Exception as e:
+            result["status"] = False
+            result["error"] = str(e)
+    
+    if table == "rewards":
+        row = rewards.objects.get(pk=primary_key)
+        try:
+            row.reward_deleted_at = timezone.now()
+            row.save()
+            result["status"] = True
+        except Exception as e:
+            result["status"] = False
+            result["error"] = str(e)
+    
+    if table == "punishments":
+        row = punishments.objects.get(pk=primary_key)
+        try:
+            row.punishment_deleted_at = timezone.now()
+            row.save()
+            result["status"] = True
+        except Exception as e:
+            result["status"] = False
+            result["error"] = str(e)
+    
+    return result
+
 

@@ -141,27 +141,29 @@
                         <div id="sales-line-chart"></div>
                     </div>
                 </div>
+                {% if user_loan %}
                 <div class="col-lg-4 col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Loan</h4>
-                            <i data-feather="help-circle" class="font-medium-3 text-muted cursor-pointer"></i>
                         </div>
-                        <div class="card-body p-0">
-                            <div id="goal-overview-chart"></div>
-                            <div class="row border-top text-center mx-0">
-                                <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Completed</p>
-                                    <h3 class="fw-bolder mb-0">786,617</h3>
-                                </div>
-                                <div class="col-6 py-1">
-                                    <p class="card-text text-muted mb-0">In Progress</p>
-                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                            <div class="card-body p-0">
+                                <div id="goal-overview-chart"></div>
+                                <div class="row border-top text-center mx-0">
+                                    <div class="col-6 border-end py-1">
+                                        <p class="card-text text-muted mb-0">Completed</p>
+                                        <h3 class="fw-bolder mb-0">{{user_loan.completed_amount}} SAR</h3>
+                                    </div>
+                                    <div class="col-6 py-1">
+                                        <p class="card-text text-muted mb-0">Remaining</p>
+                                        <h3 class="fw-bolder mb-0">{{user_loan.remaining_amount}} SAR</h3>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
+                    
                 </div>
+                {% endif %}
                 <div class="col-lg-8 col-md-6 col-12">
                     <div class="card">
                         <div class="card-header">
@@ -171,75 +173,45 @@
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-5 col-md-5 col-12">
-                                    <h6 class="">Rewards:
-                                    </h6>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-5">200</div>
-                                        <div class="col-md-5"> 8-05-2021</div>
+                                {% if user_rewards %}
+                                    <div class="col-lg-5 col-md-5 col-12">
+                                        <h6 class="">Rewards:
+                                        </h6>
+                                        {% for reward in user_rewards %}
+                                            <div class="row">
+                                                <div class="col-md-6"> <span class="badge bg-success"> +{{reward.reward_amount}} SAR</span></div>
+                                                    <div class="col-md-5">{{reward.reward_created_at|date}}</div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-5">200</div>
-                                        <div class="col-md-5"> 8-05-2021</div>
+                                {% endif %}
+
+
+                                {% if user_punishments %}
+                                    <div class="col-lg-5 col-md-5 col-12">
+                                        <h6 class="">Punishments:
+                                        </h6>
+                                        {% for punishment in user_punishments %}
+                                            <div class="row">
+                                                <div class="col-md-6"><span class="badge bg-danger"> -{{punishment.punishment_amount}} SAR</span></div>
+                                                <div class="col-md-5">{{punishment.punishment_created_at|date}}</div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-5">200</div>
-                                        <div class="col-md-5"> 8-05-2021</div>
+                                {% endif %}
+
+                                {% if user_overtimes %}
+                                    <div class="col-lg-8 col-md-8 col-12 mt-2">
+                                        <h6 class="">Overtime:</h6>
+                                        {% for overtime in user_overtimes %}
+                                            <div class="row">
+                                                <div class="col-md-5">{{overtime.overtime_overtime_category_id}}</div>
+                                                <div class="col-md-3">{{overtime.overtime_hours}} Hours</div>
+                                                <div class="col-md-4">{{overtime.overtime_date}}</div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                </div>
-                                <div class="col-lg-5 col-md-5 col-12">
-                                    <h6 class="">Punishments:
-                                    </h6>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-5">200</div>
-                                        <div class="col-md-5"> 8-05-2021</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-5">200</div>
-                                        <div class="col-md-5"> 8-05-2021</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-5">200</div>
-                                        <div class="col-md-5"> 8-05-2021</div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-12 mt-2">
-                                    <h6 class="">Overtime:
-                                    </h6>
-                                    <div class="row">
-                                <div class="col-md-2">1-</div>
-                                <div class="col-md-3">Testing</div>
-
-                                <div class="col-md-3"> 8 Hours</div>
-
-                                <div class="col-md-4">14-02-2022</div>
-
-                            </div>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-3">Testing</div>
-
-                                        <div class="col-md-3"> 8 Hours</div>
-
-                                        <div class="col-md-4">14-02-2022</div>
-
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">1-</div>
-                                        <div class="col-md-3">Testing</div>
-
-                                        <div class="col-md-3"> 8 Hours</div>
-
-                                        <div class="col-md-4">14-02-2022</div>
-
-                                    </div>
-                                </div>
+                                {% endif %}
 
                             </div>
 
@@ -409,7 +381,7 @@ Page JS-->
                 startAngle: -150,
                 endAngle: 150,
                 hollow: {
-                size: '77%'
+                size: '70%'
                 },
                 track: {
                 background: $strokeColor,
@@ -440,7 +412,7 @@ Page JS-->
                 stops: [0, 100]
             }
             },
-            series: [83],
+            series: ['{{user_loan.completed_percentage}}'],
             stroke: {
             lineCap: 'round'
             },

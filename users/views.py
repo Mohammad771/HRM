@@ -7,11 +7,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import register_form
 from .models import users as users_model
 from job_management.models import contracts
-from track_performance.models import evaluations
+from track_performance.models import evaluations 
+from employees_requests.models import loans, overtime
+from finance.models import rewards, punishments
 from django.core.exceptions import ValidationError
 from datetime import date
-import calendar
-import json
 from dateutil.relativedelta import relativedelta
 
 
@@ -115,10 +115,8 @@ def dashboard(request):
         context["user_contract"] = user_contract[0]
 
     current_date = date.today()
-    # current_month = current_date.month
     period_end = date.today() + relativedelta(days=+1)
     period_start = date.today() + relativedelta(months=-6)
-    # print(calendar.month_abbr[current_month])
 
 
     evaluations_within_6_months = evaluations.objects.filter(evaluation_user_id=request.user,
@@ -126,7 +124,6 @@ def dashboard(request):
     months_array = []
     values_array = []
     for evaluation in evaluations_within_6_months:
-        # months_array.append(evaluation.evaluation_created_at.date())
         eval_date = evaluation.evaluation_created_at
         months_array.append(date.today().strftime('%b %d'))
         values_array.append(evaluation.evaluation_overall_rate)
@@ -134,11 +131,39 @@ def dashboard(request):
     if len(months_array):
         context['months_array'] = months_array
         context['values_array'] = values_array
-        # context['months_array'] = json.dumps(months_array)
-        # context['values_array'] = json.dumps(values_array)
 
-    print(months_array)
-    print(values_array)
+    user_loan = loans.objects.filter(loan_user_id=request.user,loan_deleted_at=None)
+    if len(user_loan):
+        user_loan = user_loan[0]
+        user_loan.completed_amount = (user_loan.loan_number_of_complete_payment / user_loan.loan_period) * user_loan.loan_amount
+        user_loan.remaining_amount = user_loan.loan_amount - user_loan.completed_amount
+        user_loan.completed_percentage = (user_loan.completed_amount / user_loan.loan_amount) * 100
+        context['user_loan'] = user_loan
+    
+    current_date = date.today()
+    current_month = current_date.month
+    beginning_of_month = str(current_date.year) + "-" + str(current_month) + "-01"
+    end_of_month = str(current_date.year) + "-" + str(current_month+1) + "-01"
+
+    user_rewards = rewards.objects.filter(reward_user_id=request.user,
+    reward_created_at__range=(beginning_of_month, end_of_month))
+
+    user_punishments = punishments.objects.filter(punishment_user_id=request.user,
+        punishment_created_at__range=(beginning_of_month, end_of_month))
+
+    user_overtimes = overtime.objects.filter(overtime_user_id=request.user, overtime_status=True,
+        overtime_date__range=(beginning_of_month, end_of_month))
+
+    print(user_rewards)
+    if len(user_rewards):
+        context["user_rewards"] = user_rewards
+    if len(user_punishments):
+        context["user_punishments"] = user_punishments
+    if len(user_overtimes):
+        context["user_overtimes"] = user_overtimes
+
+    
+
 
 
     return render(request, 'users/dashboard.html', context)

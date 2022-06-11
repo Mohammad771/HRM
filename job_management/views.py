@@ -24,6 +24,10 @@ def departments_handler(request):
 
                 if result['status'] == False: 
                     context["form_errors"] = result['form_errors']
+                else:
+                    context["success_notification"] = "Operation Successful 👍"
+                    print("dazy")
+
                 
             else:
                 result = Create(request.POST, 'departments') # The "Create" functinon takes the post array (which contains a create department
@@ -31,7 +35,7 @@ def departments_handler(request):
             #  that contains the status of the operation and the form validation errors if any
 
             if result["status"] == True: # checking if the create operation was successful
-                context["success_message"] = "Operation completed successfuly 👍" # inserting a success message in the context variable
+                context["success_notification"] = "Operation Successful 👍" # inserting a success message in the context variable
                 
             else:
                 context["form_errors"] = result['form_errors'] # if the create operation failed, the errors are taken from the the array
@@ -62,12 +66,15 @@ def job_titles_handler(request):
                 result = Update(request.POST, "job_titles", job_title_id) 
 
                 if result['status'] == False: 
-                    context["form_errors"] = result['form_errors'] 
+                    context["form_errors"] = result['form_errors']
+                else:
+                    context["success_notification"] = "Operation Successful 👍"
+                   
 
             else:
                 result = Create(request.POST, 'job_titles')
                 if result["status"] == True:
-                    context["success_message"] = "Job Title has been added 👍"
+                    context["success_notification"] = "Operation Successful 👍"
                 else:
                     context["form_errors"] = result['form_errors']
     
@@ -158,6 +165,8 @@ def create_contract(request):
                 current_user.user_job_title_id = job_titles_model.objects.get(pk=request.POST['user_job_title_id'])
                 current_user.user_education_degree = request.POST['user_education_degree']
                 current_user.save()
+
+                context["success_notification"] = "Operation Successful 👍"
 
             context['returned_data'] = returned_data
 

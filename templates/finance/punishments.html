@@ -21,6 +21,9 @@
 
 
 {% block content %}
+{% if success_notification %}
+    <input type="hidden" id="success_notification" value="{{success_notification}}" >
+{% endif %}
 {% if user.is_admin %}
     <div class="card">
         <div class="card-header">
@@ -152,6 +155,19 @@
     {
         $("#punishment_id").val(row_id)
     }
+    
+    window.onload = function()
+        {
+            if ($('#success_notification').length) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: $('#success_notification').val(),
+                    showConfirmButton: false,
+                    timer: 1750
+                })
+            }
+        }
 
     </script>
 

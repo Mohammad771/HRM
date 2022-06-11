@@ -18,11 +18,22 @@
 
 
 {% block content %}
+{% if success_notification %}
+    <input type="hidden" id="success_notification" value="{{success_notification}}" >
+{% endif %}
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Apply for New Vacations</h4>
+            {% if user.is_admin %}
+                <h4 class="card-title">Create a New Vacations</h4>
+            {% else %}
+                <h4 class="card-title">Apply for New Vacations</h4>
+            {% endif %}
 
+            {% if user.is_admin %}
+            <button style="width: 250px" type="submit" class="btn btn-outline-success round waves-effect" data-bs-toggle="modal" data-bs-target="#UploadModal">Create a New Vacation</button>
+            {% else %}
             <button style="width: 250px" type="submit" class="btn btn-outline-success round waves-effect" data-bs-toggle="modal" data-bs-target="#UploadModal">Apply for New Vacation</button>
+            {% endif %}
 
         </div>
         {% if form_errors %}
@@ -210,6 +221,19 @@
                     } 
                 });
             
+        }
+
+        window.onload = function()
+        {
+            if ($('#success_notification').length) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: $('#success_notification').val(),
+                    showConfirmButton: false,
+                    timer: 1750
+                })
+            }
         }
 
     </script>

@@ -18,6 +18,9 @@
 
 
 {% block content %}
+{% if success_notification %}
+    <input type="hidden" id="success_notification" value="{{success_notification}}" >
+{% endif %}
 {% if not user.is_admin %}
     <input type="hidden" id="error" value="Sorry, You are not authorized to view this page.">
 {% else %}
@@ -139,6 +142,18 @@
     {
         $("#overtime_category_id").val(row_id)
     }
+    window.onload = function()
+        {
+            if ($('#success_notification').length) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: $('#success_notification').val(),
+                    showConfirmButton: false,
+                    timer: 1750
+                })
+            }
+        }
 
     </script>
 

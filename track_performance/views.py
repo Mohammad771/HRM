@@ -24,7 +24,7 @@ def createEvaluations(request):
 
             result = Create(request.POST, 'evaluations')
             if result["status"] == True:
-                context["success_message"] = "Evaluation has been added 👍"
+                context["success_notification"] = "Operation Successful 👍"
             else:
                 context["form_errors"] = result["form_errors"]
 

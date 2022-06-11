@@ -19,6 +19,9 @@
 
 {% block content %}
 {% if user.is_admin %}
+{% if success_notification %}
+    <input type="hidden" id="success_notification" value="{{success_notification}}" >
+{% endif %}
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">ِAdd New Department</h4>
@@ -45,9 +48,6 @@
                         <button style="width: 150px" class="btn btn-outline-success round waves-effect">Add</button>
 
                     </div>
-                    {% if success_message %}
-                    <p style="color: green;" class="card-text mb-2">{{success_message}}</p>
-                    {% endif %}
 
                 </div>
 
@@ -210,6 +210,19 @@
             document.getElementById("modal_department_id_field").value = department_id;
 
 
+        }
+
+        window.onload = function()
+        {
+            if ($('#success_notification').length) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: $('#success_notification').val(),
+                    showConfirmButton: false,
+                    timer: 1750
+                })
+            }
         }
 
     </script>

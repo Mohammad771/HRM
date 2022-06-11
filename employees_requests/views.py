@@ -31,7 +31,7 @@ def loans(request):
         
         result = Create(new_post, 'loans')
         if result["status"] == True:
-            context["success_message"] = "Loan has been created 👍"
+            context["success_notification"] = "Operation Successful 👍"
         else:
             context["form_errors"] = result['form_errors']
   
@@ -70,7 +70,7 @@ def vacations(request):
         
         result = Create(new_post, 'vacations')
         if result["status"] == True:
-            context["success_message"] = "Vacation has been created 👍"
+            context["success_notification"] = "Operation Successful 👍"
         else:
             context["form_errors"] = result['form_errors']
   
@@ -101,14 +101,14 @@ def overtime_categories(request):
         if request.POST["request_type"] == "delete":
             result = Delete("overtime_categories", request.POST["overtime_category_id"])
             if result['status']:
-                print("Deletion Successful")
+                context["success_notification"] = "Operation Successful 👍"
             else:
                 print(result['error'])
 
         else:
             result = Create(request.POST, 'overtime_categories')
             if result["status"] == True:
-                context["success_message"] = "Overtime Category has been created 👍"
+                context["success_notification"] = "Operation Successful 👍"
             else:
                 context["form_errors"] = result['form_errors']
 
@@ -122,7 +122,7 @@ def overtime(request):
         
         result = Create(request.POST, 'overtimes')
         if result["status"] == True:
-            context["success_message"] = "Overtime has been created 👍"
+            context["success_notification"] = "Operation Successful 👍"
         else:
             context["form_errors"] = result['form_errors']
 

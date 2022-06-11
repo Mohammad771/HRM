@@ -19,6 +19,9 @@
 {% endblock %}
 
 {% block viewName %}
+{% if success_notification %}
+    <input type="hidden" id="success_notification" value="{{success_notification}}" >
+{% endif %}
     {% if user.is_admin %}
         <h2 class="content-header-title float-start mb-0">Manage Payrolls</h2>
     {% else %}
@@ -281,6 +284,18 @@
         width = $("#progress_bar").text().trim();
         $("#progress_bar").css("width", width);
     }
+    window.onload = function()
+        {
+            if ($('#success_notification').length) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: $('#success_notification').val(),
+                    showConfirmButton: false,
+                    timer: 1750
+                })
+            }
+        }
     </script>
 
 

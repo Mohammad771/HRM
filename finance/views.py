@@ -19,13 +19,13 @@ def punishments(request):
             if request.POST["request_type"] == "delete":
                 result = Delete("punishments", request.POST["punishment_id"])
                 if result['status']:
-                    print("Deletion Successful")
+                    context["success_notification"] = "Operation Successful 👍"
                 else:
                     print(result['error'])
             else:
                 result = Create(request.POST, 'punishments')
                 if result["status"] == True:
-                    context["success_message"] = "Alhamdulillah"
+                    context["success_notification"] = "Operation Successful 👍"
                 else:
                     context["form_errors"] = result['form_errors']
 
@@ -42,14 +42,14 @@ def rewards(request):
             if request.POST["request_type"] == "delete":
                 result = Delete("rewards", request.POST["reward_id"])
                 if result['status']:
-                    print("Deletion Successful")
+                    context["success_notification"] = "Operation Successful 👍"
                 else:
                     print(result['error'])
             else:
                 
                 result = Create(request.POST, 'rewards')
                 if result["status"] == True:
-                    context["success_message"] = "Reward has been added 👍"
+                    context["success_notification"] = "Operation Successful 👍"
                 else:
                     context["form_errors"] = result['form_errors']
 
@@ -79,6 +79,7 @@ def create_payroll(request):
             payroll_row.save()
 
             context["users"] = Read("users")
+            context["success_notification"] = "Operation Successful 👍"
             return render(request, 'finance/create_payroll.html', context)
 
 

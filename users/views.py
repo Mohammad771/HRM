@@ -68,7 +68,8 @@ def register(request):
     context = {}
 
     if request.method == "POST":
-        form = register_form(request.POST)
+        form = register_form(request.POST, request.FILES)
+
         if form.is_valid():
             form.save()
             email = request.POST['email']

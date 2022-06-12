@@ -4,6 +4,7 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from job_management.models import job_titles, departments
+from django.core.validators import FileExtensionValidator
 import random
 
 
@@ -121,6 +122,7 @@ class users(AbstractBaseUser):
     user_mobile = models.CharField(max_length=13, unique=True)
     user_id_number = models.CharField(max_length=10, default=str(1)) # this needs to be changed to unique=True, i am not doing it now because it requires database deletion
     user_DOB = models.DateField()
+    user_photo = models.FileField(null = True, default=None, blank=True, upload_to='static/upload/users_photos', validators=[FileExtensionValidator(allowed_extensions=['png','jpg',"jpeg"])])
     user_nationality_ID = models.CharField(max_length=13)
     user_experience_years = models.IntegerField(default=None, null=True, blank=True)
     user_education_degree = models.CharField(max_length=24, default=None, null=True, blank=True)

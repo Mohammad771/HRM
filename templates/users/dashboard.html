@@ -32,8 +32,11 @@
                             <div class="profile-image-wrapper">
                                 <div class="profile-image">
                                     <div class="avatar">
-                                        <img src="{% static 'images/malek.jpg' %}"
-                                             alt="Profile Picture">
+                                        {% if user.user_photo %}
+                                            <img src="/{{user.user_photo}}" alt="Profile Picture">
+                                        {% else %}
+                                            <img src="{% static 'images/employee.png' %}"" alt="Profile Picture">
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -42,20 +45,24 @@
                             <!-- <span class="badge badge-light-primary profile-badge">{{user.user_experience_years}}</span> -->
                             <hr class="mb-2">
                                 <h4 class="fw-bolder d-flex justify-content-between align-items-start mb-1"><b>Personal Info:</b></h4>
-                                <div class="row">
-                                   <div class="col-md-5 d-flex justify-content-between align-items-start">ID Number:</div>
-                                    <div class="col-md-6 d-flex justify-content-between align-items-end">{{user.user_id_number}}</div>
-                                </div>
+                            <div class="row">
+                                <div class="col-md-5 d-flex justify-content-between align-items-start">ID Number:</div>
+                                <div class="col-md-6 d-flex justify-content-between align-items-end">{{user.user_id_number}}</div>
+                            </div>
                             <div class="row">
                                    <div class="col-md-5 d-flex justify-content-between align-items-start">Education Degee:</div>
                                     <div class="col-md-6 d-flex justify-content-between align-items-end">{{user.user_education_degree}}</div>
+                            </div>
+                            <div class="row">
+                                   <div class="col-md-5 d-flex justify-content-between align-items-start">Experience Years:</div>
+                                    <div class="col-md-6 d-flex justify-content-between align-items-end">{{user.user_experience_years}} Years</div>
                             </div>
                             <div class="row">
                                    <div class="col-md-5 d-flex justify-content-between align-items-start">
                                        Nationality:
                                    </div>
                                     <div class="col-md-6 d-flex justify-content-between align-items-end">
-                                       
+                                        {{user.user_nationality_ID}}
                                    </div>
                             </div>
                             <div class="row">
@@ -83,19 +90,15 @@
                                    </div>
                             </div>
                             <h4 class="fw-bolder mt-1 d-flex justify-content-between align-items-start mb-1"><b>Contract Info:</b></h4>
+                            {% if user_contract %}
                             <div class="row">
                                    <div class="col-md-5 d-flex justify-content-between align-items-start">
                                        Hour Price:
                                    </div>
                                     <div class="col-md-6 d-flex justify-content-between align-items-end">
-                                        {% if user.user_job_title_id %}
                                             {{user.user_job_title_id.job_title_hour_price}}
-                                        {% else %}
-                                            This employee is not added under a job title yet
-                                        {% endif %}
-                                   </div>
                             </div>
-                            {% if user_contract %}
+                            
                                 <div class="row">
                                     <div class="col-md-5 d-flex justify-content-between align-items-start">
                                         Expire Date:
@@ -120,6 +123,7 @@
                                         {% if user_contract.contract_auto_renewal %}
                                             <i class="fa-solid fa-check alert-success"></i>
                                         {% else %}
+                                        No
                                         {% endif %}
                                     </div>
                                 </div>
@@ -130,6 +134,7 @@
                         </div>
                     </div>
                 </div>
+                {% if values_array %}
                 <div class="card col-lg-7 col-md-5 col-12">
                     <div class="card-header align-items-start">
                         <div>
@@ -141,6 +146,7 @@
                         <div id="sales-line-chart"></div>
                     </div>
                 </div>
+                {% endif %}
                 {% if user_loan %}
                 <div class="col-lg-4 col-12">
                     <div class="card">
@@ -164,6 +170,7 @@
                     
                 </div>
                 {% endif %}
+                {% if user_rewards or user_punishments or user_overtimes %}
                 <div class="col-lg-8 col-md-6 col-12">
                     <div class="card">
                         <div class="card-header">
@@ -219,6 +226,7 @@
 
                     </div>
                 </div>
+                {% endif %}
 
             </div>
         </div>

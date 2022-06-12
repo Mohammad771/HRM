@@ -24,4 +24,4 @@ class create_attendance_form(forms.ModelForm):
     class  Meta():
         model = attendance
         fields = ('attendance_user_id', 'attendance_date', 'attendance_clock_in', 'attendance_clock_out'
-        , 'attendance_duration', 'attendance_half_day', 'attendance_working_from' )
+        , 'attendance_duration', 'attendance_half_day', 'attendance_working_from')

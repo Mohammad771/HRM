@@ -42,14 +42,14 @@
                 {%csrf_token%}
                 <div class="row">
                     <div class="col-md-3">
-                        <label class="form-label" for="select2-basic">National ID</label>
+                        <label class="form-label" for="select2-basic">Select User</label>
                         <div class="position-relative" data-select2-id="45">
                             <select name="contract_user_id" class="select2 form-select" id="selectUser" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                 {% for user in users %}
                                     {% if user.info == returned_data.contract_user_id %}
-                                        <option selected value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                        <option selected value="{{user.info.user_id}}" data-select2-id="2">{{user.info}}</option>
                                     {% else %}                                
-                                        <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                        <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info}}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>

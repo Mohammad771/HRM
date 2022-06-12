@@ -161,7 +161,10 @@ def create_contract(request):
                     form.save()
             
                 current_user = users.objects.get(pk=user_idd)
-                current_user.user_experience_years = request.POST['user_experience_years']
+                if request.POST['user_experience_years'] == "":
+                    current_user.user_experience_years = 0
+                else:
+                    current_user.user_experience_years = request.POST['user_experience_years']
                 current_user.user_job_title_id = job_titles_model.objects.get(pk=request.POST['user_job_title_id'])
                 current_user.user_education_degree = request.POST['user_education_degree']
                 current_user.save()

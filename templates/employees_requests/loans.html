@@ -237,7 +237,7 @@
                                 <div class="position-relative" data-select2-id="45">
                                     <select name="loan_user_id" class="select2 form-select" id="select2-basic" data-select2-id="select2-basic" tabindex="-1" aria-hidden="true">
                                         {% for user in users %}
-                                            <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info.user_nationality_ID}}</option>
+                                            <option value="{{user.info.user_id}}" data-select2-id="2">{{user.info}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

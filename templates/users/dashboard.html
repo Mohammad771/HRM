@@ -134,19 +134,23 @@
                         </div>
                     </div>
                 </div>
+
+            </div>
                 {% if values_array %}
-                <div class="card col-lg-7 col-md-5 col-12">
-                    <div class="card-header align-items-start">
-                        <div>
-                            <h4 class="card-title mb-25">Evaluations</h4>
-                            <p class="card-text mb-0">Lastest Evaluations</p>
+                    <div class="card col-lg-7 col-md-5 col-12">
+                        <div class="card-header align-items-start">
+                            <div>
+                                <h4 class="card-title mb-25">Evaluations</h4>
+                                <p class="card-text mb-0">Lastest Evaluations</p>
+                            </div>
+                        </div>
+                        <div class="card-body pb-0">
+                            <div id="sales-line-chart"></div>
                         </div>
                     </div>
-                    <div class="card-body pb-0">
-                        <div id="sales-line-chart"></div>
-                    </div>
-                </div>
                 {% endif %}
+            <div class="row">
+
                 {% if user_loan %}
                 <div class="col-lg-4 col-12">
                     <div class="card">
@@ -167,7 +171,7 @@
                                 </div>
                             </div>
                     </div>
-                    
+
                 </div>
                 {% endif %}
                 {% if user_rewards or user_punishments or user_overtimes %}
@@ -227,7 +231,6 @@
                     </div>
                 </div>
                 {% endif %}
-
             </div>
         </div>
 
